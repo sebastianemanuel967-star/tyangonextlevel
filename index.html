@@ -788,6 +788,48 @@
       margin-top: auto;
     }
 
+    .card-season {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: #0E74A5;
+      margin-bottom: 5px;
+      line-height: 1.25;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    /* Tarjeta Edición Especial (BENDITO MANGO — Azul Celeste Trululu) */
+    .card.card-edition-blue {
+      background: linear-gradient(155deg, #22A6DF 0%, #1588BE 55%, #0A6996 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 6px 20px rgba(18, 136, 190, 0.25);
+    }
+    .card.card-edition-blue .card-name {
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+    .card.card-edition-blue .card-season {
+      color: var(--lime);
+      font-weight: 800;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    .card.card-edition-blue .card-desc {
+      color: rgba(255, 255, 255, 0.95);
+    }
+    .card.card-edition-blue .card-price {
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    .card.card-edition-blue .card-badge {
+      background: #FFFFFF;
+      color: #0B6F9E;
+      font-weight: 900;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
     /* SECCIÓN 5: PERSONALIZA TU TYANGO */
     .home-customizer {
       padding: 60px 20px;
@@ -1559,6 +1601,11 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
+      .card-season {
+        font-size: 0.60rem;
+        margin-bottom: 4px;
+        line-height: 1.2;
+      }
       .card-desc {
         font-size: 0.72rem;
         line-height: 1.32;
@@ -1634,6 +1681,9 @@
       .card-name {
         font-size: 0.85rem;
       }
+      .card-season {
+        font-size: 0.58rem;
+      }
       .card-desc {
         font-size: 0.70rem;
       }
@@ -1665,6 +1715,9 @@
       }
       .card-name {
         font-size: 0.82rem;
+      }
+      .card-season {
+        font-size: 0.56rem;
       }
       .card-desc {
         font-size: 0.67rem;
@@ -1703,6 +1756,9 @@
       }
       .card-name {
         font-size: 0.78rem;
+      }
+      .card-season {
+        font-size: 0.54rem;
       }
       .card-desc {
         font-size: 0.64rem;
@@ -2233,6 +2289,16 @@
           desc: 'Uva congelada con Sprite y Tajín. Fría, refrescante y llena de sabor. ❄️🍇', 
           price: '$2.50' 
         },
+        { 
+          img: 'bendito-mango.jpg', 
+          customCardClass: 'card-edition-blue',
+          badge: 'EDICIÓN LIMITADA', 
+          badgeCss: 'background:#FFFFFF;color:#0B6F9E;font-weight:900;',
+          seasonInfo: 'Disponible durante septiembre',
+          name: 'BENDITO MANGO', 
+          desc: 'Mango con chamoy y gomitas azules. Una edición especial, intensa y llena de sabor.', 
+          price: '$2.99' 
+        },
       ],
       ice: [
         { emoji:'🧊', bg:'linear-gradient(135deg,#E0F2FE,#BAE6FD)', badge:'Best Seller', badgeCss:'background:rgba(59,130,246,0.12);color:#2563EB', name:'Iced Latte Tyango', desc:'Espresso frío con leche y hielo, toque especial.', price:'$9.500' },
@@ -2641,18 +2707,24 @@
       grid.innerHTML = '';
       items.forEach((item, i) => {
         const card = document.createElement('article');
-        card.className = 'card';
+        card.className = 'card' + (item.customCardClass ? ' ' + item.customCardClass : '');
         card.setAttribute('role', 'article');
         const mediaContent = item.img 
           ? `<img src="${item.img}" alt="${item.name}" class="card-photo" loading="lazy">` 
           : `<span class="card-emoji" aria-hidden="true">${item.emoji}</span>`;
+        
+        const seasonMarkup = item.seasonInfo 
+          ? `<div class="card-season">📅 ${item.seasonInfo}</div>` 
+          : '';
+
         card.innerHTML = `
           <div class="card-img" style="${item.bg ? 'background:' + item.bg : ''}">
             ${mediaContent}
           </div>
           <div class="card-body">
-            ${item.badge ? `<span class="card-badge" style="${item.badgeCss}">${item.badge}</span>` : ''}
+            ${item.badge ? `<span class="card-badge" style="${item.badgeCss || ''}">${item.badge}</span>` : ''}
             <h3 class="card-name">${item.name}</h3>
+            ${seasonMarkup}
             <p class="card-desc">${item.desc}</p>
             <span class="card-price">${item.price}</span>
           </div>`;
