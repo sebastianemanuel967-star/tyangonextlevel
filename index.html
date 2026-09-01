@@ -1792,12 +1792,12 @@
         <img src="logo.png" alt="TYANGO" class="header-logo-img">
       </button>
 
-      <!-- TYHOT | TYICE | TYBOWLS | TYAZUCA — centro (SIEMPRE visibles horizontalmente) -->
+      <!-- TYHOT | TYAZUCA | TYICE | TYBOWLS — centro (SIEMPRE visibles horizontalmente) -->
       <nav class="header-nav" role="navigation" aria-label="Navegación principal de productos">
         <button class="header-nav-btn" data-page="hot" onclick="navigate('hot')" aria-label="Ver productos TYHOT">TYHOT</button>
+        <button class="header-nav-btn" data-page="azuca" onclick="navigate('azuca')" aria-label="Ver productos TYAZUCA">TYAZUCA</button>
         <button class="header-nav-btn" data-page="ice" onclick="navigate('ice')" aria-label="Ver productos TYICE">TYICE</button>
         <button class="header-nav-btn" data-page="bowls" onclick="navigate('bowls')" aria-label="Ver productos TYBOWLS">TYBOWLS</button>
-        <button class="header-nav-btn" data-page="azuca" onclick="navigate('azuca')" aria-label="Ver productos TYAZUCA">TYAZUCA</button>
       </nav>
 
       <!-- ☰ — derecha (abre drawer en móvil / dropdown en desktop) -->
@@ -1845,6 +1845,11 @@
           <span class="dni-text">TYHOT</span>
           <span class="dni-tag">Picante</span>
         </button>
+        <button type="button" class="drawer-nav-item" data-page="azuca" onclick="navigate('azuca')">
+          <span class="dni-icon">🍓</span>
+          <span class="dni-text">TYAZUCA</span>
+          <span class="dni-tag">Fresas</span>
+        </button>
         <button type="button" class="drawer-nav-item" data-page="ice" onclick="navigate('ice')">
           <span class="dni-icon">❄️</span>
           <span class="dni-text">TYICE</span>
@@ -1854,11 +1859,6 @@
           <span class="dni-icon">🥣</span>
           <span class="dni-text">TYBOWLS</span>
           <span class="dni-tag">Bowls</span>
-        </button>
-        <button type="button" class="drawer-nav-item" data-page="azuca" onclick="navigate('azuca')">
-          <span class="dni-icon">🍓</span>
-          <span class="dni-text">TYAZUCA</span>
-          <span class="dni-tag">Fresas</span>
         </button>
       </nav>
 
@@ -1914,6 +1914,12 @@
           <p class="dc-desc">Fruta fresca con aderezos de Nochixtlán, Oaxaca. Un toque de picante y mucho sabor. 🌶️</p>
           <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('hot')">VER TYHOT →</button>
         </div>
+        <div class="discover-card" onclick="navigate('azuca')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')navigate('azuca')" aria-label="Explorar categoría TYAZUCA">
+          <span class="dc-emoji">🍓</span>
+          <h3 class="dc-name">TYAZUCA</h3>
+          <p class="dc-desc">Fresas frescas con aderezos únicos a tu manera.</p>
+          <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('azuca')">VER TYAZUCA →</button>
+        </div>
         <div class="discover-card" onclick="navigate('ice')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')navigate('ice')" aria-label="Explorar categoría TYICE">
           <span class="dc-emoji">❄️</span>
           <h3 class="dc-name">TYICE</h3>
@@ -1925,12 +1931,6 @@
           <h3 class="dc-name">TYBOWLS</h3>
           <p class="dc-desc">Bowls nutritivos y deliciosos para disfrutar.</p>
           <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('bowls')">VER TYBOWLS →</button>
-        </div>
-        <div class="discover-card" onclick="navigate('azuca')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')navigate('azuca')" aria-label="Explorar categoría TYAZUCA">
-          <span class="dc-emoji">🍓</span>
-          <h3 class="dc-name">TYAZUCA</h3>
-          <p class="dc-desc">Fresas frescas con aderezos únicos a tu manera.</p>
-          <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('azuca')">VER TYAZUCA →</button>
         </div>
       </div>
     </section>
@@ -2683,9 +2683,9 @@
           <h4 style="font-weight:800;margin-bottom:10px;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--lime)">Menú</h4>
           <div style="display:flex;flex-direction:column;gap:6px">
             <a href="#" onclick="navigate('hot')">TYHOT</a>
+            <a href="#" onclick="navigate('azuca')">TYAZUCA</a>
             <a href="#" onclick="navigate('ice')">TYICE</a>
             <a href="#" onclick="navigate('bowls')">TYBOWLS</a>
-            <a href="#" onclick="navigate('azuca')">TYAZUCA</a>
           </div>
         </div>
         <div>
