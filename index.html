@@ -705,6 +705,9 @@
       transform: translateY(18px);
       box-shadow: var(--shadow-sm);
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
     .card.show {
       opacity: 1;
@@ -714,6 +717,10 @@
       transform: translateY(-5px);
       box-shadow: var(--shadow-hover);
     }
+    .card:focus-visible {
+      outline: 2.5px solid var(--lime);
+      outline-offset: 2px;
+    }
     .card-img {
       height: 175px;
       display: flex;
@@ -722,6 +729,7 @@
       position: relative;
       overflow: hidden;
       background: var(--cream);
+      flex-shrink: 0;
     }
     .card-photo {
       width: 100%;
@@ -742,9 +750,13 @@
     }
     .card-body {
       padding: 18px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
     }
     .card-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       padding: 3px 9px;
       border-radius: var(--radius-sm);
       font-size: 0.68rem;
@@ -752,25 +764,28 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
       margin-bottom: 8px;
+      align-self: flex-start;
     }
     .card-name {
       font-size: 1.05rem;
       font-weight: 800;
       color: var(--purple-dark);
       margin-bottom: 4px;
+      line-height: 1.25;
     }
     .card-desc {
       font-size: 0.8rem;
       color: var(--purple-mid);
       line-height: 1.45;
       margin-bottom: 12px;
-      min-height: 38px;
+      flex-grow: 1;
     }
     .card-price {
       font-size: 1.15rem;
       font-weight: 900;
       color: var(--purple-dark);
       display: block;
+      margin-top: auto;
     }
 
     /* SECCIÓN 5: PERSONALIZA TU TYANGO */
@@ -1488,18 +1503,13 @@
         font-size: 0.85rem;
       }
 
-      /* Catálogos & Favoritos: 2 Columnas en Mobile */
-      .products-grid {
+      /* Catálogos & Favoritos: 2 Columnas en Mobile con Altura Uniforme */
+      .products-grid, .favs-grid {
         grid-template-columns: repeat(2, 1fr);
         max-width: 100%;
         margin: 16px auto 0;
         gap: 12px;
-      }
-      .favs-grid {
-        grid-template-columns: repeat(2, 1fr);
-        max-width: 100%;
-        margin: 20px auto 0;
-        gap: 12px;
+        align-items: stretch;
       }
       .cat-products {
         padding: 8px 12px 48px;
@@ -1508,9 +1518,19 @@
         border-radius: var(--radius-md);
         display: flex;
         flex-direction: column;
+        height: 100%;
+        box-shadow: 0 2px 8px rgba(74, 25, 66, 0.05);
+      }
+      .card:hover {
+        transform: none;
+        box-shadow: 0 2px 8px rgba(74, 25, 66, 0.05);
+      }
+      .card:active {
+        transform: scale(0.985);
       }
       .card-img {
-        height: 140px;
+        height: 135px;
+        flex-shrink: 0;
       }
       .card-body {
         padding: 10px 10px 12px;
@@ -1519,32 +1539,47 @@
         flex-grow: 1;
       }
       .card-badge {
-        font-size: 0.60rem;
+        font-size: 0.58rem;
         padding: 2px 6px;
         margin-bottom: 5px;
         align-self: flex-start;
+        line-height: 1.2;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
       }
       .card-name {
-        font-size: 0.92rem;
+        font-size: 0.88rem;
         font-weight: 800;
-        line-height: 1.25;
+        line-height: 1.22;
         margin-bottom: 4px;
-      }
-      .card-desc {
-        font-size: 0.73rem;
-        line-height: 1.35;
-        color: var(--purple-mid);
-        margin-bottom: 8px;
-        flex-grow: 1;
+        color: var(--purple-dark);
+        min-height: 2.44em;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
+      .card-desc {
+        font-size: 0.72rem;
+        line-height: 1.32;
+        color: var(--purple-mid);
+        margin-bottom: 8px;
+        flex-grow: 1;
+        min-height: 2.64em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+      }
       .card-price {
-        font-size: 1.08rem;
+        font-size: 1.05rem;
         font-weight: 900;
+        color: var(--purple-dark);
         margin-top: auto;
+        padding-top: 2px;
+        display: block;
       }
 
       /* Personalizador Mobile */
@@ -1594,16 +1629,16 @@
         gap: 10px;
       }
       .card-img {
-        height: 135px;
+        height: 130px;
       }
       .card-name {
-        font-size: 0.88rem;
+        font-size: 0.85rem;
       }
       .card-desc {
         font-size: 0.70rem;
       }
       .card-price {
-        font-size: 1.04rem;
+        font-size: 1.02rem;
       }
       .dna-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1623,16 +1658,16 @@
         gap: 8px;
       }
       .card-img {
-        height: 125px;
+        height: 120px;
       }
       .card-body {
         padding: 8px 8px 10px;
       }
       .card-name {
-        font-size: 0.84rem;
+        font-size: 0.82rem;
       }
       .card-desc {
-        font-size: 0.68rem;
+        font-size: 0.67rem;
       }
       .card-price {
         font-size: 0.98rem;
@@ -1658,19 +1693,22 @@
         max-width: 85px;
       }
       .products-grid, .favs-grid {
-        gap: 8px;
+        gap: 7px;
       }
       .card-img {
-        height: 118px;
+        height: 112px;
+      }
+      .card-body {
+        padding: 7px 7px 9px;
       }
       .card-name {
-        font-size: 0.82rem;
+        font-size: 0.78rem;
       }
       .card-desc {
-        font-size: 0.66rem;
+        font-size: 0.64rem;
       }
       .card-price {
-        font-size: 0.95rem;
+        font-size: 0.94rem;
       }
       .step-title {
         font-size: 0.98rem;
@@ -2144,7 +2182,7 @@
           badge: 'Popular', 
           badgeCss: 'background:rgba(255,100,50,0.12);color:#E85D30', 
           name: 'TYANGO CLÁSICO', 
-          desc: 'Mango jugoso con chamoy, limón y Tajín. Clásico, fresco y lleno de sabor.', 
+          desc: 'Mango con chamoy, limón y Tajín. Clásico, fresco y lleno de sabor.', 
           price: '$2.50' 
         },
         { 
@@ -2152,7 +2190,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(236,72,153,0.12);color:#DB2777', 
           name: 'PICAZANA', 
-          desc: 'Manzana fresca envuelta en una intensa masa de chamoy y tamarindo. Dulce, ácida y picosita. 🌶️', 
+          desc: 'Manzana cubierta con masa de chamoy y tamarindo. Dulce, ácida y picosita.', 
           price: '$2.50' 
         },
         { 
@@ -2160,7 +2198,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(123,91,123,0.12);color:#7B5B7B', 
           name: 'UVA PULPA', 
-          desc: 'Uva verde cubierta en Pulparindo y Tajín. Dulce, ácida y picosita. 🌶️', 
+          desc: 'Uva verde cubierta con Pulparindo y Tajín. Dulce, ácida y picosita.', 
           price: '$2.50' 
         },
         { 
@@ -2168,7 +2206,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(245,158,11,0.15);color:#D97706', 
           name: 'PIÑADIABLO', 
-          desc: 'Piña congelada con chamoy y Tajín. Dulce, fría y con un toque de picante. 🌶️', 
+          desc: 'Piña congelada con chamoy y Tajín. Dulce, fría y con un toque de picante.', 
           price: '$2.50' 
         },
         { 
@@ -2176,7 +2214,7 @@
           badge: '🔥 MUY PICANTE', 
           badgeCss: 'background:rgba(239,68,68,0.15);color:#DC2626', 
           name: 'TAKIMANGO', 
-          desc: 'Takis Fuego con mango y chamoy. Muy picante, jugoso y lleno de sabor. 🔥', 
+          desc: 'Takis Fuego con mango y chamoy. Muy picante, jugoso y lleno de sabor.', 
           price: '$2.50' 
         },
         { 
@@ -2184,7 +2222,7 @@
           badge: 'Fresco', 
           badgeCss: 'background:rgba(34,197,94,0.15);color:#15803D', 
           name: 'PEPINAZO', 
-          desc: 'Pepino fresco con chamoy, Tajín y limón. Jugoso, ácido y con el toque picosito de TYHOT. 🌶️', 
+          desc: 'Pepino fresco con chamoy, Tajín y limón. Jugoso, ácido y picosito.', 
           price: '$2.50' 
         },
       ],
