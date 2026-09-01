@@ -417,6 +417,442 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════
+       CARRITO GLOBAL TYANGO — HEADER & SLIDE-OVER DRAWER
+    ═══════════════════════════════════════════════════════════════ */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header-cart-btn {
+      background: rgba(212, 217, 140, 0.16);
+      border: 1.5px solid rgba(212, 217, 140, 0.35);
+      color: var(--cream);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-main);
+      font-weight: 800;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    .header-cart-btn:hover {
+      background: var(--lime);
+      color: var(--purple-dark);
+      border-color: var(--lime);
+      transform: translateY(-1px);
+    }
+    .header-cart-btn:active {
+      transform: scale(0.95);
+    }
+    .cart-icon-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cart-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+    .cart-badge {
+      background: #E85D30;
+      color: #FFFFFF;
+      font-size: 0.74rem;
+      font-weight: 900;
+      padding: 1px 7px;
+      border-radius: var(--radius-full);
+      min-width: 20px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
+      transition: transform var(--transition-fast), background var(--transition-fast);
+    }
+    .cart-badge.bump {
+      transform: scale(1.25);
+    }
+    .header-cart-btn:hover .cart-badge {
+      background: var(--purple-dark);
+      color: var(--lime);
+    }
+
+    /* Backdrop del Carrito */
+    .cart-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(45, 12, 39, 0.72);
+      backdrop-filter: blur(6px);
+      z-index: 210;
+      opacity: 0;
+      transition: opacity var(--transition-base);
+    }
+    .cart-backdrop.open {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Drawer del Carrito */
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(420px, 92vw);
+      height: 100vh;
+      height: 100dvh;
+      background: var(--cream);
+      color: var(--purple-dark);
+      z-index: 211;
+      box-shadow: -8px 0 40px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform var(--transition-base);
+      overflow: hidden;
+    }
+    .cart-drawer.open {
+      transform: translateX(0);
+    }
+
+    .cart-drawer-header {
+      padding: 18px 20px;
+      background: var(--purple-dark);
+      color: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid rgba(212, 217, 140, 0.2);
+      flex-shrink: 0;
+    }
+    .cart-drawer-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cart-drawer-title-group h2 {
+      font-size: 1.18rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      margin: 0;
+      color: var(--cream);
+    }
+    .cart-drawer-count {
+      font-size: 0.78rem;
+      font-weight: 800;
+      background: rgba(212, 217, 140, 0.18);
+      color: var(--lime);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }
+
+    .cart-drawer-body {
+      padding: 16px;
+      flex-grow: 1;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Fila de Producto en el Carrito */
+    .cart-item-row {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      border: 1px solid rgba(74, 25, 66, 0.08);
+      box-shadow: 0 2px 8px rgba(74, 25, 66, 0.04);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .cart-item-thumb {
+      width: 62px;
+      height: 62px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-item-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cart-item-thumb .ci-emoji {
+      font-size: 2rem;
+    }
+    .cart-item-info {
+      flex-grow: 1;
+      min-width: 0;
+    }
+    .cart-item-name {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--purple-dark);
+      margin-bottom: 2px;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cart-item-desc {
+      font-size: 0.72rem;
+      color: var(--purple-mid);
+      margin-bottom: 6px;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cart-item-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .cart-item-price {
+      font-size: 0.88rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+    }
+    .cart-item-subtotal {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: #E85D30;
+    }
+
+    /* Stepper del Carrito */
+    .cart-stepper {
+      display: inline-flex;
+      align-items: center;
+      background: var(--cream);
+      border: 1px solid rgba(74, 25, 66, 0.12);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .cart-stepper-btn {
+      width: 30px;
+      height: 30px;
+      background: none;
+      border: none;
+      color: var(--purple-dark);
+      font-weight: 900;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition-fast);
+    }
+    .cart-stepper-btn:hover {
+      background: rgba(74, 25, 66, 0.08);
+    }
+    .cart-stepper-num {
+      min-width: 24px;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--purple-dark);
+    }
+    .cart-del-btn {
+      background: none;
+      border: none;
+      color: #9CA3AF;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      transition: color var(--transition-fast);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-del-btn:hover {
+      color: #EF4444;
+    }
+
+    /* Empty state del Carrito */
+    .cart-empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      margin: auto 0;
+    }
+    .cart-empty-emoji {
+      font-size: 3.5rem;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .cart-empty-title {
+      font-size: 1.18rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+      margin-bottom: 6px;
+    }
+    .cart-empty-text {
+      font-size: 0.84rem;
+      color: var(--purple-mid);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    /* Footer del Carrito */
+    .cart-drawer-footer {
+      padding: 16px 20px;
+      background: var(--white);
+      border-top: 1px solid rgba(74, 25, 66, 0.1);
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+      flex-shrink: 0;
+    }
+    .cart-subtotal-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .cart-subtotal-label {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--purple-mid);
+      letter-spacing: 0.03em;
+    }
+    .cart-subtotal-amount {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+    }
+    .cart-actions-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .btn-checkout {
+      width: 100%;
+      min-height: 48px;
+      font-size: 0.95rem;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-clear-cart {
+      background: none;
+      border: none;
+      color: var(--purple-mid);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+      text-align: center;
+      padding: 4px;
+      transition: color var(--transition-fast);
+    }
+    .btn-clear-cart:hover {
+      color: #EF4444;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BARRA DE ACCIÓN EN TARJETAS DE PRODUCTO (AGREGAR / STEPPER)
+    ═══════════════════════════════════════════════════════════════ */
+    .card-action-bar {
+      margin-top: auto;
+      padding-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .btn-add-cart {
+      background: var(--purple-dark);
+      color: var(--lime);
+      border: none;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-main);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+    .btn-add-cart:hover {
+      background: var(--purple-surface);
+      transform: scale(1.03);
+    }
+    .btn-add-cart:active {
+      transform: scale(0.96);
+    }
+
+    .card.card-edition-blue .btn-add-cart {
+      background: #FFFFFF;
+      color: #0B6F9E;
+    }
+    .card.card-edition-blue .btn-add-cart:hover {
+      background: var(--lime);
+      color: var(--purple-dark);
+    }
+
+    /* Stepper dentro de la tarjeta de producto */
+    .card-qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(74, 25, 66, 0.08);
+      border: 1px solid rgba(74, 25, 66, 0.15);
+      border-radius: var(--radius-full);
+      padding: 2px;
+    }
+    .card.card-edition-blue .card-qty-stepper {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .cqty-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--purple-dark);
+      color: var(--lime);
+      border: none;
+      font-weight: 900;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform var(--transition-fast);
+    }
+    .card.card-edition-blue .cqty-btn {
+      background: #FFFFFF;
+      color: #0B6F9E;
+    }
+    .cqty-btn:active {
+      transform: scale(0.9);
+    }
+    .cqty-num {
+      min-width: 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+    }
+    .card.card-edition-blue .cqty-num {
+      color: #FFFFFF;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
        SISTEMA DE PÁGINAS (SPA)
     ═══════════════════════════════════════════════════════════════ */
     .page {
@@ -1800,10 +2236,20 @@
         <button class="header-nav-btn" data-page="bowls" onclick="navigate('bowls')" aria-label="Ver productos TYBOWLS">TYBOWLS</button>
       </nav>
 
-      <!-- ☰ — derecha (abre drawer en móvil / dropdown en desktop) -->
-      <button class="header-hamburger" onclick="toggleMenu()" aria-label="Abrir menú" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+      <!-- Acciones de Cabecera: Carrito 🛒 + Hamburguesa ☰ -->
+      <div class="header-actions">
+        <button class="header-cart-btn" onclick="openCartDrawer()" aria-label="Ver carrito de compras" id="headerCartBtn">
+          <div class="cart-icon-wrapper">
+            <span class="cart-icon">🛒</span>
+            <span class="cart-badge" id="cartBadge">0</span>
+          </div>
+        </button>
+
+        <!-- ☰ — derecha (abre drawer en móvil / dropdown en desktop) -->
+        <button class="header-hamburger" onclick="toggleMenu()" aria-label="Abrir menú" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
 
     </div>
   </header>
@@ -1811,6 +2257,7 @@
   <!-- Menú secundario (Desktop) -->
   <aside class="secondary-menu" id="secondaryMenu" aria-label="Menú secundario">
     <a href="#" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); toggleMenu();">🎨 Hazlo a tu manera</a>
+    <a href="#" onclick="openCartDrawer(); toggleMenu();">🛒 Ver Mi Carrito</a>
     <a href="#">📸 Instagram</a>
     <a href="#">📘 Facebook</a>
     <a href="#">🎵 TikTok</a>
@@ -1864,14 +2311,55 @@
 
       <div class="drawer-divider"></div>
 
-      <div class="drawer-section-title">EXPERIENCIAS & CONTACTO</div>
+      <div class="drawer-section-title">EXPERIENCIAS & ACCIONES</div>
       <div class="drawer-sub-links">
+        <a href="#" class="drawer-sub-link" onclick="openCartDrawer(); closeMobileDrawer();">
+          🛒 Ver Mi Carrito
+        </a>
         <a href="#" class="drawer-sub-link" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); closeMobileDrawer();">
           🎨 Hazlo a tu manera
         </a>
         <a href="#" class="drawer-sub-link">📸 Instagram</a>
         <a href="#" class="drawer-sub-link">📍 Ubicación</a>
         <a href="#" class="drawer-sub-link">📞 Contacto</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Backdrop Overlay para Carrito -->
+  <div class="cart-backdrop" id="cartBackdrop" onclick="closeCartDrawer()"></div>
+
+  <!-- Drawer Lateral del Carrito -->
+  <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Carrito de compras">
+    <div class="cart-drawer-header">
+      <div class="cart-drawer-title-group">
+        <span class="cart-icon" style="font-size: 1.35rem;">🛒</span>
+        <h2>TU CARRITO</h2>
+        <span class="cart-drawer-count" id="cartDrawerCount">0 items</span>
+      </div>
+      <button type="button" class="drawer-close-btn" onclick="closeCartDrawer()" aria-label="Cerrar carrito">
+        ✕
+      </button>
+    </div>
+
+    <!-- Lista de Productos en el Carrito -->
+    <div class="cart-drawer-body" id="cartItemsList">
+      <!-- Inyectado por JS -->
+    </div>
+
+    <!-- Footer del Carrito -->
+    <div class="cart-drawer-footer" id="cartDrawerFooter">
+      <div class="cart-subtotal-row">
+        <span class="cart-subtotal-label">TOTAL:</span>
+        <span class="cart-subtotal-amount" id="cartTotalAmount">$0.00</span>
+      </div>
+      <div class="cart-actions-group">
+        <button type="button" class="btn-primary btn-checkout" onclick="checkoutWhatsApp()">
+          PEDIR POR WHATSAPP 📲
+        </button>
+        <button type="button" class="btn-clear-cart" onclick="clearCart()">
+          Vaciar carrito
+        </button>
       </div>
     </div>
   </aside>
@@ -2222,18 +2710,19 @@
       <div id="modal-order-details" style="background: var(--cream); border-radius: var(--radius-md); padding: 14px; text-align: left; font-size: 0.84rem; color: var(--purple-dark); margin-bottom: 20px; border: 1px solid rgba(74,25,66,0.08); line-height: 1.55;">
       </div>
       <div style="display: flex; gap: 10px;">
-        <button type="button" class="btn-primary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal()">Crear Otro</button>
-        <button type="button" class="btn-secondary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal(); navigate('hot');">Ver Menú</button>
+        <button type="button" class="btn-primary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal(); openCartDrawer();">🛒 Ver Carrito</button>
+        <button type="button" class="btn-secondary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal()">Crear Otro</button>
       </div>
     </div>
   </div>
 
   <!-- ═══════ JAVASCRIPT ENGINE ═══════ -->
   <script>
-    /* ═══════ CATÁLOGOS EXISTENTES ═══════ */
+    /* ═══════ CATÁLOGOS EXISTENTES CON IDENTIFICADORES ÚNICOS ═══════ */
     const catalog = {
       hot: [
         { 
+          id: 'hot_tyango_clasico',
           img: 'tyango-clasico.jpg', 
           badge: 'Popular', 
           badgeCss: 'background:rgba(255,100,50,0.12);color:#E85D30', 
@@ -2242,6 +2731,7 @@
           price: '$2.50' 
         },
         { 
+          id: 'hot_picazana',
           img: 'picazana.jpg', 
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(236,72,153,0.12);color:#DB2777', 
@@ -2250,6 +2740,7 @@
           price: '$2.50' 
         },
         { 
+          id: 'hot_uva_pulpa',
           img: 'uva-pulpa.jpg', 
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(123,91,123,0.12);color:#7B5B7B', 
@@ -2258,6 +2749,7 @@
           price: '$2.50' 
         },
         { 
+          id: 'hot_pinadiablo',
           img: 'pinadiablo.jpg', 
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(245,158,11,0.15);color:#D97706', 
@@ -2266,6 +2758,7 @@
           price: '$2.50' 
         },
         { 
+          id: 'hot_takimango',
           img: 'takimango.jpg', 
           badge: '🔥 MUY PICANTE', 
           badgeCss: 'background:rgba(239,68,68,0.15);color:#DC2626', 
@@ -2274,6 +2767,7 @@
           price: '$2.50' 
         },
         { 
+          id: 'hot_pepinazo',
           img: 'pepinazo.jpg', 
           badge: 'Fresco', 
           badgeCss: 'background:rgba(34,197,94,0.15);color:#15803D', 
@@ -2282,6 +2776,7 @@
           price: '$2.50' 
         },
         { 
+          id: 'hot_iceuva',
           img: 'iceuva.jpg', 
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(59,130,246,0.12);color:#2563EB', 
@@ -2290,6 +2785,7 @@
           price: '$2.50' 
         },
         { 
+          id: 'hot_bendito_mango',
           img: 'bendito-mango.jpg', 
           customCardClass: 'card-edition-blue',
           badge: 'EDICIÓN LIMITADA', 
@@ -2301,31 +2797,301 @@
         },
       ],
       ice: [
-        { emoji:'🧊', bg:'linear-gradient(135deg,#E0F2FE,#BAE6FD)', badge:'Best Seller', badgeCss:'background:rgba(59,130,246,0.12);color:#2563EB', name:'Iced Latte Tyango', desc:'Espresso frío con leche y hielo, toque especial.', price:'$9.500' },
-        { emoji:'🍹', bg:'linear-gradient(135deg,#ECFDF5,#D1FAE5)', name:'Limonada Fresca', desc:'Limón natural, hierbabuena y jengibre.', price:'$7.500' },
-        { emoji:'🥭', bg:'linear-gradient(135deg,#FFF7ED,#FFEDD5)', badge:'Tropical', badgeCss:'background:rgba(245,158,11,0.12);color:#D97706', name:'Smoothie Tropical', desc:'Mango, maracuyá y piña natural.', price:'$11.000' },
-        { emoji:'🫐', bg:'linear-gradient(135deg,#F5F3FF,#EDE9FE)', name:'Berry Blast', desc:'Frutos rojos, yogur natural y miel pura.', price:'$10.500' },
+        { id: 'ice_latte', emoji:'🧊', bg:'linear-gradient(135deg,#E0F2FE,#BAE6FD)', badge:'Best Seller', badgeCss:'background:rgba(59,130,246,0.12);color:#2563EB', name:'Iced Latte Tyango', desc:'Espresso frío con leche y hielo, toque especial.', price:'$2.50' },
+        { id: 'ice_limonada', emoji:'🍹', bg:'linear-gradient(135deg,#ECFDF5,#D1FAE5)', name:'Limonada Fresca', desc:'Limón natural, hierbabuena y jengibre.', price:'$2.50' },
+        { id: 'ice_smoothie', emoji:'🥭', bg:'linear-gradient(135deg,#FFF7ED,#FFEDD5)', badge:'Tropical', badgeCss:'background:rgba(245,158,11,0.12);color:#D97706', name:'Smoothie Tropical', desc:'Mango, maracuyá y piña natural.', price:'$2.50' },
+        { id: 'ice_berry', emoji:'🫐', bg:'linear-gradient(135deg,#F5F3FF,#EDE9FE)', name:'Berry Blast', desc:'Frutos rojos, yogur natural y miel pura.', price:'$2.50' },
       ],
       bowls: [
-        { emoji:'🥑', bg:'linear-gradient(135deg,#E8EDB8,#D4D98C)', badge:'Favorito', badgeCss:'background:rgba(212,217,140,0.35);color:#4A1942', name:'Açaí Power Bowl', desc:'Açaí, granola, banana, frutos rojos y miel.', price:'$15.000' },
-        { emoji:'🥝', bg:'linear-gradient(135deg,#FEF3C7,#FDE68A)', name:'Green Vitality', desc:'Espinaca, kiwi, banana, chía y leche de coco.', price:'$14.000' },
-        { emoji:'🍓', bg:'linear-gradient(135deg,#FCE7F3,#FBCFE8)', badge:'Nuevo', badgeCss:'background:rgba(236,72,153,0.12);color:#DB2777', name:'Pitaya Dream', desc:'Pitaya rosa, coco, mango y granola crujiente.', price:'$16.000' },
-        { emoji:'🍌', bg:'linear-gradient(135deg,#FEF9C3,#FEF08A)', name:'Tropical Sunrise', desc:'Mango, piña, banana, coco y hemp protein.', price:'$14.500' },
+        { id: 'bowls_acai', emoji:'🥑', bg:'linear-gradient(135deg,#E8EDB8,#D4D98C)', badge:'Favorito', badgeCss:'background:rgba(212,217,140,0.35);color:#4A1942', name:'Açaí Power Bowl', desc:'Açaí, granola, banana, frutos rojos y miel.', price:'$2.50' },
+        { id: 'bowls_vitality', emoji:'🥝', bg:'linear-gradient(135deg,#FEF3C7,#FDE68A)', name:'Green Vitality', desc:'Espinaca, kiwi, banana, chía y leche de coco.', price:'$2.50' },
+        { id: 'bowls_pitaya', emoji:'🍓', bg:'linear-gradient(135deg,#FCE7F3,#FBCFE8)', badge:'Nuevo', badgeCss:'background:rgba(236,72,153,0.12);color:#DB2777', name:'Pitaya Dream', desc:'Pitaya rosa, coco, mango y granola crujiente.', price:'$2.50' },
+        { id: 'bowls_sunrise', emoji:'🍌', bg:'linear-gradient(135deg,#FEF9C3,#FEF08A)', name:'Tropical Sunrise', desc:'Mango, piña, banana, coco y hemp protein.', price:'$2.50' },
       ],
       azuca: [
-        { emoji:'🍓', bg:'linear-gradient(135deg,#FFE4E6,#FECDD3)', badge:'Nuevo', badgeCss:'background:rgba(236,72,153,0.15);color:#DB2777', name:'Fresas Tradicionales', desc:'Fresas seleccionadas con crema batida artesanal y leche condensada.', price:'$12.000' },
-        { emoji:'🍫', bg:'linear-gradient(135deg,#FFF1F2,#FFE4E6)', badge:'Popular', badgeCss:'background:rgba(255,100,50,0.12);color:#E85D30', name:'Fresas Choco-Lover', desc:'Fresas frescas bañadas en chocolate oscuro, nutella y chips crocantes.', price:'$14.000' },
-        { emoji:'🍬', bg:'linear-gradient(135deg,#FDF2F8,#FCE7F3)', name:'Fresas Dulce Explosión', desc:'Fresas frescas con masmelos, gomitas dulces y lluvia de toppings.', price:'$13.500' },
-        { emoji:'🍯', bg:'linear-gradient(135deg,#FFFBEB,#FEF3C7)', name:'Fresas Miel & Granola', desc:'Fresas crujientes con miel de abeja pura, granola y yogur griego.', price:'$13.000' },
+        { id: 'azuca_tradicionales', emoji:'🍓', bg:'linear-gradient(135deg,#FFE4E6,#FECDD3)', badge:'Nuevo', badgeCss:'background:rgba(236,72,153,0.15);color:#DB2777', name:'Fresas Tradicionales', desc:'Fresas seleccionadas con crema batida artesanal y leche condensada.', price:'$2.50' },
+        { id: 'azuca_choco', emoji:'🍫', bg:'linear-gradient(135deg,#FFF1F2,#FFE4E6)', badge:'Popular', badgeCss:'background:rgba(255,100,50,0.12);color:#E85D30', name:'Fresas Choco-Lover', desc:'Fresas frescas bañadas en chocolate oscuro, nutella y chips crocantes.', price:'$2.50' },
+        { id: 'azuca_explosion', emoji:'🍬', bg:'linear-gradient(135deg,#FDF2F8,#FCE7F3)', name:'Fresas Dulce Explosión', desc:'Fresas frescas con masmelos, gomitas dulces y lluvia de toppings.', price:'$2.50' },
+        { id: 'azuca_miel', emoji:'🍯', bg:'linear-gradient(135deg,#FFFBEB,#FEF3C7)', name:'Fresas Miel & Granola', desc:'Fresas crujientes con miel de abeja pura, granola y yogur griego.', price:'$2.50' },
       ]
     };
 
     /* Favoritos destacados para la home */
     const favorites = [
       { ...catalog.hot[0], badge:'Favorito', badgeCss:'background:rgba(212,217,140,0.35);color:#4A1942' },
-      { ...catalog.ice[0], badge:'Best Seller', badgeCss:'background:rgba(59,130,246,0.12);color:#2563EB' },
-      { ...catalog.bowls[0], badge:'Favorito', badgeCss:'background:rgba(212,217,140,0.35);color:#4A1942' },
+      { ...catalog.azuca[0], badge:'Nuevo', badgeCss:'background:rgba(236,72,153,0.15);color:#DB2777' },
+      { ...catalog.hot[7], badge:'Edición Limitada', badgeCss:'background:#FFFFFF;color:#0B6F9E;font-weight:900;' },
     ];
+
+    /* ═══════════════════════════════════════════════════════════════
+       MOTOR DEL CARRITO GLOBAL (PERSISTENTE & MULTICATEGORÍA)
+    ═══════════════════════════════════════════════════════════════ */
+    const CART_STORAGE_KEY = 'tyango_global_cart_v1';
+    let cart = {}; // id -> { id, name, desc, price, priceNum, qty, img, emoji, customCardClass, isCustom }
+
+    function parsePriceNumber(priceStr) {
+      if (typeof priceStr === 'number') return priceStr;
+      if (!priceStr) return 2.50;
+      const clean = priceStr.replace(/[^0-9.]/g, '');
+      const val = parseFloat(clean);
+      return isNaN(val) ? 2.50 : val;
+    }
+
+    function formatCurrency(amount) {
+      return '$' + Number(amount).toFixed(2);
+    }
+
+    function findProductInCatalog(productId) {
+      for (const cat in catalog) {
+        const found = catalog[cat].find(item => item.id === productId);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    function loadCartFromStorage() {
+      try {
+        const raw = localStorage.getItem(CART_STORAGE_KEY);
+        if (raw) {
+          cart = JSON.parse(raw);
+        }
+      } catch (e) {
+        console.error('Error al cargar carrito:', e);
+        cart = {};
+      }
+      updateCartUI();
+    }
+
+    function saveCartToStorage() {
+      try {
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+      } catch (e) {
+        console.error('Error al guardar carrito:', e);
+      }
+      updateCartUI();
+    }
+
+    function addToCart(productId) {
+      const prod = findProductInCatalog(productId);
+      if (!prod) return;
+
+      const priceNum = parsePriceNumber(prod.price);
+      if (cart[productId]) {
+        cart[productId].qty += 1;
+      } else {
+        cart[productId] = {
+          id: prod.id,
+          name: prod.name,
+          desc: prod.desc || '',
+          price: prod.price,
+          priceNum: priceNum,
+          qty: 1,
+          img: prod.img || null,
+          emoji: prod.emoji || null,
+          customCardClass: prod.customCardClass || null
+        };
+      }
+      saveCartToStorage();
+      triggerCartBadgeBump();
+    }
+
+    function updateCartQty(productId, delta) {
+      if (!cart[productId]) {
+        if (delta > 0) addToCart(productId);
+        return;
+      }
+      const newQty = cart[productId].qty + delta;
+      if (newQty <= 0) {
+        delete cart[productId];
+      } else {
+        cart[productId].qty = newQty;
+      }
+      saveCartToStorage();
+      triggerCartBadgeBump();
+    }
+
+    function removeFromCart(productId) {
+      if (cart[productId]) {
+        delete cart[productId];
+        saveCartToStorage();
+      }
+    }
+
+    function clearCart() {
+      if (confirm('¿Deseas vaciar todos los productos del carrito?')) {
+        cart = {};
+        saveCartToStorage();
+      }
+    }
+
+    function getCartTotalUnits() {
+      return Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
+    }
+
+    function getCartTotalPrice() {
+      return Object.values(cart).reduce((sum, item) => sum + (item.priceNum * item.qty), 0);
+    }
+
+    function triggerCartBadgeBump() {
+      const badge = document.getElementById('cartBadge');
+      if (badge) {
+        badge.classList.remove('bump');
+        void badge.offsetWidth;
+        badge.classList.add('bump');
+        setTimeout(() => badge.classList.remove('bump'), 300);
+      }
+    }
+
+    function updateCartUI() {
+      const totalUnits = getCartTotalUnits();
+      const totalPrice = getCartTotalPrice();
+
+      // 1. Actualizar Badge en Header
+      const badge = document.getElementById('cartBadge');
+      if (badge) {
+        badge.textContent = totalUnits;
+      }
+
+      // 2. Actualizar Contador en Drawer
+      const drawerCount = document.getElementById('cartDrawerCount');
+      if (drawerCount) {
+        drawerCount.textContent = `${totalUnits} ${totalUnits === 1 ? 'item' : 'items'}`;
+      }
+
+      // 3. Actualizar Total en Drawer
+      const totalEl = document.getElementById('cartTotalAmount');
+      if (totalEl) {
+        totalEl.textContent = formatCurrency(totalPrice);
+      }
+
+      // 4. Re-renderizar items dentro del Drawer
+      renderCartDrawerItems();
+
+      // 5. Re-renderizar controles de tarjetas visibles
+      refreshAllProductCardButtons();
+    }
+
+    function openCartDrawer() {
+      closeMobileDrawer();
+      const drawer = document.getElementById('cartDrawer');
+      const backdrop = document.getElementById('cartBackdrop');
+      if (drawer) drawer.classList.add('open');
+      if (backdrop) backdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      renderCartDrawerItems();
+    }
+
+    function closeCartDrawer() {
+      const drawer = document.getElementById('cartDrawer');
+      const backdrop = document.getElementById('cartBackdrop');
+      if (drawer) drawer.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function renderCartDrawerItems() {
+      const list = document.getElementById('cartItemsList');
+      if (!list) return;
+
+      const items = Object.values(cart);
+      if (items.length === 0) {
+        list.innerHTML = `
+          <div class="cart-empty-state">
+            <span class="cart-empty-emoji">🥭</span>
+            <div class="cart-empty-title">Tu carrito está vacío</div>
+            <p class="cart-empty-text">Explora nuestras líneas TYHOT, TYAZUCA, TYICE y TYBOWLS para agregar tus productos favoritos.</p>
+            <button type="button" class="btn-primary" onclick="closeCartDrawer(); navigate('hot');">
+              EXPLORAR TYHOT 🌶️
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = items.map(item => {
+        const thumbContent = item.img 
+          ? `<img src="${item.img}" alt="${item.name}">` 
+          : `<span class="ci-emoji">${item.emoji || '🥭'}</span>`;
+        
+        return `
+          <div class="cart-item-row" id="cart-item-${item.id}">
+            <div class="cart-item-thumb">
+              ${thumbContent}
+            </div>
+            <div class="cart-item-info">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:6px;">
+                <h4 class="cart-item-name" title="${item.name}">${item.name}</h4>
+                <button type="button" class="cart-del-btn" onclick="removeFromCart('${item.id}')" aria-label="Eliminar ${item.name} del carrito">🗑️</button>
+              </div>
+              ${item.desc ? `<p class="cart-item-desc">${item.desc}</p>` : ''}
+              <div class="cart-item-bottom">
+                <div class="cart-stepper">
+                  <button type="button" class="cart-stepper-btn" onclick="updateCartQty('${item.id}', -1)" aria-label="Disminuir cantidad">−</button>
+                  <span class="cart-stepper-num">${item.qty}</span>
+                  <button type="button" class="cart-stepper-btn" onclick="updateCartQty('${item.id}', 1)" aria-label="Aumentar cantidad">+</button>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:0.72rem; color:var(--purple-mid);">${item.price} c/u</div>
+                  <div class="cart-item-subtotal">${formatCurrency(item.priceNum * item.qty)}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function refreshAllProductCardButtons() {
+      document.querySelectorAll('.card[data-product-id]').forEach(card => {
+        const prodId = card.dataset.productId;
+        const actionBar = card.querySelector('.card-action-bar');
+        const prod = findProductInCatalog(prodId);
+        if (actionBar && prod) {
+          const qty = cart[prodId] ? cart[prodId].qty : 0;
+          actionBar.innerHTML = `
+            <span class="card-price">${prod.price}</span>
+            ${renderCardButtonMarkup(prodId, qty, prod.name)}
+          `;
+        }
+      });
+    }
+
+    function renderCardButtonMarkup(prodId, qty, prodName) {
+      if (qty > 0) {
+        return `
+          <div class="card-qty-stepper">
+            <button type="button" class="cqty-btn" onclick="event.stopPropagation(); updateCartQty('${prodId}', -1)" aria-label="Quitar una unidad">−</button>
+            <span class="cqty-num">${qty}</span>
+            <button type="button" class="cqty-btn" onclick="event.stopPropagation(); updateCartQty('${prodId}', 1)" aria-label="Agregar una unidad">+</button>
+          </div>
+        `;
+      }
+      return `
+        <button type="button" class="btn-add-cart" onclick="event.stopPropagation(); addToCart('${prodId}')" aria-label="Agregar ${prodName} al carrito">
+          + AGREGAR
+        </button>
+      `;
+    }
+
+    function checkoutWhatsApp() {
+      const items = Object.values(cart);
+      if (items.length === 0) {
+        alert('Tu carrito está vacío. Agrega tus productos favoritos antes de pedir.');
+        return;
+      }
+      let msg = `¡Hola Tyango! 🥭 Quiero hacer el siguiente pedido:\n\n`;
+      items.forEach((item, i) => {
+        msg += `${i + 1}. *${item.name}* × ${item.qty} (${item.price})\n`;
+        if (item.desc) msg += `   _${item.desc}_\n`;
+        msg += `   Subtotal: ${formatCurrency(item.priceNum * item.qty)}\n\n`;
+      });
+      msg += `━━━━━━━━━━━━━━━━━━━\n`;
+      msg += `*TOTAL A PAGAR: ${formatCurrency(getCartTotalPrice())}*\n\n`;
+      msg += `📍 ¿Me confirman disponibilidad y tiempo de entrega? ¡Muchas gracias!`;
+
+      const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
 
     /* ═══════ DATOS DEL PERSONALIZADOR ═══════ */
     const customizerData = {
@@ -2348,55 +3114,75 @@
         { id: 'takis', name: 'Takis', emoji: '🌮' },
       ],
       sizes: [
-        { id: 'mini', name: 'Mini', badge: '', price: 9000 },
-        { id: 'grande', name: 'Grande ⭐', badge: 'Popular', price: 12500 },
-        { id: 'premium', name: 'Premium', badge: 'Full', price: 15500 },
+        { id: 'mini', name: 'Mini', badge: '', price: 2.00 },
+        { id: 'grande', name: 'Grande ⭐', badge: 'Popular', price: 2.50 },
+        { id: 'premium', name: 'Premium', badge: 'Full', price: 3.00 },
       ]
     };
 
-    /* Estado reactivo */
+    /* Estado reactivo del personalizador */
     const customState = {
       fruitMode: 'mix',
       selectedFruits: [],
       selectedToppings: [],
       selectedSize: 'grande',
       quantity: 1,
-      disclaimerAccepted: false
+      disclaimerAccepted: false,
     };
 
     function formatCOP(val) {
-      return '$' + val.toLocaleString('es-CO');
+      return '$' + Number(val).toFixed(2);
     }
 
     /* ═══════ RENDER DEL PERSONALIZADOR ═══════ */
     function renderCustomizer() {
-      // 1. Frutas
+      // Frutas
       const fruitGrid = document.getElementById('fruit-grid');
       if (fruitGrid) {
         fruitGrid.innerHTML = customizerData.fruits.map(f => `
-          <div class="ingredient-item" id="fruit-item-${f.id}" onclick="toggleFruit('${f.id}')" role="checkbox" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleFruit('${f.id}')">
+          <button type="button" 
+                  class="ingredient-item" 
+                  id="fruit-item-${f.id}" 
+                  onclick="toggleFruit('${f.id}')"
+                  role="checkbox"
+                  aria-checked="false"
+                  aria-label="Fruta ${f.name}">
             <span class="ingredient-emoji">${f.emoji}</span>
             <span class="ingredient-name">${f.name}</span>
-          </div>
+            <span class="check-icon">✓</span>
+          </button>
         `).join('');
       }
 
-      // 2. Toppings
+      // Toppings
       const toppingGrid = document.getElementById('topping-grid');
       if (toppingGrid) {
         toppingGrid.innerHTML = customizerData.toppings.map(t => `
-          <div class="ingredient-item" id="topping-item-${t.id}" onclick="toggleTopping('${t.id}')" role="checkbox" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleTopping('${t.id}')">
+          <button type="button" 
+                  class="ingredient-item" 
+                  id="topping-item-${t.id}" 
+                  onclick="toggleTopping('${t.id}')"
+                  role="checkbox"
+                  aria-checked="false"
+                  aria-label="Topping ${t.name}">
             <span class="ingredient-emoji">${t.emoji}</span>
             <span class="ingredient-name">${t.name}</span>
-          </div>
+            <span class="check-icon">✓</span>
+          </button>
         `).join('');
       }
 
-      // 3. Tamaños
+      // Tamaños
       const sizeGrid = document.getElementById('size-grid');
       if (sizeGrid) {
         sizeGrid.innerHTML = customizerData.sizes.map(s => `
-          <div class="size-card ${s.id === customState.selectedSize ? 'selected' : ''}" id="size-card-${s.id}" onclick="selectSize('${s.id}')" role="radio" aria-checked="${s.id === customState.selectedSize}" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')selectSize('${s.id}')">
+          <div class="size-card ${s.id === customState.selectedSize ? 'selected' : ''}" 
+               id="size-card-${s.id}" 
+               onclick="selectSize('${s.id}')"
+               role="radio"
+               aria-checked="${s.id === customState.selectedSize}"
+               tabindex="0"
+               onkeydown="if(event.key==='Enter'||event.key===' ')selectSize('${s.id}')">
             ${s.badge ? `<span class="size-badge">${s.badge}</span>` : ''}
             <div class="size-name">${s.name}</div>
             <div class="size-price">${formatCOP(s.price)}</div>
@@ -2407,152 +3193,51 @@
       updateCustomizerUI();
     }
 
-    /* ═══════ CONTROL DE MODO DE FRUTAS ═══════ */
+    /* ═══════ MODO DE FRUTAS (Individual vs Mix) ═══════ */
     function setFruitMode(mode) {
       if (customState.fruitMode === mode) return;
       customState.fruitMode = mode;
-
-      const btnInd = document.getElementById('mode-individual');
-      const btnMix = document.getElementById('mode-mix');
-      if (btnInd && btnMix) {
-        btnInd.classList.toggle('active', mode === 'individual');
-        btnInd.setAttribute('aria-selected', mode === 'individual');
-        btnMix.classList.toggle('active', mode === 'mix');
-        btnMix.setAttribute('aria-selected', mode === 'mix');
-      }
-
-      // Si pasa a individual y tenía más de 1 fruta, conservar solo la primera
-      if (mode === 'individual' && customState.selectedFruits.length > 1) {
-        customState.selectedFruits = [customState.selectedFruits[0]];
-      }
-
       updateCustomizerUI();
     }
 
-    /* ═══════ SELECCIÓN DE FRUTAS (con límites estrictos) ═══════ */
-    function toggleFruit(fruitId) {
-      const maxFruits = customState.fruitMode === 'individual' ? 1 : 3;
-      const index = customState.selectedFruits.indexOf(fruitId);
-
-      if (index > -1) {
-        customState.selectedFruits.splice(index, 1);
-      } else {
-        if (customState.fruitMode === 'individual') {
-          customState.selectedFruits = [fruitId];
-        } else {
-          if (customState.selectedFruits.length >= maxFruits) {
-            showTemporaryNotice('fruit-limit-msg');
-            return;
-          }
-          customState.selectedFruits.push(fruitId);
-        }
-      }
-
-      updateCustomizerUI();
-    }
-
-    /* ═══════ SELECCIÓN DE TOPPINGS (máx 3) ═══════ */
-    function toggleTopping(toppingId) {
-      const maxToppings = 3;
-      const index = customState.selectedToppings.indexOf(toppingId);
-
-      if (index > -1) {
-        customState.selectedToppings.splice(index, 1);
-      } else {
-        if (customState.selectedToppings.length >= maxToppings) {
-          showTemporaryNotice('topping-limit-msg');
-          return;
-        }
-        customState.selectedToppings.push(toppingId);
-      }
-
-      updateCustomizerUI();
-    }
-
-    function showTemporaryNotice(id) {
-      const el = document.getElementById(id);
-      if (el) {
-        el.classList.add('show');
-        setTimeout(() => el.classList.remove('show'), 3200);
-      }
-    }
-
-    /* ═══════ SELECCIÓN DE TAMAÑO & CANTIDAD ═══════ */
-    function selectSize(sizeId) {
-      customState.selectedSize = sizeId;
-      document.querySelectorAll('.size-card').forEach(c => {
-        c.classList.remove('selected');
-        c.setAttribute('aria-checked', 'false');
-      });
-      const activeCard = document.getElementById(`size-card-${sizeId}`);
-      if (activeCard) {
-        activeCard.classList.add('selected');
-        activeCard.setAttribute('aria-checked', 'true');
-      }
-      updateCustomizerUI();
-    }
-
-    function changeQuantity(delta) {
-      customState.quantity = Math.max(1, customState.quantity + delta);
-      const qtyEl = document.getElementById('qty-display');
-      if (qtyEl) qtyEl.textContent = customState.quantity;
-      updateCustomizerUI();
-    }
-
-    function toggleDisclaimerAccept() {
-      const checkbox = document.getElementById('accept-disclaimer');
-      customState.disclaimerAccepted = checkbox ? checkbox.checked : false;
-      updateCustomizerUI();
-    }
-
-    /* ═══════ REACCIONES DIVERTIDAS (EASTER EGGS) ═══════ */
     function checkWittyReactions() {
       const fruits = customState.selectedFruits;
       const toppings = customState.selectedToppings;
       const banner = document.getElementById('witty-reaction');
       const textEl = document.getElementById('witty-text');
-
       if (!banner || !textEl) return;
 
       let msg = '';
-
-      if (fruits.includes('pepino') && toppings.includes('gomitas')) {
-        msg = '👀 "TYANGO no juzga... pero nosotros tampoco lo hemos probado."';
-      } else if (toppings.includes('takis') && fruits.includes('melon')) {
-        msg = '🧐 "¿Seguro de esa combinación? Melón con Takis es para valientes."';
-      } else if (toppings.includes('takis') && toppings.includes('tajin_picante') && toppings.includes('gomitas')) {
-        msg = '🥊 "Bajo tu propio riesgo, campeón. 😂"';
-      } else if (toppings.includes('takis') && toppings.includes('tajin_picante')) {
-        msg = '🔥 "¡Nivel volcánico y crujiente activado! 🌶️"';
-      } else if (toppings.includes('gomitas') && toppings.includes('miel')) {
-        msg = '🍬 "¡Sobredosis de dulzura extrema! Nivel experto ✨"';
-      } else if (fruits.includes('sandia') && toppings.includes('tajin') && toppings.includes('limon')) {
-        msg = '🍉 "¡La gloria absoluta de los clásicos! 🏆"';
-      } else if (fruits.includes('mango') && toppings.includes('tajin') && toppings.includes('limon')) {
-        msg = '🥭 "¡El favorito de la casa! Simplemente perfecto."';
+      if (fruits.includes('mango') && toppings.includes('tajin_picante') && toppings.includes('takis')) {
+        msg = '🔥 Nivel: Fuego puro. ¡Ten un vaso de agua cerca!';
+      } else if (fruits.includes('sandia') && toppings.includes('miel') && toppings.includes('limon')) {
+        msg = '🍯🍉 Dulce, ácido y fresco. ¡Combinación de los dioses!';
       } else if (fruits.length === 3 && toppings.length === 3) {
-        msg = '⚡ "¡Super combo personalizado cargado con todo el poder Tyango!"';
+        msg = '👑 ¡El Tyango definitivo! Esto ya es una obra de arte.';
+      } else if (fruits.includes('pepino') && toppings.includes('gomitas')) {
+        msg = '👀 ¿Pepino con gomitas? TYANGO no juzga... pero tampoco lo hemos probado.';
+      } else if (fruits.length > 0 && toppings.length === 0) {
+        msg = '🍃 Minimalista y natural. Puro sabor a fruta.';
       }
 
       if (msg) {
         textEl.textContent = msg;
-        banner.classList.add('show');
+        banner.classList.add('active');
       } else {
-        banner.classList.remove('show');
+        banner.classList.remove('active');
       }
     }
 
-    /* ═══════ ACTUALIZACIÓN GENERAL DE UI ═══════ */
+    /* ═══════ ACTUALIZACIÓN GENERAL DEL PERSONALIZADOR ═══════ */
     function updateCustomizerUI() {
-      const maxFruits = customState.fruitMode === 'individual' ? 1 : 3;
       const fruitCount = customState.selectedFruits.length;
-      const toppingCount = customState.selectedToppings.length;
+      const maxFruits = customState.fruitMode === 'individual' ? 1 : 3;
 
-      // 1. Contador de frutas
+      // 1. Contador Frutas
       const fruitCounter = document.getElementById('fruit-counter');
       if (fruitCounter) {
         fruitCounter.textContent = `${fruitCount} / ${maxFruits} fruta${maxFruits > 1 ? 's' : ''}`;
-        fruitCounter.classList.toggle('limit-reached', fruitCount === maxFruits && fruitCount > 0);
+        fruitCounter.classList.toggle('limit-reached', fruitCount === maxFruits);
       }
 
       // Estado visual de frutas
@@ -2567,7 +3252,8 @@
         }
       });
 
-      // 2. Contador de toppings
+      // 2. Contador Toppings
+      const toppingCount = customState.selectedToppings.length;
       const toppingCounter = document.getElementById('topping-counter');
       if (toppingCounter) {
         toppingCounter.textContent = `${toppingCount} / 3 toppings`;
@@ -2620,7 +3306,7 @@
       const subtotal = currentSize.price * customState.quantity;
       const summaryTotal = document.getElementById('summary-total');
       if (summaryTotal) {
-        summaryTotal.textContent = formatCOP(subtotal);
+        summaryTotal.textContent = formatCurrency(subtotal);
       }
 
       checkWittyReactions();
@@ -2633,7 +3319,7 @@
       }
     }
 
-    /* ═══════ SUBMIT & MODAL ═══════ */
+    /* ═══════ SUBMIT DEL PERSONALIZADOR & INTEGRACIÓN AL CARRITO ═══════ */
     function submitCustomTyango() {
       if (customState.selectedFruits.length === 0 || !customState.disclaimerAccepted) return;
 
@@ -2649,56 +3335,39 @@
           }).join(', ')
         : 'Sin toppings adicionales';
 
-      const currentSize = customizerData.sizes.find(s => s.id === customState.selectedSize);
-      const total = currentSize.price * customState.quantity;
+      const currentSize = customizerData.sizes.find(s => s.id === customState.selectedSize) || customizerData.sizes[1];
+      const unitPrice = currentSize.price;
+      const customId = 'custom_' + Date.now();
+
+      // Agregar como línea única al Carrito Global
+      cart[customId] = {
+        id: customId,
+        name: '🎨 TYANGO PERSONALIZADO',
+        desc: `${fruitNames} | ${toppingNames} | ${currentSize.name}`,
+        price: formatCurrency(unitPrice),
+        priceNum: unitPrice,
+        qty: customState.quantity,
+        emoji: '🥭',
+        isCustom: true
+      };
+      saveCartToStorage();
+      triggerCartBadgeBump();
 
       const detailsEl = document.getElementById('modal-order-details');
       if (detailsEl) {
         detailsEl.innerHTML = `
           <div style="margin-bottom: 5px;"><strong>🥭 Fruta(s):</strong> ${fruitNames}</div>
           <div style="margin-bottom: 5px;"><strong>🌶️ Toppings:</strong> ${toppingNames}</div>
-          <div style="margin-bottom: 5px;"><strong>📏 Tamaño:</strong> ${currentSize.name} (${formatCOP(currentSize.price)})</div>
+          <div style="margin-bottom: 5px;"><strong>📏 Tamaño:</strong> ${currentSize.name}</div>
           <div style="margin-bottom: 5px;"><strong>🔢 Cantidad:</strong> ${customState.quantity}</div>
           <div style="margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(74,25,66,0.1); font-size: 1.05rem; font-weight: 900; color: var(--purple-dark);">
-            Total: ${formatCOP(total)}
+            Agregado al Carrito: ${formatCurrency(unitPrice * customState.quantity)}
           </div>
         `;
       }
 
       document.getElementById('successModal').classList.add('open');
     }
-
-    function closeSuccessModal() {
-      document.getElementById('successModal').classList.remove('open');
-    }
-
-    /* ═══════ FOOTER TEMPLATE ═══════ */
-    const footerHTML = `
-      <div class="footer-grid">
-        <div>
-          <h3 style="font-size:1.25rem;font-weight:900;margin-bottom:10px;color:var(--lime)">TYANGO</h3>
-          <p style="color:var(--purple-light);font-size:0.82rem;line-height:1.6">Frescura, sabor y energía en cada producto.</p>
-        </div>
-        <div>
-          <h4 style="font-weight:800;margin-bottom:10px;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--lime)">Menú</h4>
-          <div style="display:flex;flex-direction:column;gap:6px">
-            <a href="#" onclick="navigate('hot')">TYHOT</a>
-            <a href="#" onclick="navigate('azuca')">TYAZUCA</a>
-            <a href="#" onclick="navigate('ice')">TYICE</a>
-            <a href="#" onclick="navigate('bowls')">TYBOWLS</a>
-          </div>
-        </div>
-        <div>
-          <h4 style="font-weight:800;margin-bottom:10px;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--lime)">Síguenos</h4>
-          <div style="display:flex;flex-direction:column;gap:6px">
-            <a href="#">📸 Instagram</a>
-            <a href="#">📍 Ubicación</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p style="color:var(--purple-light);font-size:0.74rem">© 2026 Tyango. Todos los derechos reservados 💜</p>
-      </div>`;
 
     /* ═══════ RENDER CARDS ═══════ */
     function renderGrid(gridId, items) {
@@ -2709,6 +3378,9 @@
         const card = document.createElement('article');
         card.className = 'card' + (item.customCardClass ? ' ' + item.customCardClass : '');
         card.setAttribute('role', 'article');
+        if (item.id) {
+          card.setAttribute('data-product-id', item.id);
+        }
         const mediaContent = item.img 
           ? `<img src="${item.img}" alt="${item.name}" class="card-photo" loading="lazy">` 
           : `<span class="card-emoji" aria-hidden="true">${item.emoji}</span>`;
@@ -2716,6 +3388,9 @@
         const seasonMarkup = item.seasonInfo 
           ? `<div class="card-season">📅 ${item.seasonInfo}</div>` 
           : '';
+
+        const qty = (item.id && cart[item.id]) ? cart[item.id].qty : 0;
+        const buttonMarkup = item.id ? renderCardButtonMarkup(item.id, qty, item.name) : '';
 
         card.innerHTML = `
           <div class="card-img" style="${item.bg ? 'background:' + item.bg : ''}">
@@ -2726,7 +3401,10 @@
             <h3 class="card-name">${item.name}</h3>
             ${seasonMarkup}
             <p class="card-desc">${item.desc}</p>
-            <span class="card-price">${item.price}</span>
+            <div class="card-action-bar">
+              <span class="card-price">${item.price}</span>
+              ${buttonMarkup}
+            </div>
           </div>`;
         grid.appendChild(card);
         setTimeout(() => card.classList.add('show'), 40 + i * 80);
@@ -2837,6 +3515,7 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeMobileDrawer();
+        closeCartDrawer();
         const menu = document.getElementById('secondaryMenu');
         if (menu) menu.classList.remove('open');
       }
