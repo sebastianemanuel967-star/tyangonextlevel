@@ -1759,26 +1759,33 @@
 
     .size-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
     }
     .size-card {
       background: var(--cream);
       border: 2px solid transparent;
       border-radius: var(--radius-md);
-      padding: 16px 12px;
+      padding: 18px 14px;
       text-align: center;
       cursor: pointer;
       transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 86px;
     }
     .size-card:hover {
       border-color: var(--purple-light);
       background: var(--white);
+      transform: translateY(-2px);
     }
     .size-card.selected {
       background: #F9F2FB;
       border-color: var(--purple-dark);
       box-shadow: 0 4px 16px rgba(74, 25, 66, 0.1);
+      transform: translateY(-2px);
     }
     .size-badge {
       display: inline-block;
@@ -1791,13 +1798,13 @@
       margin-bottom: 4px;
     }
     .size-name {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 900;
       color: var(--purple-dark);
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
     .size-price {
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       font-weight: 900;
       color: var(--purple-mid);
     }
@@ -2772,8 +2779,18 @@
         font-size: 2rem;
       }
       .size-grid {
-        grid-template-columns: 1fr;
-        gap: 8px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .size-card {
+        padding: 14px 8px;
+        min-height: 76px;
+      }
+      .size-name {
+        font-size: 0.95rem;
+      }
+      .size-price {
+        font-size: 1.05rem;
       }
       .qty-stepper {
         padding: 3px 6px;
@@ -3301,7 +3318,7 @@
           <!-- Subtotal -->
           <div class="summary-total-box">
             <span class="total-label">Subtotal</span>
-            <span class="total-amount" id="summary-total">$12.500</span>
+            <span class="total-amount" id="summary-total">$2.50</span>
           </div>
 
           <!-- Aviso Legal & Checkbox -->
@@ -3375,12 +3392,6 @@
     <div class="cat-products bg-hot">
       <div class="products-grid" id="grid-hot"></div>
     </div>
-    <div class="cta">
-      <div class="cta-circle" style="width:220px;height:220px;top:-60px;right:-60px"></div>
-      <h2>¿Listo para probar algo increíble?</h2>
-      <p>Haz tu pedido y vive la experiencia Tyango.</p>
-      <a href="#" class="btn-secondary">Pedir Ahora</a>
-    </div>
     <footer class="footer" id="footer-hot" role="contentinfo"></footer>
   </main>
 
@@ -3393,12 +3404,6 @@
     </div>
     <div class="cat-products bg-ice">
       <div class="products-grid" id="grid-ice"></div>
-    </div>
-    <div class="cta">
-      <div class="cta-circle" style="width:220px;height:220px;top:-60px;right:-60px"></div>
-      <h2>¿Listo para probar algo increíble?</h2>
-      <p>Haz tu pedido y vive la experiencia Tyango.</p>
-      <a href="#" class="btn-secondary">Pedir Ahora</a>
     </div>
     <footer class="footer" id="footer-ice" role="contentinfo"></footer>
   </main>
@@ -3413,12 +3418,6 @@
     <div class="cat-products bg-bowls">
       <div class="products-grid" id="grid-bowls"></div>
     </div>
-    <div class="cta">
-      <div class="cta-circle" style="width:220px;height:220px;top:-60px;right:-60px"></div>
-      <h2>¿Listo para probar algo increíble?</h2>
-      <p>Haz tu pedido y vive la experiencia Tyango.</p>
-      <a href="#" class="btn-secondary">Pedir Ahora</a>
-    </div>
     <footer class="footer" id="footer-bowls" role="contentinfo"></footer>
   </main>
 
@@ -3432,12 +3431,6 @@
     </div>
     <div class="cat-products bg-azuca">
       <div class="products-grid" id="grid-azuca"></div>
-    </div>
-    <div class="cta">
-      <div class="cta-circle" style="width:220px;height:220px;top:-60px;right:-60px"></div>
-      <h2>¿Quieres personalizarlas a tu gusto?</h2>
-      <p>Elige tus aderezos y crea tu combinación única.</p>
-      <a href="#" class="btn-secondary" onclick="event.preventDefault(); navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 300);">HAZLO A TU MANERA</a>
     </div>
     <footer class="footer" id="footer-azuca" role="contentinfo"></footer>
   </main>
@@ -3541,23 +3534,19 @@
           badge: 'Popular', 
           badgeCss: 'background:rgba(255,100,50,0.12);color:#E85D30', 
           name: 'TYANGO CLÁSICO', 
-          desc: 'Mango jugoso con chamoy, limón y Tajín.', 
+          desc: 'Mango jugoso con chamoy y Tajín.', 
           price: '$2.50' 
         },
         { 
           id: 'hot_picazana',
           img: 'picazana.jpg', 
-          badge: 'Nuevo', 
-          badgeCss: 'background:rgba(236,72,153,0.12);color:#DB2777', 
           name: 'PICAZANA', 
-          desc: 'Manzana dulce, ácida y picante con tamarindo.', 
+          desc: 'Manzana dulce, ácida y picante.', 
           price: '$2.50' 
         },
         { 
           id: 'hot_uva_pulpa',
           img: 'uva-pulpa.jpg', 
-          badge: 'Nuevo', 
-          badgeCss: 'background:rgba(123,91,123,0.12);color:#7B5B7B', 
           name: 'UVA PULPA', 
           desc: 'Uvas verdes congeladas con Pulparindo y Tajín.', 
           price: '$2.50' 
@@ -3565,8 +3554,6 @@
         { 
           id: 'hot_pinadiablo',
           img: 'pinadiablo.jpg', 
-          badge: 'Nuevo', 
-          badgeCss: 'background:rgba(245,158,11,0.15);color:#D97706', 
           name: 'PIÑADIABLO', 
           desc: 'Piña fría con chamoy y toque picante.', 
           price: '$2.50' 
@@ -3574,8 +3561,6 @@
         { 
           id: 'hot_takimango',
           img: 'takimango.jpg', 
-          badge: 'MUY PICANTE', 
-          badgeCss: 'background:rgba(239,68,68,0.15);color:#DC2626', 
           name: 'TAKIMANGO', 
           desc: 'Takis Fuego crujientes con mango y chamoy.', 
           price: '$2.50' 
@@ -3583,8 +3568,6 @@
         { 
           id: 'hot_pepinazo',
           img: 'pepinazo.jpg', 
-          badge: 'Fresco', 
-          badgeCss: 'background:rgba(34,197,94,0.15);color:#15803D', 
           name: 'PEPINAZO', 
           desc: 'Pepino fresco con chamoy, limón y Tajín.', 
           price: '$2.50' 
@@ -3626,17 +3609,15 @@
         { 
           id: 'azuca_raffaello',
           img: 'raffaello.jpg', 
-          badge: 'Nuevo', 
+          badge: 'Popular', 
           badgeCss: 'background:rgba(236,72,153,0.12);color:#DB2777', 
           name: 'RAFFAELLO', 
-          desc: 'Fresas frescas con crema de coco Velvet y Raffaello.', 
+          desc: 'Fresas frescas con crema Velvet y Raffaello.', 
           price: '$4.50' 
         },
         { 
           id: 'azuca_paccari',
           img: 'paccari.jpg', 
-          badge: 'Popular', 
-          badgeCss: 'background:rgba(255,100,50,0.12);color:#E85D30', 
           name: 'PACCARI', 
           desc: 'Fresas cremosas con chocolate Paccari.', 
           price: '$4.50' 
@@ -3653,8 +3634,6 @@
         { 
           id: 'azuca_kinder_bueno',
           img: 'kinder-bueno.jpg', 
-          badge: 'Popular', 
-          badgeCss: 'background:rgba(255,100,50,0.12);color:#E85D30', 
           name: 'KINDER BUENO', 
           desc: 'Fresas frescas con crema Velvet y Kinder Bueno.', 
           price: '$4.50' 
@@ -3665,7 +3644,7 @@
           badge: 'EDICIÓN LIMITADA', 
           badgeCss: 'background:rgba(245,158,11,0.15);color:#D97706;font-weight:900;', 
           name: 'MANGO & RAFFAELLO', 
-          desc: 'Mango fresco, crema de coco y Raffaello.', 
+          desc: 'Mango fresco, coco y Raffaello.', 
           price: '$4.50' 
         },
       ]
@@ -4425,9 +4404,8 @@
         { id: 'takis', name: 'Takis', emoji: '🌮' },
       ],
       sizes: [
-        { id: 'mini', name: 'Mini', badge: '', price: 2.00 },
-        { id: 'grande', name: 'Grande ⭐', badge: 'Popular', price: 2.50 },
-        { id: 'premium', name: 'Premium', badge: 'Full', price: 3.00 },
+        { id: 'grande', name: 'Grande', price: 2.50 },
+        { id: 'bowl', name: 'Bowl', price: 4.99 },
       ]
     };
 
@@ -4730,7 +4708,7 @@
         }
       }
 
-      const currentSize = customizerData.sizes.find(s => s.id === customState.selectedSize) || customizerData.sizes[1];
+      const currentSize = customizerData.sizes.find(s => s.id === customState.selectedSize) || customizerData.sizes[0];
       const summarySize = document.getElementById('summary-size');
       if (summarySize) {
         summarySize.innerHTML = `<span class="summary-tag">${currentSize.name}</span>`;
@@ -4770,7 +4748,7 @@
         return;
       }
 
-      const currentSize = customizerData.sizes.find(s => s.id === customState.selectedSize) || customizerData.sizes[1];
+      const currentSize = customizerData.sizes.find(s => s.id === customState.selectedSize) || customizerData.sizes[0];
 
       const fruitNames = customState.selectedFruits.map(fId => {
         const f = customizerData.fruits.find(x => x.id === fId);
