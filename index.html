@@ -3071,14 +3071,14 @@
       <p class="customer-modal-desc">Para comenzar tu pedido, coloca tu nombre.</p>
       <form id="customerNameForm" onsubmit="event.preventDefault(); submitCustomerName();">
         <div class="customer-input-wrap">
-          <label for="customerNameInput" class="customer-input-label">Tu nombre</label>
+          <label for="customerNameInput" class="customer-input-label">TU NOMBRE</label>
           <input type="text" id="customerNameInput" class="customer-input" placeholder="Tu nombre" autocomplete="name" required maxlength="50" autofocus>
           <div id="customerNameError" class="customer-error-msg">
             Ingresa tu nombre para continuar.
           </div>
         </div>
         <button type="submit" class="btn-primary btn-customer-submit">
-          CONTINUAR
+          CONTINUAR 🚀
         </button>
       </form>
     </div>
@@ -3660,14 +3660,11 @@
       const total = formatCurrency(getCartTotalPrice());
       msg += `\nTOTAL: ${total}`;
 
-      // 4. Copiar mensaje al portapapeles
+      // 4. Copia de respaldo en portapapeles
       copyToClipboard(msg);
 
-      // 5. Mostrar aviso en pantalla
-      showToast('Pedido copiado. Pégalo en WhatsApp para enviarlo.');
-
-      // 6. Abrir WhatsApp inmediatamente
-      const targetUrl = `https://wa.me/message/HXXJ4PZHNIAQE1?text=${encodeURIComponent(msg)}`;
+      // 5. Abrir WhatsApp directamente con el pedido ya escrito en el campo de texto
+      const targetUrl = `https://wa.me/593994124996?text=${encodeURIComponent(msg)}`;
       window.open(targetUrl, '_blank');
     }
 
