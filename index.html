@@ -3610,7 +3610,7 @@
           return orderData;
         } catch (e) {
           console.error('Error al guardar pedido en historial:', e);
-          return orderData;
+          return null;
         }
       }
     };
@@ -4147,62 +4147,72 @@
     }
 
     function checkoutWhatsApp() {
-      // 1. Validar nombre del cliente
+      // 1. Verificar que exista un cliente identificado
       if (!customerName || !customerName.trim()) {
         showToast('Ingresa tu nombre para continuar.');
         openCustomerModal(false);
         return;
       }
 
-      // 2. Validar carrito con productos
+      // 2. Verificar que el carrito no esté vacío
       const items = Object.values(cart);
       if (items.length === 0) {
         showToast('Agrega al menos un producto para realizar tu pedido.');
         return;
       }
 
-      const now = new Date();
-      const existingOrders = OrdersRepository.getAll();
-      const orderSeq = existingOrders.length + 1;
-      const orderNumberStr = '#' + String(orderSeq).padStart(3, '0');
-      const orderIdStr = 'ORD-' + String(orderSeq).padStart(3, '0') + '-' + Date.now().toString(36);
+      // 3. Crear y guardar una copia completa del pedido en el HISTORIAL
+      let savedOrder = null;
+      try {
+        const now = new Date();
+        const existingOrders = OrdersRepository.getAll();
+        const orderSeq = existingOrders.length + 1;
+        const orderNumberStr = '#' + String(orderSeq).padStart(3, '0');
+        const orderIdStr = 'ORD-' + String(orderSeq).padStart(3, '0') + '-' + Date.now().toString(36);
 
-      const orderItems = items.map(item => ({
-        id: item.id,
-        name: item.name,
-        qty: item.qty,
-        price: item.price,
-        priceNum: item.priceNum,
-        subtotal: formatCurrency(item.priceNum * item.qty),
-        img: item.img || null,
-        emoji: item.emoji || null,
-        desc: item.desc || '',
-        isCustom: !!item.isCustom
-      }));
+        const orderItems = items.map(item => ({
+          id: item.id,
+          name: item.name,
+          qty: item.qty,
+          price: item.price,
+          priceNum: item.priceNum,
+          subtotal: formatCurrency(item.priceNum * item.qty),
+          img: item.img || null,
+          emoji: item.emoji || null,
+          desc: item.desc || '',
+          isCustom: !!item.isCustom
+        }));
 
-      const totalNum = getCartTotalPrice();
-      const totalFormatted = formatCurrency(totalNum);
+        const totalNum = getCartTotalPrice();
+        const totalFormatted = formatCurrency(totalNum);
 
-      // 3. GUARDAR EL PEDIDO ANTES DE ABRIR WHATSAPP (ESTADO: ENVIADO A WHATSAPP)
-      const newOrder = {
-        id: orderIdStr,
-        orderNumber: orderNumberStr,
-        customerId: (customerProfile && customerProfile.id) ? customerProfile.id : 'cust_anon',
-        customerName: customerName.trim(),
-        date: formatSpanishDate(now),
-        time: formatSpanishTime(now),
-        timestamp: now.getTime(),
-        items: orderItems,
-        totalUnits: getCartTotalUnits(),
-        total: totalFormatted,
-        totalNum: totalNum,
-        status: 'ENVIADO A WHATSAPP'
-      };
+        const newOrder = {
+          id: orderIdStr,
+          orderNumber: orderNumberStr,
+          customerId: (customerProfile && customerProfile.id) ? customerProfile.id : 'cust_anon',
+          customerName: customerName.trim(),
+          date: formatSpanishDate(now),
+          time: formatSpanishTime(now),
+          timestamp: now.getTime(),
+          items: orderItems,
+          totalUnits: getCartTotalUnits(),
+          total: totalFormatted,
+          totalNum: totalNum,
+          status: 'ENVIADO A WHATSAPP'
+        };
 
-      OrdersRepository.save(newOrder);
-      updateCustomerUI();
+        savedOrder = OrdersRepository.save(newOrder);
+        if (!savedOrder) {
+          throw new Error('No se pudo persistir el pedido');
+        }
+      } catch (err) {
+        console.error('Error al guardar pedido:', err);
+        // PROTECCIÓN: Si existe un error al guardar el pedido, NO vaciar el carrito
+        showToast('No pudimos guardar tu pedido. Inténtalo nuevamente.');
+        return;
+      }
 
-      // 4. Generar mensaje según formato solicitado
+      // 4. Generar el mensaje completo de WhatsApp
       let msg = `Hola, soy ${customerName.trim()} 👋\n\nMi pedido es:\n\n`;
 
       items.forEach(item => {
@@ -4213,14 +4223,27 @@
         }
       });
 
+      const totalFormatted = formatCurrency(getCartTotalPrice());
       msg += `\nTOTAL: ${totalFormatted}`;
 
-      // 5. Copia silenciosa de respaldo en portapapeles
-      copyToClipboard(msg);
-
-      // 6. Abrir WhatsApp directamente con el pedido ya escrito en el campo de texto
+      // 5. Generar y validar el enlace de WhatsApp con el número oficial 593994124996
       const targetUrl = `https://wa.me/593994124996?text=${encodeURIComponent(msg)}`;
-      window.open(targetUrl, '_blank');
+
+      // 6. Vaciar completamente el carrito actual
+      cart = {};
+      saveCartToStorage();
+
+      // 7. Actualizar inmediatamente la interfaz del carrito y cerrar el drawer
+      closeCartDrawer();
+      updateCustomerUI();
+
+      // 8. Abrir WhatsApp con el pedido ya prellenado en el campo de mensaje
+      copyToClipboard(msg);
+      try {
+        window.open(targetUrl, '_blank');
+      } catch (e) {
+        console.warn('No se pudo abrir automáticamente la ventana:', e);
+      }
     }
 
     /* ═══════ DATOS DEL PERSONALIZADOR ═══════ */
