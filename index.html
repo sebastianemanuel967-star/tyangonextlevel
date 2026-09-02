@@ -840,22 +840,22 @@
       .mobile-floating-cart {
         display: flex;
         position: fixed;
-        bottom: 18px;
+        bottom: 12px;
         left: 50%;
         transform: translateX(-50%) translateY(160%);
-        width: calc(100% - 32px);
-        max-width: 420px;
+        width: calc(100% - 24px);
+        max-width: 380px;
         background: var(--purple-dark);
         color: var(--cream);
-        padding: 12px 18px;
+        padding: 8px 14px;
         border-radius: var(--radius-full);
         align-items: center;
         justify-content: space-between;
-        box-shadow: 0 12px 32px rgba(45, 12, 39, 0.45);
+        box-shadow: 0 8px 24px rgba(45, 12, 39, 0.45);
         border: 1.5px solid rgba(212, 217, 140, 0.4);
-        z-index: 200;
+        z-index: 150;
         cursor: pointer;
-        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
         text-decoration: none;
       }
       .mobile-floating-cart.visible {
@@ -867,13 +867,13 @@
       .mfc-left {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
       }
       .mfc-icon {
-        font-size: 1.3rem;
+        font-size: 1.15rem;
       }
       .mfc-info {
-        font-size: 0.86rem;
+        font-size: 0.80rem;
         font-weight: 800;
         color: var(--cream);
       }
@@ -884,15 +884,43 @@
       .mfc-cta {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         background: var(--lime);
         color: var(--purple-dark);
-        font-size: 0.74rem;
+        font-size: 0.70rem;
         font-weight: 900;
-        padding: 6px 12px;
+        padding: 5px 10px;
         border-radius: var(--radius-full);
-        letter-spacing: 0.04em;
+        letter-spacing: 0.03em;
       }
+    }
+
+    /* Toast Flotante de Notificación */
+    .tyango-toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120px);
+      background: var(--purple-dark);
+      color: var(--cream);
+      border: 1.5px solid var(--lime);
+      padding: 11px 20px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-main);
+      font-size: 0.86rem;
+      font-weight: 800;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      z-index: 9999;
+      opacity: 0;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      pointer-events: none;
+      text-align: center;
+      max-width: 90%;
+      white-space: normal;
+    }
+    .tyango-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -1903,25 +1931,25 @@
        PÁGINAS DE CATEGORÍAS (TYHOT, TYICE, TYBOWLS)
     ═══════════════════════════════════════════════════════════════ */
     .cat-header {
-      padding: 44px 20px 24px;
+      padding: 24px 20px 10px;
       text-align: center;
     }
     .cat-title {
-      font-size: clamp(2rem, 5vw, 2.6rem);
+      font-size: clamp(1.8rem, 4vw, 2.3rem);
       font-weight: 900;
       color: var(--purple-dark);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       letter-spacing: -0.02em;
     }
     .cat-subtitle {
-      font-size: 0.96rem;
+      font-size: 0.92rem;
       color: var(--purple-mid);
       max-width: 480px;
       margin: 0 auto;
-      line-height: 1.6;
+      line-height: 1.45;
     }
     .cat-products {
-      padding: 8px 20px 64px;
+      padding: 4px 20px 40px;
     }
     .products-grid {
       max-width: 1040px;
@@ -2170,107 +2198,153 @@
       .home-hero h1 {
         font-size: clamp(2.1rem, 8vw, 3rem);
       }
+      .header {
+        height: 52px;
+      }
+      .page {
+        margin-top: 52px;
+        min-height: calc(100vh - 52px);
+        padding-bottom: 70px;
+      }
       .hero-btn-group {
         flex-direction: column;
         width: 100%;
-        gap: 12px;
+        gap: 10px;
       }
       .hero-btn-group button {
         width: 100%;
-        min-height: 50px;
+        min-height: 46px;
+        font-size: 0.88rem;
+      }
+
+      /* Secciones Mobile más compactas */
+      .home-hero {
+        padding: 30px 16px 20px;
+      }
+      .home-hero h1 {
+        font-size: 1.85rem;
+        margin-bottom: 6px;
+      }
+      .hero-tagline {
         font-size: 0.92rem;
+        margin-bottom: 6px;
       }
-
-      /* Secciones Mobile */
+      .hero-desc {
+        font-size: 0.82rem;
+        margin-bottom: 16px;
+      }
       .home-about, .home-discover, .home-favs, .home-dna, .home-customizer {
-        padding: 42px 16px;
+        padding: 26px 16px;
+      }
+      .home-final-cta {
+        padding: 30px 16px;
       }
 
-      /* Descubre Tyango en 1 Columna en Mobile */
+      /* Descubre Tyango */
       .discover-grid {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 12px;
         max-width: 440px;
-        margin: 28px auto 0;
+        margin: 18px auto 0;
       }
       .discover-card {
-        padding: 24px 20px;
+        padding: 16px 14px;
       }
       .discover-card .dc-btn {
         width: 100%;
         justify-content: center;
-        padding: 12px 20px;
-        font-size: 0.85rem;
+        padding: 10px 16px;
+        font-size: 0.82rem;
       }
 
-      /* Catálogos & Favoritos: 2 Columnas en Mobile con Altura Uniforme */
+      /* Encabezado de Categorías Directo y Compacto */
+      .cat-header {
+        padding: 14px 14px 4px;
+      }
+      .cat-header .section-badge {
+        padding: 3px 10px;
+        font-size: 0.65rem;
+        margin-bottom: 4px;
+      }
+      .cat-title {
+        font-size: 1.55rem;
+        margin-bottom: 2px;
+        line-height: 1.1;
+      }
+      .cat-subtitle {
+        font-size: 0.80rem;
+        line-height: 1.32;
+        margin-bottom: 0;
+      }
+      .cat-products {
+        padding: 2px 10px 24px;
+      }
+
+      /* Catálogos & Favoritos: 2 Columnas en Mobile */
       .products-grid, .favs-grid {
         grid-template-columns: repeat(2, 1fr);
         max-width: 100%;
-        margin: 16px auto 0;
-        gap: 12px;
+        margin: 6px auto 0;
+        gap: 10px;
         align-items: stretch;
-      }
-      .cat-products {
-        padding: 8px 12px 48px;
       }
       .card {
         border-radius: var(--radius-md);
         display: flex;
         flex-direction: column;
         height: 100%;
-        box-shadow: 0 2px 8px rgba(74, 25, 66, 0.05);
+        box-shadow: 0 2px 6px rgba(74, 25, 66, 0.04);
       }
       .card:hover {
         transform: none;
-        box-shadow: 0 2px 8px rgba(74, 25, 66, 0.05);
+        box-shadow: 0 2px 6px rgba(74, 25, 66, 0.04);
       }
       .card:active {
         transform: scale(0.985);
       }
       .card-img {
-        height: 135px;
+        height: 124px;
         flex-shrink: 0;
       }
       .card-body {
-        padding: 10px 10px 12px;
+        padding: 7px 7px 9px;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
       }
       .card-badge {
-        font-size: 0.58rem;
-        padding: 2px 6px;
-        margin-bottom: 5px;
+        font-size: 0.54rem;
+        padding: 2px 5px;
+        margin-bottom: 3px;
         align-self: flex-start;
-        line-height: 1.2;
+        line-height: 1.15;
         letter-spacing: 0.02em;
         white-space: nowrap;
       }
       .card-name {
-        font-size: 0.88rem;
+        font-size: 0.84rem;
         font-weight: 800;
-        line-height: 1.22;
-        margin-bottom: 4px;
+        line-height: 1.16;
+        margin-bottom: 2px;
         color: var(--purple-dark);
-        min-height: 2.44em;
+        min-height: 2.32em;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
       }
       .card-season {
-        font-size: 0.60rem;
-        margin-bottom: 4px;
-        line-height: 1.2;
+        font-size: 0.56rem;
+        margin-bottom: 2px;
+        line-height: 1.12;
       }
       .card-desc {
-        font-size: 0.72rem;
-        line-height: 1.32;
+        font-size: 0.68rem;
+        line-height: 1.25;
         color: var(--purple-mid);
-        margin-bottom: 8px;
+        margin-bottom: 5px;
         flex-grow: 1;
-        min-height: 2.64em;
+        min-height: 2.5em;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -2278,104 +2352,96 @@
         text-overflow: ellipsis;
         word-break: break-word;
       }
-      .card-price {
-        font-size: 1.05rem;
-        font-weight: 900;
-        color: var(--purple-dark);
+      .card-action-bar {
         margin-top: auto;
         padding-top: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4px;
+      }
+      .card-price {
+        font-size: 1rem;
+        font-weight: 900;
+        color: var(--purple-dark);
         display: block;
+      }
+      .btn-add-cart {
+        padding: 5px 9px;
+        font-size: 0.68rem;
+      }
+
+      /* CTA en Mobile */
+      .cta {
+        padding: 24px 16px;
+      }
+      .cta h2 {
+        font-size: 1.3rem;
+        margin-bottom: 4px;
+      }
+      .cta p {
+        font-size: 0.80rem;
+        margin-bottom: 14px;
+      }
+      .cta .btn-secondary {
+        padding: 9px 22px;
+        font-size: 0.80rem;
       }
 
       /* Personalizador Mobile */
       .customizer-layout {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 18px;
       }
       .ingredient-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 10px;
       }
       .ingredient-item {
-        padding: 14px 10px;
-        min-height: 84px;
+        padding: 12px 8px;
+        min-height: 74px;
       }
       .ingredient-emoji {
-        font-size: 2.3rem;
+        font-size: 2rem;
       }
       .size-grid {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 8px;
       }
       .qty-stepper {
-        padding: 4px 8px;
-        gap: 12px;
+        padding: 3px 6px;
+        gap: 10px;
       }
       .qty-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 1.1rem;
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
       }
       .btn-create-tyango {
-        min-height: 52px;
-        font-size: 0.98rem;
+        min-height: 48px;
+        font-size: 0.92rem;
       }
     }
 
     @media (max-width: 414px) {
       .header-inner {
-        padding: 0 14px;
-      }
-      .header-logo-img {
-        height: 34px;
-        max-width: 105px;
-      }
-      .products-grid, .favs-grid {
-        gap: 10px;
-      }
-      .card-img {
-        height: 130px;
-      }
-      .card-name {
-        font-size: 0.85rem;
-      }
-      .card-season {
-        font-size: 0.58rem;
-      }
-      .card-desc {
-        font-size: 0.70rem;
-      }
-      .card-price {
-        font-size: 1.02rem;
-      }
-      .dna-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-    }
-
-    @media (max-width: 375px) {
-      .header-inner {
         padding: 0 12px;
       }
       .header-logo-img {
-        height: 30px;
+        height: 28px;
         max-width: 95px;
       }
       .products-grid, .favs-grid {
         gap: 8px;
       }
       .card-img {
-        height: 120px;
-      }
-      .card-body {
-        padding: 8px 8px 10px;
+        height: 118px;
       }
       .card-name {
         font-size: 0.82rem;
       }
       .card-season {
-        font-size: 0.56rem;
+        font-size: 0.54rem;
       }
       .card-desc {
         font-size: 0.67rem;
@@ -2383,25 +2449,19 @@
       .card-price {
         font-size: 0.98rem;
       }
-      .ingredient-item {
-        padding: 12px 6px;
-        min-height: 78px;
-      }
-      .ingredient-emoji {
-        font-size: 2rem;
-      }
-      .ingredient-name {
-        font-size: 0.8rem;
+      .dna-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
       }
     }
 
-    @media (max-width: 360px) {
+    @media (max-width: 375px) {
       .header-inner {
         padding: 0 10px;
       }
       .header-logo-img {
-        height: 28px;
-        max-width: 85px;
+        height: 26px;
+        max-width: 88px;
       }
       .products-grid, .favs-grid {
         gap: 7px;
@@ -2410,26 +2470,80 @@
         height: 112px;
       }
       .card-body {
-        padding: 7px 7px 9px;
+        padding: 6px 6px 8px;
       }
       .card-name {
-        font-size: 0.78rem;
+        font-size: 0.79rem;
       }
       .card-season {
-        font-size: 0.54rem;
+        font-size: 0.52rem;
       }
       .card-desc {
-        font-size: 0.64rem;
+        font-size: 0.65rem;
       }
       .card-price {
         font-size: 0.94rem;
       }
+      .btn-add-cart {
+        padding: 4px 7px;
+        font-size: 0.66rem;
+      }
+      .cqty-btn {
+        width: 23px;
+        height: 23px;
+        font-size: 0.85rem;
+      }
+      .cqty-num {
+        min-width: 15px;
+        font-size: 0.78rem;
+      }
+      .ingredient-item {
+        padding: 10px 5px;
+        min-height: 70px;
+      }
+      .ingredient-emoji {
+        font-size: 1.8rem;
+      }
+      .ingredient-name {
+        font-size: 0.76rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .header-inner {
+        padding: 0 8px;
+      }
+      .header-logo-img {
+        height: 24px;
+        max-width: 80px;
+      }
+      .products-grid, .favs-grid {
+        gap: 6px;
+      }
+      .card-img {
+        height: 106px;
+      }
+      .card-body {
+        padding: 5px 5px 7px;
+      }
+      .card-name {
+        font-size: 0.76rem;
+      }
+      .card-season {
+        font-size: 0.50rem;
+      }
+      .card-desc {
+        font-size: 0.62rem;
+      }
+      .card-price {
+        font-size: 0.90rem;
+      }
       .step-title {
-        font-size: 0.98rem;
+        font-size: 0.90rem;
       }
       .counter-pill {
-        font-size: 0.72rem;
-        padding: 3px 8px;
+        font-size: 0.68rem;
+        padding: 2px 6px;
       }
       .dna-grid {
         grid-template-columns: 1fr;
@@ -2478,13 +2592,13 @@
 
   <!-- Menú secundario (Desktop) -->
   <aside class="secondary-menu" id="secondaryMenu" aria-label="Menú secundario">
-    <a href="#" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); toggleMenu();">🎨 Hazlo a tu manera</a>
-    <a href="#" onclick="openCartDrawer(); toggleMenu();">🛒 Ver Mi Carrito</a>
-    <a href="#">📸 Instagram</a>
-    <a href="#">📘 Facebook</a>
-    <a href="#">🎵 TikTok</a>
-    <a href="#">📍 Ubicación</a>
-    <a href="#">📞 Contacto</a>
+    <a href="#" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); toggleMenu();">Hazlo a tu manera</a>
+    <a href="#" onclick="openCartDrawer(); toggleMenu();">Ver Mi Carrito</a>
+    <a href="#">Instagram</a>
+    <a href="#">Facebook</a>
+    <a href="#">TikTok</a>
+    <a href="#">Ubicación</a>
+    <a href="#">Contacto</a>
   </aside>
 
   <!-- Backdrop Overlay para Drawer Móvil -->
@@ -2536,14 +2650,14 @@
       <div class="drawer-section-title">EXPERIENCIAS & ACCIONES</div>
       <div class="drawer-sub-links">
         <a href="#" class="drawer-sub-link" onclick="openCartDrawer(); closeMobileDrawer();">
-          🛒 Ver Mi Carrito
+          Ver Mi Carrito
         </a>
         <a href="#" class="drawer-sub-link" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); closeMobileDrawer();">
-          🎨 Hazlo a tu manera
+          Hazlo a tu manera
         </a>
-        <a href="#" class="drawer-sub-link">📸 Instagram</a>
-        <a href="#" class="drawer-sub-link">📍 Ubicación</a>
-        <a href="#" class="drawer-sub-link">📞 Contacto</a>
+        <a href="#" class="drawer-sub-link">Instagram</a>
+        <a href="#" class="drawer-sub-link">Ubicación</a>
+        <a href="#" class="drawer-sub-link">Contacto</a>
       </div>
     </div>
   </aside>
@@ -2574,7 +2688,7 @@
         </div>
       </div>
       <button type="button" class="ccb-edit-btn" onclick="openCustomerModal(true)" aria-label="Cambiar nombre del cliente">
-        ✏️ Cambiar
+        Cambiar
       </button>
     </div>
 
@@ -2591,7 +2705,7 @@
       </div>
       <div class="cart-actions-group">
         <button type="button" class="btn-primary btn-checkout" onclick="checkoutWhatsApp()">
-          PEDIR POR WHATSAPP 📲
+          PEDIR POR WHATSAPP
         </button>
         <button type="button" class="btn-clear-cart" onclick="clearCart()">
           Vaciar carrito
@@ -2622,13 +2736,13 @@
       <div class="home-blob" style="width:340px;height:340px;background:var(--purple-dark);top:5%;left:-6%"></div>
       <div class="home-blob" style="width:240px;height:240px;background:var(--lime);bottom:8%;right:-4%;animation-delay:3s"></div>
       <div style="position:relative;z-index:2;max-width:620px">
-        <span class="section-badge">✨ Bienvenido</span>
+        <span class="section-badge">Bienvenido</span>
         <h1>BIENVENIDO A<br><em>TYANGO</em></h1>
-        <p class="hero-tagline">Sabores que no pasan desapercibidos. 🥭</p>
+        <p class="hero-tagline">Sabores que no pasan desapercibidos.</p>
         <p class="hero-desc">Una experiencia llena de sabor, creatividad y combinaciones hechas para disfrutar.</p>
         <div class="hero-btn-group">
           <button type="button" class="btn-primary" onclick="document.getElementById('discover-section').scrollIntoView({behavior:'smooth'})">EXPLORAR MENÚ</button>
-          <button type="button" class="btn-secondary" onclick="document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'})">🎨 HAZLO A TU MANERA</button>
+          <button type="button" class="btn-secondary" onclick="document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'})">HAZLO A TU MANERA</button>
         </div>
       </div>
     </section>
@@ -2649,7 +2763,7 @@
         <div class="discover-card" onclick="navigate('hot')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')navigate('hot')" aria-label="Explorar categoría TYHOT">
           <span class="dc-emoji">🔥</span>
           <h3 class="dc-name">TYHOT</h3>
-          <p class="dc-desc">Fruta fresca con aderezos de Nochixtlán, Oaxaca. Un toque de picante y mucho sabor. 🌶️</p>
+          <p class="dc-desc">Fruta fresca con aderezos de Nochixtlán, Oaxaca. Un toque de picante y mucho sabor.</p>
           <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('hot')">VER TYHOT →</button>
         </div>
         <div class="discover-card" onclick="navigate('azuca')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')navigate('azuca')" aria-label="Explorar categoría TYAZUCA">
@@ -2684,7 +2798,7 @@
     <!-- SECCIÓN 5 — PERSONALIZA TU TYANGO -->
     <section class="home-customizer" id="personaliza-section" aria-label="Personalizador de TYANGO">
       <div style="text-align:center; max-width:620px; margin:0 auto 32px">
-        <span class="section-badge">🎨 Tu Creación</span>
+        <span class="section-badge">Personalizador</span>
         <h2 class="section-title">PERSONALIZA TU TYANGO</h2>
         <p class="section-subtitle">Hazlo a tu manera. Elige tus favoritos y crea una combinación única.</p>
       </div>
@@ -2706,10 +2820,10 @@
             <!-- Selector de Modo -->
             <div class="mode-toggle" role="tablist" aria-label="Modo de frutas">
               <button type="button" class="mode-btn" id="mode-individual" onclick="setFruitMode('individual')" role="tab" aria-selected="false">
-                🥭 Individual (1 fruta)
+                Individual (1 fruta)
               </button>
               <button type="button" class="mode-btn active" id="mode-mix" onclick="setFruitMode('mix')" role="tab" aria-selected="true">
-                🍍 Mix (hasta 3 frutas)
+                Mix (hasta 3 frutas)
               </button>
             </div>
 
@@ -2719,7 +2833,7 @@
             </div>
 
             <div id="fruit-limit-msg" class="limit-notice" role="alert">
-              <span>⚠️ Límite de frutas alcanzado. Quita una para cambiarla.</span>
+              <span>Límite de frutas alcanzado. Quita una para cambiarla.</span>
             </div>
           </div>
 
@@ -2739,7 +2853,7 @@
             </div>
 
             <div id="topping-limit-msg" class="limit-notice" role="alert">
-              <span>⚠️ Ya tienes tus 3 toppings. Quita uno para cambiarlo.</span>
+              <span>Ya tienes tus 3 toppings. Quita uno para cambiarlo.</span>
             </div>
           </div>
 
@@ -2762,7 +2876,7 @@
 
         <!-- Columna Derecha: Resumen en Tiempo Real -->
         <aside class="summary-panel" aria-label="Resumen de tu pedido personalizado">
-          <h3 class="summary-title">TU TYANGO ✨</h3>
+          <h3 class="summary-title">TU TYANGO</h3>
 
           <div class="summary-items">
             <!-- Fila Fruta -->
@@ -2785,7 +2899,7 @@
             <div class="summary-row">
               <span class="summary-label">Tamaño</span>
               <div class="summary-value" id="summary-size">
-                <span class="summary-tag">Grande ⭐</span>
+                <span class="summary-tag">Grande</span>
               </div>
             </div>
 
@@ -2802,7 +2916,7 @@
 
           <!-- Easter Egg: Mensaje divertido -->
           <div id="witty-reaction" class="witty-banner" role="status">
-            <span id="witty-text">👀 TYANGO no juzga... pero nosotros tampoco lo hemos probado.</span>
+            <span id="witty-text">TYANGO no juzga... pero nosotros tampoco lo hemos probado.</span>
           </div>
 
           <!-- Subtotal -->
@@ -2813,9 +2927,9 @@
 
           <!-- Aviso Legal & Checkbox -->
           <div class="disclaimer-card">
-            <div class="disclaimer-title">⚠️ TÚ LO CREAS, TÚ LO DISFRUTAS.</div>
+            <div class="disclaimer-title">TÚ LO CREAS, TÚ LO DISFRUTAS.</div>
             <p class="disclaimer-text">
-              Algunas combinaciones pueden ser... arriesgadas 👀 TYANGO permite personalizar tu producto, pero no garantiza que todas las combinaciones tengan el mismo resultado de sabor. Al confirmar, aceptas la preparación exacta con los ingredientes seleccionados.
+              Algunas combinaciones pueden ser arriesgadas. TYANGO permite personalizar tu producto, pero no garantiza que todas las combinaciones tengan el mismo resultado de sabor. Al confirmar, aceptas la preparación exacta con los ingredientes seleccionados.
             </p>
             <label class="disclaimer-check">
               <input type="checkbox" id="accept-disclaimer" onchange="toggleDisclaimerAccept()">
@@ -2875,9 +2989,9 @@
   <!-- ═══════ PAGE: TYHOT ═══════ -->
   <main class="page" id="page-hot" role="main">
     <div class="cat-header bg-hot">
-      <span class="section-badge" style="background:rgba(232,93,48,0.15);color:#D94E20">🌶️ FRESCO, JUGOSO Y PICANTE</span>
+      <span class="section-badge" style="background:rgba(232,93,48,0.15);color:#D94E20">FRESCO, JUGOSO Y PICANTE</span>
       <h1 class="cat-title">TYHOT</h1>
-      <p class="cat-subtitle">Fruta fresca con aderezos de Nochixtlán, Oaxaca. Un toque de picante y mucho sabor. 🌶️</p>
+      <p class="cat-subtitle">Fruta fresca con aderezos de Nochixtlán, Oaxaca. Un toque de picante y mucho sabor.</p>
     </div>
     <div class="cat-products bg-hot">
       <div class="products-grid" id="grid-hot"></div>
@@ -2886,7 +3000,7 @@
       <div class="cta-circle" style="width:220px;height:220px;top:-60px;right:-60px"></div>
       <h2>¿Listo para probar algo increíble?</h2>
       <p>Haz tu pedido y vive la experiencia Tyango.</p>
-      <a href="#" class="btn-secondary">Pedir Ahora 🚀</a>
+      <a href="#" class="btn-secondary">Pedir Ahora</a>
     </div>
     <footer class="footer" id="footer-hot" role="contentinfo"></footer>
   </main>
@@ -2894,7 +3008,7 @@
   <!-- ═══════ PAGE: TYICE ═══════ -->
   <main class="page" id="page-ice" role="main">
     <div class="cat-header bg-ice">
-      <span class="section-badge" style="background:rgba(59,130,246,0.15);color:#2563EB">❄️ Línea Helada</span>
+      <span class="section-badge" style="background:rgba(59,130,246,0.15);color:#2563EB">Línea Helada</span>
       <h1 class="cat-title">TYICE</h1>
       <p class="cat-subtitle">Refréscate con nuestras creaciones frías. Perfectas para cualquier momento del día.</p>
     </div>
@@ -2905,7 +3019,7 @@
       <div class="cta-circle" style="width:220px;height:220px;top:-60px;right:-60px"></div>
       <h2>¿Listo para probar algo increíble?</h2>
       <p>Haz tu pedido y vive la experiencia Tyango.</p>
-      <a href="#" class="btn-secondary">Pedir Ahora 🚀</a>
+      <a href="#" class="btn-secondary">Pedir Ahora</a>
     </div>
     <footer class="footer" id="footer-ice" role="contentinfo"></footer>
   </main>
@@ -2913,7 +3027,7 @@
   <!-- ═══════ PAGE: TYBOWLS ═══════ -->
   <main class="page" id="page-bowls" role="main">
     <div class="cat-header bg-bowls">
-      <span class="section-badge" style="background:rgba(212,217,140,0.4);color:var(--purple-dark)">🥣 Línea Bowls</span>
+      <span class="section-badge" style="background:rgba(212,217,140,0.4);color:var(--purple-dark)">Línea Bowls</span>
       <h1 class="cat-title">TYBOWLS</h1>
       <p class="cat-subtitle">Bowls nutritivos y deliciosos. El complemento perfecto para tu bebida favorita.</p>
     </div>
@@ -2924,7 +3038,7 @@
       <div class="cta-circle" style="width:220px;height:220px;top:-60px;right:-60px"></div>
       <h2>¿Listo para probar algo increíble?</h2>
       <p>Haz tu pedido y vive la experiencia Tyango.</p>
-      <a href="#" class="btn-secondary">Pedir Ahora 🚀</a>
+      <a href="#" class="btn-secondary">Pedir Ahora</a>
     </div>
     <footer class="footer" id="footer-bowls" role="contentinfo"></footer>
   </main>
@@ -2932,9 +3046,9 @@
   <!-- ═══════ PAGE: TYAZUCA ═══════ -->
   <main class="page" id="page-azuca" role="main">
     <div class="cat-header bg-azuca">
-      <span class="section-badge" style="background:rgba(236,72,153,0.15);color:#DB2777">🍓 Fresas con Aderezos</span>
+      <span class="section-badge" style="background:rgba(236,72,153,0.15);color:#DB2777">Fresas con Aderezos</span>
       <h1 class="cat-title">TYAZUCA</h1>
-      <p class="cat-subtitle" style="font-weight: 800; color: var(--purple-dark); margin-bottom: 4px;">Fresas que puedes llevar a tu manera. 🍓</p>
+      <p class="cat-subtitle" style="font-weight: 800; color: var(--purple-dark); margin-bottom: 4px;">Fresas que puedes llevar a tu manera.</p>
       <p class="cat-subtitle">Fresas frescas acompañadas de aderezos y combinaciones llenas de sabor.</p>
     </div>
     <div class="cat-products bg-azuca">
@@ -2944,7 +3058,7 @@
       <div class="cta-circle" style="width:220px;height:220px;top:-60px;right:-60px"></div>
       <h2>¿Quieres personalizarlas a tu gusto?</h2>
       <p>Elige tus aderezos y crea tu combinación única.</p>
-      <a href="#" class="btn-secondary" onclick="event.preventDefault(); navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 300);">🎨 HAZLO A TU MANERA</a>
+      <a href="#" class="btn-secondary" onclick="event.preventDefault(); navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 300);">HAZLO A TU MANERA</a>
     </div>
     <footer class="footer" id="footer-azuca" role="contentinfo"></footer>
   </main>
@@ -2952,7 +3066,7 @@
   <!-- ═══════ MODAL: IDENTIFICACIÓN DEL CLIENTE ═══════ -->
   <div class="custom-modal-overlay" id="customerModal" role="dialog" aria-modal="true" aria-labelledby="customerModalTitle">
     <div class="custom-modal-box customer-modal-box">
-      <div class="customer-modal-icon">🥭👋</div>
+      <div class="customer-modal-icon" style="font-size: 2.6rem; margin-bottom: 8px;">👋</div>
       <h2 id="customerModalTitle" class="customer-modal-title">¡Hola! 👋</h2>
       <p class="customer-modal-desc">Para comenzar tu pedido, coloca tu nombre.</p>
       <form id="customerNameForm" onsubmit="event.preventDefault(); submitCustomerName();">
@@ -2960,11 +3074,11 @@
           <label for="customerNameInput" class="customer-input-label">Tu nombre</label>
           <input type="text" id="customerNameInput" class="customer-input" placeholder="Tu nombre" autocomplete="name" required maxlength="50" autofocus>
           <div id="customerNameError" class="customer-error-msg">
-            ⚠️ Por favor, ingresa tu nombre para continuar.
+            Ingresa tu nombre para continuar.
           </div>
         </div>
         <button type="submit" class="btn-primary btn-customer-submit">
-          CONTINUAR 🚀
+          CONTINUAR
         </button>
       </form>
     </div>
@@ -2973,7 +3087,7 @@
   <!-- ═══════ MODAL SUCCESS ═══════ -->
   <div class="custom-modal-overlay" id="successModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="custom-modal-box">
-      <div style="font-size: 3.2rem; margin-bottom: 10px;">🎉🥭</div>
+      <div style="font-size: 2.6rem; margin-bottom: 8px;">🎉</div>
       <h3 id="modal-title" style="font-size: 1.5rem; font-weight: 900; color: var(--purple-dark); margin-bottom: 6px;">¡TU TYANGO ESTÁ LISTO!</h3>
       <p style="font-size: 0.9rem; color: var(--purple-mid); margin-bottom: 16px; line-height: 1.45;">
         ¡Tu combinación personalizada ha sido creada con éxito!
@@ -2981,7 +3095,7 @@
       <div id="modal-order-details" style="background: var(--cream); border-radius: var(--radius-md); padding: 14px; text-align: left; font-size: 0.84rem; color: var(--purple-dark); margin-bottom: 20px; border: 1px solid rgba(74,25,66,0.08); line-height: 1.55;">
       </div>
       <div style="display: flex; gap: 10px;">
-        <button type="button" class="btn-primary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal(); openCartDrawer();">🛒 Ver Carrito</button>
+        <button type="button" class="btn-primary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal(); openCartDrawer();">Ver Carrito</button>
         <button type="button" class="btn-secondary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal()">Crear Otro</button>
       </div>
     </div>
@@ -3031,7 +3145,7 @@
         { 
           id: 'hot_takimango',
           img: 'takimango.jpg', 
-          badge: '🔥 MUY PICANTE', 
+          badge: 'MUY PICANTE', 
           badgeCss: 'background:rgba(239,68,68,0.15);color:#DC2626', 
           name: 'TAKIMANGO', 
           desc: 'Takis Fuego con mango y chamoy. Muy picante, jugoso y lleno de sabor.', 
@@ -3052,7 +3166,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(59,130,246,0.12);color:#2563EB', 
           name: 'ICEUVA', 
-          desc: 'Uva congelada con Sprite y Tajín. Fría, refrescante y llena de sabor. ❄️🍇', 
+          desc: 'Uva congelada con Sprite y Tajín. Fría, refrescante y llena de sabor.', 
           price: '$2.50' 
         },
         { 
@@ -3157,7 +3271,10 @@
       const err = document.getElementById('customerNameError');
       if (!modal || !input) return;
 
-      if (err) err.style.display = 'none';
+      if (err) {
+        err.textContent = 'Ingresa tu nombre para continuar.';
+        err.style.display = 'none';
+      }
       input.classList.remove('error');
       input.value = customerName || '';
       modal.classList.add('open');
@@ -3172,7 +3289,10 @@
 
       const val = input.value.trim();
       if (!val) {
-        if (err) err.style.display = 'flex';
+        if (err) {
+          err.textContent = 'Ingresa tu nombre para continuar.';
+          err.style.display = 'block';
+        }
         input.classList.add('error');
         input.focus();
         return;
@@ -3191,7 +3311,7 @@
     function updateCustomerUI() {
       const display = document.getElementById('cartCustomerName');
       if (display) {
-        display.textContent = customerName ? `${customerName} 👋` : 'Sin asignar';
+        display.textContent = customerName ? customerName : 'Sin asignar';
       }
     }
 
@@ -3397,7 +3517,7 @@
             <div class="cart-empty-title">Tu carrito está vacío</div>
             <p class="cart-empty-text">Explora nuestras líneas TYHOT, TYAZUCA, TYICE y TYBOWLS para agregar tus productos favoritos.</p>
             <button type="button" class="btn-primary" onclick="closeCartDrawer(); navigate('hot');">
-              EXPLORAR TYHOT 🌶️
+              EXPLORAR TYHOT
             </button>
           </div>
         `;
@@ -3469,9 +3589,52 @@
       `;
     }
 
+    function copyToClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text).catch(() => fallbackCopyText(text));
+      } else {
+        return fallbackCopyText(text);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.top = '-9999px';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.resolve();
+      }
+    }
+
+    function showToast(message, duration = 3000) {
+      let toast = document.getElementById('tyangoToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'tyangoToast';
+        toast.className = 'tyango-toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, duration);
+    }
+
     function checkoutWhatsApp() {
       // 1. Validar nombre del cliente
       if (!customerName || !customerName.trim()) {
+        showToast('Ingresa tu nombre para continuar.');
         openCustomerModal(false);
         return;
       }
@@ -3479,7 +3642,7 @@
       // 2. Validar carrito con productos
       const items = Object.values(cart);
       if (items.length === 0) {
-        alert('Tu carrito está vacío. Agrega tus productos favoritos antes de pedir.');
+        showToast('Agrega al menos un producto para realizar tu pedido.');
         return;
       }
 
@@ -3490,13 +3653,20 @@
         const itemSubtotal = formatCurrency(item.priceNum * item.qty);
         msg += `• ${item.qty} × ${item.name} — ${itemSubtotal}\n`;
         if (item.isCustom && item.desc) {
-          msg += `   _${item.desc}_\n`;
+          msg += `   (${item.desc})\n`;
         }
       });
 
       const total = formatCurrency(getCartTotalPrice());
       msg += `\nTOTAL: ${total}`;
 
+      // 4. Copiar mensaje al portapapeles
+      copyToClipboard(msg);
+
+      // 5. Mostrar aviso en pantalla
+      showToast('Pedido copiado. Pégalo en WhatsApp para enviarlo.');
+
+      // 6. Abrir WhatsApp inmediatamente
       const targetUrl = `https://wa.me/message/HXXJ4PZHNIAQE1?text=${encodeURIComponent(msg)}`;
       window.open(targetUrl, '_blank');
     }
