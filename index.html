@@ -601,13 +601,41 @@
       text-overflow: ellipsis;
       max-width: 190px;
     }
+    .ccb-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .ccb-orders-btn {
+      background: var(--purple-dark);
+      border: 1.5px solid var(--purple-dark);
+      color: var(--lime);
+      font-size: 0.70rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all var(--transition-fast);
+      font-family: var(--font-main);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+    .ccb-orders-btn:hover {
+      background: var(--purple-surface);
+      transform: translateY(-1px);
+    }
     .ccb-edit-btn {
       background: var(--white);
       border: 1.5px solid rgba(74, 25, 66, 0.12);
       color: var(--purple-dark);
-      font-size: 0.72rem;
+      font-size: 0.70rem;
       font-weight: 800;
-      padding: 5px 11px;
+      padding: 4px 9px;
       border-radius: var(--radius-full);
       cursor: pointer;
       display: inline-flex;
@@ -615,6 +643,7 @@
       gap: 4px;
       transition: all var(--transition-fast);
       flex-shrink: 0;
+      white-space: nowrap;
     }
     .ccb-edit-btn:hover {
       background: var(--purple-dark);
@@ -2138,6 +2167,226 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════
+       MODAL MIS PEDIDOS & HISTORIAL
+    ═══════════════════════════════════════════════════════════════ */
+    .orders-modal-box {
+      max-width: 480px;
+      width: min(94vw, 480px);
+      max-height: 84vh;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(74, 25, 66, 0.1);
+      box-shadow: 0 20px 50px rgba(45, 12, 39, 0.35);
+      position: relative;
+    }
+    .orders-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1.5px solid rgba(74, 25, 66, 0.08);
+      margin-bottom: 14px;
+      flex-shrink: 0;
+    }
+    .orders-modal-title {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+    .orders-modal-close {
+      background: rgba(74, 25, 66, 0.06);
+      border: none;
+      color: var(--purple-dark);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 0.95rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+    .orders-modal-close:hover {
+      background: rgba(74, 25, 66, 0.12);
+    }
+    .orders-list-body {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-right: 2px;
+    }
+    .order-card {
+      background: var(--cream);
+      border: 1.5px solid rgba(74, 25, 66, 0.1);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: box-shadow var(--transition-fast);
+    }
+    .order-card:hover {
+      box-shadow: 0 4px 12px rgba(74, 25, 66, 0.08);
+    }
+    .order-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .order-num-title {
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+      letter-spacing: 0.02em;
+    }
+    .order-status-badge {
+      background: rgba(74, 25, 66, 0.08);
+      color: var(--purple-dark);
+      font-size: 0.58rem;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border: 1px solid rgba(74, 25, 66, 0.12);
+    }
+    .order-date-row {
+      font-size: 0.72rem;
+      color: var(--purple-mid);
+      font-weight: 700;
+      margin-top: 1px;
+    }
+    .order-items-box {
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      border: 1px solid rgba(74, 25, 66, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .order-item-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.80rem;
+      color: var(--purple-dark);
+      gap: 8px;
+    }
+    .oil-name {
+      font-weight: 700;
+    }
+    .oil-subtotal {
+      font-weight: 800;
+      color: var(--purple-mid);
+      font-size: 0.78rem;
+    }
+    .order-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 2px;
+      gap: 10px;
+    }
+    .order-card-total {
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+    }
+    .btn-reorder {
+      background: var(--purple-dark);
+      color: var(--lime);
+      border: none;
+      font-family: var(--font-main);
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 7px 13px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .btn-reorder:hover {
+      background: var(--purple-surface);
+      transform: translateY(-1px);
+    }
+    .btn-reorder:active {
+      transform: scale(0.96);
+    }
+
+    /* Tarjeta de Reorden Rápida en Carrito Vacío */
+    .quick-reorder-card {
+      background: var(--white);
+      border: 1.5px solid rgba(74, 25, 66, 0.12);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin: 12px 0 8px;
+      text-align: left;
+      box-shadow: 0 4px 12px rgba(74, 25, 66, 0.05);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .qrc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .qrc-badge {
+      font-size: 0.62rem;
+      font-weight: 900;
+      color: var(--purple-mid);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .qrc-order-num {
+      font-size: 0.88rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+      margin-bottom: 2px;
+    }
+    .qrc-date {
+      font-size: 0.68rem;
+      color: var(--purple-mid);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .qrc-items-list {
+      font-size: 0.76rem;
+      color: var(--purple-dark);
+      line-height: 1.45;
+      margin-bottom: 8px;
+      background: var(--cream);
+      padding: 7px 9px;
+      border-radius: var(--radius-sm);
+    }
+    .qrc-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .qrc-total {
+      font-size: 0.88rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
        ANIMACIONES
     ═══════════════════════════════════════════════════════════════ */
     @keyframes fadeIn {
@@ -2594,6 +2843,7 @@
   <aside class="secondary-menu" id="secondaryMenu" aria-label="Menú secundario">
     <a href="#" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); toggleMenu();">Hazlo a tu manera</a>
     <a href="#" onclick="openCartDrawer(); toggleMenu();">Ver Mi Carrito</a>
+    <a href="#" onclick="openOrdersModal(); toggleMenu();">Mis Pedidos</a>
     <a href="#">Instagram</a>
     <a href="#">Facebook</a>
     <a href="#">TikTok</a>
@@ -2652,6 +2902,9 @@
         <a href="#" class="drawer-sub-link" onclick="openCartDrawer(); closeMobileDrawer();">
           Ver Mi Carrito
         </a>
+        <a href="#" class="drawer-sub-link" onclick="openOrdersModal(); closeMobileDrawer();">
+          Mis Pedidos<span id="drawerOrdersBadge"></span>
+        </a>
         <a href="#" class="drawer-sub-link" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); closeMobileDrawer();">
           Hazlo a tu manera
         </a>
@@ -2687,9 +2940,14 @@
           <span class="ccb-name" id="cartCustomerName">Sin asignar</span>
         </div>
       </div>
-      <button type="button" class="ccb-edit-btn" onclick="openCustomerModal(true)" aria-label="Cambiar nombre del cliente">
-        Cambiar
-      </button>
+      <div class="ccb-actions">
+        <button type="button" class="ccb-orders-btn" onclick="openOrdersModal()" id="cartCustomerOrdersBtn" title="Ver mis pedidos">
+          Mis Pedidos
+        </button>
+        <button type="button" class="ccb-edit-btn" onclick="openCustomerModal(true)" aria-label="Cambiar nombre del cliente">
+          Cambiar
+        </button>
+      </div>
     </div>
 
     <!-- Lista de Productos en el Carrito -->
@@ -3101,6 +3359,19 @@
     </div>
   </div>
 
+  <!-- ═══════ MODAL: MIS PEDIDOS ═══════ -->
+  <div class="custom-modal-overlay" id="ordersModal" role="dialog" aria-modal="true" aria-labelledby="ordersModalTitle" onclick="if(event.target === this) closeOrdersModal();">
+    <div class="orders-modal-box">
+      <div class="orders-modal-header">
+        <h3 id="ordersModalTitle" class="orders-modal-title">MIS PEDIDOS</h3>
+        <button type="button" class="orders-modal-close" onclick="closeOrdersModal()" aria-label="Cerrar pedidos">✕</button>
+      </div>
+      <div class="orders-list-body" id="ordersListContent">
+        <!-- Inyectado dinámicamente por JS -->
+      </div>
+    </div>
+  </div>
+
   <!-- ═══════ JAVASCRIPT ENGINE ═══════ -->
   <script>
     /* ═══════ CATÁLOGOS EXISTENTES CON IDENTIFICADORES ÚNICOS ═══════ */
@@ -3250,15 +3521,118 @@
     ];
 
     /* ═══════════════════════════════════════════════════════════════
-       GESTIÓN DEL CLIENTE (NOMBRE OBLIGATORIO)
+       FASE 1: MOTOR DE CLIENTES & HISTORIAL DE PEDIDOS
     ═══════════════════════════════════════════════════════════════ */
-    const CUSTOMER_STORAGE_KEY = 'tyango_customer_name';
+    const CUSTOMER_PROFILE_KEY = 'tyango_customer_profile_v1';
+    const CUSTOMER_NAME_KEY = 'tyango_customer_name';
+    const ORDERS_HISTORY_KEY = 'tyango_orders_history_v1';
+
+    let customerProfile = null;
     let customerName = '';
 
+    const CustomerRepository = {
+      getProfile() {
+        try {
+          const raw = localStorage.getItem(CUSTOMER_PROFILE_KEY);
+          if (raw) return JSON.parse(raw);
+          const legacyName = localStorage.getItem(CUSTOMER_NAME_KEY) || sessionStorage.getItem(CUSTOMER_NAME_KEY);
+          if (legacyName && legacyName.trim()) {
+            return this.createProfile(legacyName.trim());
+          }
+        } catch (e) {
+          console.error('Error al leer perfil de cliente:', e);
+        }
+        return null;
+      },
+
+      createProfile(name) {
+        const id = 'cust_' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        const profile = {
+          id: id,
+          name: name.trim(),
+          createdAt: new Date().toISOString(),
+          lastVisitAt: new Date().toISOString()
+        };
+        try {
+          localStorage.setItem(CUSTOMER_PROFILE_KEY, JSON.stringify(profile));
+          localStorage.setItem(CUSTOMER_NAME_KEY, profile.name);
+          sessionStorage.setItem(CUSTOMER_NAME_KEY, profile.name);
+        } catch (e) {
+          console.error('Error al guardar perfil de cliente:', e);
+        }
+        return profile;
+      },
+
+      updateName(newName) {
+        let profile = this.getProfile();
+        if (!profile) {
+          return this.createProfile(newName);
+        }
+        profile.name = newName.trim();
+        profile.lastVisitAt = new Date().toISOString();
+        try {
+          localStorage.setItem(CUSTOMER_PROFILE_KEY, JSON.stringify(profile));
+          localStorage.setItem(CUSTOMER_NAME_KEY, profile.name);
+          sessionStorage.setItem(CUSTOMER_NAME_KEY, profile.name);
+        } catch (e) {
+          console.error('Error al actualizar nombre de cliente:', e);
+        }
+        return profile;
+      }
+    };
+
+    const OrdersRepository = {
+      getAll() {
+        try {
+          const raw = localStorage.getItem(ORDERS_HISTORY_KEY);
+          if (raw) return JSON.parse(raw);
+        } catch (e) {
+          console.error('Error al leer historial de pedidos:', e);
+        }
+        return [];
+      },
+
+      getLastOrder() {
+        const orders = this.getAll();
+        return orders.length > 0 ? orders[0] : null;
+      },
+
+      getOrderById(orderId) {
+        const orders = this.getAll();
+        return orders.find(o => o.id === orderId) || null;
+      },
+
+      save(orderData) {
+        try {
+          const orders = this.getAll();
+          orders.unshift(orderData); // El pedido más reciente al inicio
+          localStorage.setItem(ORDERS_HISTORY_KEY, JSON.stringify(orders));
+          return orderData;
+        } catch (e) {
+          console.error('Error al guardar pedido en historial:', e);
+          return orderData;
+        }
+      }
+    };
+
+    function formatSpanishDate(d) {
+      const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = months[d.getMonth()];
+      const year = d.getFullYear();
+      return `${day} ${month} ${year}`;
+    }
+
+    function formatSpanishTime(d) {
+      const hours = String(d.getHours()).padStart(2, '0');
+      const mins = String(d.getMinutes()).padStart(2, '0');
+      return `${hours}:${mins}`;
+    }
+
     function initCustomer() {
-      const savedName = localStorage.getItem(CUSTOMER_STORAGE_KEY) || sessionStorage.getItem(CUSTOMER_STORAGE_KEY);
-      if (savedName && savedName.trim().length > 0) {
-        customerName = savedName.trim();
+      customerProfile = CustomerRepository.getProfile();
+      if (customerProfile && customerProfile.name && customerProfile.name.trim().length > 0) {
+        customerName = customerProfile.name.trim();
         updateCustomerUI();
       } else {
         openCustomerModal(false);
@@ -3298,9 +3672,8 @@
         return;
       }
 
-      customerName = val;
-      localStorage.setItem(CUSTOMER_STORAGE_KEY, customerName);
-      sessionStorage.setItem(CUSTOMER_STORAGE_KEY, customerName);
+      customerProfile = CustomerRepository.updateName(val);
+      customerName = customerProfile.name;
       updateCustomerUI();
 
       const modal = document.getElementById('customerModal');
@@ -3311,7 +3684,16 @@
     function updateCustomerUI() {
       const display = document.getElementById('cartCustomerName');
       if (display) {
-        display.textContent = customerName ? customerName : 'Sin asignar';
+        display.textContent = customerName ? `Hola, ${customerName} 👋` : 'Sin asignar';
+      }
+      const orders = OrdersRepository.getAll();
+      const badge = document.getElementById('drawerOrdersBadge');
+      if (badge) {
+        badge.textContent = orders.length > 0 ? ` (${orders.length})` : '';
+      }
+      const cartOrdersBtn = document.getElementById('cartCustomerOrdersBtn');
+      if (cartOrdersBtn) {
+        cartOrdersBtn.textContent = orders.length > 0 ? `Mis Pedidos (${orders.length})` : 'Mis Pedidos';
       }
     }
 
@@ -3511,6 +3893,37 @@
 
       const items = Object.values(cart);
       if (items.length === 0) {
+        const lastOrder = OrdersRepository.getLastOrder();
+        if (lastOrder) {
+          list.innerHTML = `
+            <div class="cart-empty-state">
+              <span class="cart-empty-emoji">🥭</span>
+              <div class="cart-empty-title">Tu carrito está vacío</div>
+              <div class="quick-reorder-card">
+                <div class="qrc-header">
+                  <span class="qrc-badge">Último Pedido</span>
+                  <span class="order-status-badge">${lastOrder.status}</span>
+                </div>
+                <div class="qrc-order-num">PEDIDO ${lastOrder.orderNumber}</div>
+                <div class="qrc-date">${lastOrder.date} · ${lastOrder.time}</div>
+                <div class="qrc-items-list">
+                  ${lastOrder.items.map(it => `<div>• <strong>${it.qty} ×</strong> ${it.name} — ${it.subtotal || formatCurrency(it.priceNum * it.qty)}</div>`).join('')}
+                </div>
+                <div class="qrc-footer">
+                  <div class="qrc-total">TOTAL: ${lastOrder.total}</div>
+                  <button type="button" class="btn-reorder" onclick="reorderFromHistory('${lastOrder.id}')">
+                    VOLVER A PEDIR
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="btn-secondary" style="margin-top:6px; font-size:0.76rem; padding:7px 14px;" onclick="openOrdersModal()">
+                Ver todos mis pedidos
+              </button>
+            </div>
+          `;
+          return;
+        }
+
         list.innerHTML = `
           <div class="cart-empty-state">
             <span class="cart-empty-emoji">🥭</span>
@@ -3589,6 +4002,108 @@
       `;
     }
 
+    /* ═══════ FUNCIONALIDAD DE VOLVER A PEDIR (SIN DUPLICADOS) ═══════ */
+    function reorderFromHistory(orderId) {
+      const order = OrdersRepository.getOrderById(orderId);
+      if (!order || !order.items || order.items.length === 0) {
+        showToast('No se encontró el pedido.');
+        return;
+      }
+
+      order.items.forEach(item => {
+        const prodId = item.id;
+        // Si el producto ya existe en el carrito, sumar las cantidades para evitar duplicados
+        if (cart[prodId]) {
+          cart[prodId].qty += item.qty;
+        } else {
+          const catProd = findProductInCatalog(prodId);
+          cart[prodId] = {
+            id: prodId,
+            name: (catProd && catProd.name) ? catProd.name : item.name,
+            desc: (catProd && catProd.desc) ? catProd.desc : (item.desc || ''),
+            price: (catProd && catProd.price) ? catProd.price : item.price,
+            priceNum: (catProd && catProd.price) ? parsePriceNumber(catProd.price) : item.priceNum,
+            qty: item.qty,
+            img: (catProd && catProd.img) ? catProd.img : (item.img || null),
+            emoji: (catProd && catProd.emoji) ? catProd.emoji : (item.emoji || null),
+            customCardClass: (catProd && catProd.customCardClass) ? catProd.customCardClass : null,
+            isCustom: !!item.isCustom
+          };
+        }
+      });
+
+      saveCartToStorage();
+      triggerCartBadgeBump();
+      closeOrdersModal();
+      openCartDrawer();
+      showToast('Productos agregados al carrito.');
+    }
+
+    /* ═══════ GESTIÓN DEL MODAL MIS PEDIDOS ═══════ */
+    function openOrdersModal() {
+      closeMobileDrawer();
+      closeCartDrawer();
+      const modal = document.getElementById('ordersModal');
+      if (!modal) return;
+      renderOrdersHistoryModal();
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeOrdersModal() {
+      const modal = document.getElementById('ordersModal');
+      if (modal) modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function renderOrdersHistoryModal() {
+      const container = document.getElementById('ordersListContent');
+      if (!container) return;
+
+      const orders = OrdersRepository.getAll();
+      if (orders.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:32px 14px; color:var(--purple-mid);">
+            <div style="font-size:2.2rem; margin-bottom:8px;">📋</div>
+            <h4 style="font-size:1.05rem; color:var(--purple-dark); font-weight:900; margin-bottom:6px;">Aún no tienes pedidos registrados</h4>
+            <p style="font-size:0.82rem; line-height:1.45; max-width:300px; margin:0 auto 16px;">
+              Cuando realices tu primer pedido por WhatsApp, quedará guardado aquí para que puedas volver a pedirlo con 1 clic.
+            </p>
+            <button type="button" class="btn-primary" onclick="closeOrdersModal(); navigate('hot');" style="font-size:0.8rem; padding:9px 18px;">
+              EXPLORAR EL MENÚ
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = orders.map(order => `
+        <div class="order-card" id="order-card-${order.id}">
+          <div class="order-card-top">
+            <div>
+              <div class="order-num-title">PEDIDO ${order.orderNumber}</div>
+              <div class="order-date-row">${order.date} · ${order.time}</div>
+            </div>
+            <span class="order-status-badge">${order.status}</span>
+          </div>
+          <div class="order-items-box">
+            ${order.items.map(it => `
+              <div class="order-item-line">
+                <span class="oil-name"><strong>${it.qty} ×</strong> ${it.name}</span>
+                <span class="oil-subtotal">${it.subtotal || formatCurrency(it.priceNum * it.qty)}</span>
+              </div>
+            `).join('')}
+          </div>
+          <div class="order-card-bottom">
+            <div class="order-card-total">TOTAL: ${order.total}</div>
+            <button type="button" class="btn-reorder" onclick="reorderFromHistory('${order.id}')">
+              VOLVER A PEDIR
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
     function copyToClipboard(text) {
       if (navigator.clipboard && window.isSecureContext) {
         return navigator.clipboard.writeText(text).catch(() => fallbackCopyText(text));
@@ -3646,7 +4161,48 @@
         return;
       }
 
-      // 3. Generar mensaje según formato solicitado
+      const now = new Date();
+      const existingOrders = OrdersRepository.getAll();
+      const orderSeq = existingOrders.length + 1;
+      const orderNumberStr = '#' + String(orderSeq).padStart(3, '0');
+      const orderIdStr = 'ORD-' + String(orderSeq).padStart(3, '0') + '-' + Date.now().toString(36);
+
+      const orderItems = items.map(item => ({
+        id: item.id,
+        name: item.name,
+        qty: item.qty,
+        price: item.price,
+        priceNum: item.priceNum,
+        subtotal: formatCurrency(item.priceNum * item.qty),
+        img: item.img || null,
+        emoji: item.emoji || null,
+        desc: item.desc || '',
+        isCustom: !!item.isCustom
+      }));
+
+      const totalNum = getCartTotalPrice();
+      const totalFormatted = formatCurrency(totalNum);
+
+      // 3. GUARDAR EL PEDIDO ANTES DE ABRIR WHATSAPP (ESTADO: ENVIADO A WHATSAPP)
+      const newOrder = {
+        id: orderIdStr,
+        orderNumber: orderNumberStr,
+        customerId: (customerProfile && customerProfile.id) ? customerProfile.id : 'cust_anon',
+        customerName: customerName.trim(),
+        date: formatSpanishDate(now),
+        time: formatSpanishTime(now),
+        timestamp: now.getTime(),
+        items: orderItems,
+        totalUnits: getCartTotalUnits(),
+        total: totalFormatted,
+        totalNum: totalNum,
+        status: 'ENVIADO A WHATSAPP'
+      };
+
+      OrdersRepository.save(newOrder);
+      updateCustomerUI();
+
+      // 4. Generar mensaje según formato solicitado
       let msg = `Hola, soy ${customerName.trim()} 👋\n\nMi pedido es:\n\n`;
 
       items.forEach(item => {
@@ -3657,13 +4213,12 @@
         }
       });
 
-      const total = formatCurrency(getCartTotalPrice());
-      msg += `\nTOTAL: ${total}`;
+      msg += `\nTOTAL: ${totalFormatted}`;
 
-      // 4. Copia de respaldo en portapapeles
+      // 5. Copia silenciosa de respaldo en portapapeles
       copyToClipboard(msg);
 
-      // 5. Abrir WhatsApp directamente con el pedido ya escrito en el campo de texto
+      // 6. Abrir WhatsApp directamente con el pedido ya escrito en el campo de texto
       const targetUrl = `https://wa.me/593994124996?text=${encodeURIComponent(msg)}`;
       window.open(targetUrl, '_blank');
     }
@@ -4089,6 +4644,11 @@
     // Cerrar con tecla Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        const ordModal = document.getElementById('ordersModal');
+        if (ordModal && ordModal.classList.contains('open')) {
+          closeOrdersModal();
+          return;
+        }
         const custModal = document.getElementById('customerModal');
         if (custModal && custModal.classList.contains('open')) {
           if (!customerName || !customerName.trim()) {
