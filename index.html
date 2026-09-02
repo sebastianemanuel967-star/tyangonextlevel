@@ -180,6 +180,31 @@
       background: var(--lime);
       border-radius: 3px 3px 0 0;
     }
+    .header-nav-btn.locked {
+      opacity: 0.62;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+    }
+    .header-nav-btn.locked:hover {
+      opacity: 0.92;
+      color: var(--lime);
+    }
+    .header-nav-soon-pill {
+      font-size: 0.50rem;
+      font-weight: 900;
+      background: rgba(212, 217, 140, 0.18);
+      color: var(--lime);
+      border: 1px solid rgba(212, 217, 140, 0.35);
+      padding: 1px 5px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-left: 2px;
+    }
 
     /* Botón Hamburguesa ☰ (Opciones secundarias) */
     .header-hamburger {
@@ -386,6 +411,22 @@
     .drawer-nav-item.active .dni-tag {
       background: var(--purple-dark);
       color: var(--lime);
+    }
+    .drawer-nav-item.locked {
+      opacity: 0.60;
+      background: rgba(255, 255, 255, 0.02);
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+    .drawer-nav-item.locked:hover {
+      opacity: 0.88;
+      background: rgba(212, 217, 140, 0.06);
+    }
+    .dni-tag-locked {
+      background: rgba(212, 217, 140, 0.15) !important;
+      color: var(--lime) !important;
+      border: 1px solid rgba(212, 217, 140, 0.3);
+      font-size: 0.62rem !important;
+      letter-spacing: 0.04em;
     }
 
     .drawer-divider {
@@ -1304,6 +1345,33 @@
     .discover-card .dc-btn:hover {
       background: var(--purple-surface);
       transform: translateY(-1px);
+    }
+    .discover-card.locked-card {
+      opacity: 0.72;
+      position: relative;
+      border-color: rgba(74, 25, 66, 0.12);
+    }
+    .discover-card.locked-card:hover {
+      opacity: 0.92;
+      transform: translateY(-2px);
+    }
+    .dc-lock-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.58rem;
+      font-weight: 900;
+      background: var(--purple-dark);
+      color: var(--lime);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .dc-btn-locked {
+      background: rgba(74, 25, 66, 0.08) !important;
+      color: var(--purple-dark) !important;
+      border: 1px solid rgba(74, 25, 66, 0.15) !important;
     }
 
     /* SECCIÓN 4: FAVORITOS */
@@ -2817,8 +2885,8 @@
       <nav class="header-nav" role="navigation" aria-label="Navegación principal de productos">
         <button class="header-nav-btn" data-page="hot" onclick="navigate('hot')" aria-label="Ver productos TYHOT">TYHOT</button>
         <button class="header-nav-btn" data-page="azuca" onclick="navigate('azuca')" aria-label="Ver productos TYAZUCA">TYAZUCA</button>
-        <button class="header-nav-btn" data-page="ice" onclick="navigate('ice')" aria-label="Ver productos TYICE">TYICE</button>
-        <button class="header-nav-btn" data-page="bowls" onclick="navigate('bowls')" aria-label="Ver productos TYBOWLS">TYBOWLS</button>
+        <button class="header-nav-btn locked" data-page="ice" onclick="showComingSoonModal('TYICE')" aria-label="TYICE - Próximamente" title="TYICE - Próximamente">🔒 TYICE <span class="header-nav-soon-pill">PRÓXIMAMENTE</span></button>
+        <button class="header-nav-btn locked" data-page="bowls" onclick="showComingSoonModal('TYBOWLS')" aria-label="TYBOWLS - Próximamente" title="TYBOWLS - Próximamente">🔒 TYBOWLS <span class="header-nav-soon-pill">PRÓXIMAMENTE</span></button>
       </nav>
 
       <!-- Acciones de Cabecera: Carrito 🛒 + Hamburguesa ☰ -->
@@ -2883,15 +2951,15 @@
           <span class="dni-text">TYAZUCA</span>
           <span class="dni-tag">Fresas</span>
         </button>
-        <button type="button" class="drawer-nav-item" data-page="ice" onclick="navigate('ice')">
-          <span class="dni-icon">❄️</span>
+        <button type="button" class="drawer-nav-item locked" onclick="showComingSoonModal('TYICE')" aria-label="TYICE - Próximamente">
+          <span class="dni-icon">🔒</span>
           <span class="dni-text">TYICE</span>
-          <span class="dni-tag">Helado</span>
+          <span class="dni-tag dni-tag-locked">Próximamente</span>
         </button>
-        <button type="button" class="drawer-nav-item" data-page="bowls" onclick="navigate('bowls')">
-          <span class="dni-icon">🥣</span>
+        <button type="button" class="drawer-nav-item locked" onclick="showComingSoonModal('TYBOWLS')" aria-label="TYBOWLS - Próximamente">
+          <span class="dni-icon">🔒</span>
           <span class="dni-text">TYBOWLS</span>
-          <span class="dni-tag">Bowls</span>
+          <span class="dni-tag dni-tag-locked">Próximamente</span>
         </button>
       </nav>
 
@@ -3030,17 +3098,19 @@
           <p class="dc-desc">Fresas frescas con aderezos únicos a tu manera.</p>
           <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('azuca')">VER TYAZUCA →</button>
         </div>
-        <div class="discover-card" onclick="navigate('ice')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')navigate('ice')" aria-label="Explorar categoría TYICE">
-          <span class="dc-emoji">❄️</span>
+        <div class="discover-card locked-card" onclick="showComingSoonModal('TYICE')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')showComingSoonModal('TYICE')" aria-label="Categoría TYICE - Próximamente">
+          <div class="dc-lock-badge">PRÓXIMAMENTE</div>
+          <span class="dc-emoji">🔒</span>
           <h3 class="dc-name">TYICE</h3>
           <p class="dc-desc">Bebidas frías, frescas y llenas de sabor.</p>
-          <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('ice')">VER TYICE →</button>
+          <button type="button" class="dc-btn dc-btn-locked" onclick="event.stopPropagation(); showComingSoonModal('TYICE')">🔒 PRÓXIMAMENTE</button>
         </div>
-        <div class="discover-card" onclick="navigate('bowls')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')navigate('bowls')" aria-label="Explorar categoría TYBOWLS">
-          <span class="dc-emoji">🥣</span>
+        <div class="discover-card locked-card" onclick="showComingSoonModal('TYBOWLS')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')showComingSoonModal('TYBOWLS')" aria-label="Categoría TYBOWLS - Próximamente">
+          <div class="dc-lock-badge">PRÓXIMAMENTE</div>
+          <span class="dc-emoji">🔒</span>
           <h3 class="dc-name">TYBOWLS</h3>
           <p class="dc-desc">Bowls nutritivos y deliciosos para disfrutar.</p>
-          <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('bowls')">VER TYBOWLS →</button>
+          <button type="button" class="dc-btn dc-btn-locked" onclick="event.stopPropagation(); showComingSoonModal('TYBOWLS')">🔒 PRÓXIMAMENTE</button>
         </div>
       </div>
     </section>
@@ -3369,6 +3439,22 @@
       <div class="orders-list-body" id="ordersListContent">
         <!-- Inyectado dinámicamente por JS -->
       </div>
+    </div>
+  </div>
+
+  <!-- ═══════ MODAL: PRÓXIMAMENTE (TYICE / TYBOWLS BLOQUEADOS) ═══════ -->
+  <div class="custom-modal-overlay" id="comingSoonModal" role="dialog" aria-modal="true" aria-labelledby="comingSoonTitle" onclick="if(event.target === this) closeComingSoonModal();">
+    <div class="custom-modal-box" style="text-align: center; max-width: 380px; padding: 26px 22px;">
+      <div style="font-size: 2.5rem; margin-bottom: 8px;">🔒</div>
+      <h3 id="comingSoonTitle" style="font-size: 1.3rem; font-weight: 900; color: var(--purple-dark); margin-bottom: 8px; letter-spacing: -0.01em;">
+        🔒 Próximamente
+      </h3>
+      <p id="comingSoonDesc" style="font-size: 0.88rem; color: var(--purple-mid); line-height: 1.45; margin-bottom: 22px;">
+        Esta línea de TYANGO estará disponible muy pronto.
+      </p>
+      <button type="button" class="btn-primary" style="width: 100%; min-height: 44px; font-size: 0.85rem; letter-spacing: 0.04em;" onclick="closeComingSoonModal()">
+        ENTENDIDO
+      </button>
     </div>
   </div>
 
@@ -4564,10 +4650,38 @@
       });
     }
 
+    /* ═══════ MODAL PRÓXIMAMENTE (BLOQUEO TEMPORAL TYICE / TYBOWLS) ═══════ */
+    function showComingSoonModal(lineName = '') {
+      closeMobileDrawer();
+      closeCartDrawer();
+      const modal = document.getElementById('comingSoonModal');
+      if (!modal) return;
+      const desc = document.getElementById('comingSoonDesc');
+      if (desc && lineName) {
+        desc.textContent = `La línea ${lineName} de TYANGO estará disponible muy pronto.`;
+      } else if (desc) {
+        desc.textContent = 'Esta línea de TYANGO estará disponible muy pronto.';
+      }
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeComingSoonModal() {
+      const modal = document.getElementById('comingSoonModal');
+      if (modal) modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
     /* ═══════ NAVEGACIÓN ENTRE PÁGINAS ═══════ */
     let currentPage = 'home';
 
     function navigate(page) {
+      // Bloqueo temporal para TYICE y TYBOWLS
+      if (page === 'ice' || page === 'bowls') {
+        showComingSoonModal(page === 'ice' ? 'TYICE' : 'TYBOWLS');
+        return;
+      }
+
       if (page === currentPage) return;
 
       // Cerrar menús
@@ -4667,6 +4781,11 @@
     // Cerrar con tecla Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        const csModal = document.getElementById('comingSoonModal');
+        if (csModal && csModal.classList.contains('open')) {
+          closeComingSoonModal();
+          return;
+        }
         const ordModal = document.getElementById('ordersModal');
         if (ordModal && ordModal.classList.contains('open')) {
           closeOrdersModal();
