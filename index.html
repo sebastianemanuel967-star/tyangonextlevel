@@ -551,6 +551,77 @@
       border-radius: var(--radius-full);
     }
 
+    /* Barra de Cliente en el Carrito */
+    .cart-customer-bar {
+      background: #F4EBF2;
+      border-bottom: 1.5px solid rgba(74, 25, 66, 0.08);
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .ccb-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .ccb-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--purple-dark);
+      color: var(--lime);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+    .ccb-text-group {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      min-width: 0;
+    }
+    .ccb-label {
+      font-size: 0.62rem;
+      font-weight: 900;
+      color: var(--purple-mid);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    .ccb-name {
+      font-size: 0.92rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 190px;
+    }
+    .ccb-edit-btn {
+      background: var(--white);
+      border: 1.5px solid rgba(74, 25, 66, 0.12);
+      color: var(--purple-dark);
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 5px 11px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .ccb-edit-btn:hover {
+      background: var(--purple-dark);
+      color: var(--lime);
+      border-color: var(--purple-dark);
+    }
+
     .cart-drawer-body {
       padding: 16px;
       flex-grow: 1;
@@ -759,6 +830,69 @@
     }
     .btn-clear-cart:hover {
       color: #EF4444;
+    }
+
+    /* Barra Flotante de Carrito en Móvil */
+    .mobile-floating-cart {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .mobile-floating-cart {
+        display: flex;
+        position: fixed;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%) translateY(160%);
+        width: calc(100% - 32px);
+        max-width: 420px;
+        background: var(--purple-dark);
+        color: var(--cream);
+        padding: 12px 18px;
+        border-radius: var(--radius-full);
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 12px 32px rgba(45, 12, 39, 0.45);
+        border: 1.5px solid rgba(212, 217, 140, 0.4);
+        z-index: 200;
+        cursor: pointer;
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+        text-decoration: none;
+      }
+      .mobile-floating-cart.visible {
+        transform: translateX(-50%) translateY(0);
+      }
+      .mobile-floating-cart:active {
+        transform: translateX(-50%) scale(0.97);
+      }
+      .mfc-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .mfc-icon {
+        font-size: 1.3rem;
+      }
+      .mfc-info {
+        font-size: 0.86rem;
+        font-weight: 800;
+        color: var(--cream);
+      }
+      .mfc-total {
+        color: var(--lime);
+        font-weight: 900;
+      }
+      .mfc-cta {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--lime);
+        color: var(--purple-dark);
+        font-size: 0.74rem;
+        font-weight: 900;
+        padding: 6px 12px;
+        border-radius: var(--radius-full);
+        letter-spacing: 0.04em;
+      }
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -1887,6 +2021,94 @@
       animation: scaleUp var(--transition-bounce);
     }
 
+    /* Modal de Identificación del Cliente */
+    .customer-modal-box {
+      max-width: 410px;
+      width: 92%;
+      padding: 34px 26px 30px;
+      text-align: center;
+      border: 2px solid rgba(212, 217, 140, 0.45);
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 24px 60px rgba(45, 12, 39, 0.45);
+    }
+    .customer-modal-icon {
+      font-size: 3.2rem;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+    .customer-modal-title {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .customer-modal-desc {
+      font-size: 0.94rem;
+      color: var(--purple-mid);
+      line-height: 1.45;
+      margin-bottom: 22px;
+    }
+    .customer-input-wrap {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .customer-input-label {
+      display: block;
+      font-size: 0.74rem;
+      font-weight: 900;
+      color: var(--purple-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .customer-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--cream);
+      border: 2px solid rgba(74, 25, 66, 0.16);
+      border-radius: var(--radius-md);
+      font-family: var(--font-main);
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--purple-dark);
+      outline: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+    }
+    .customer-input:focus {
+      border-color: var(--purple-dark);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(74, 25, 66, 0.12);
+    }
+    .customer-input.error {
+      border-color: #DC2626;
+      background: #FEF2F2;
+    }
+    .customer-error-msg {
+      display: none;
+      color: #DC2626;
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-top: 6px;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-customer-submit {
+      width: 100%;
+      min-height: 48px;
+      font-size: 0.95rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
     /* ═══════════════════════════════════════════════════════════════
        ANIMACIONES
     ═══════════════════════════════════════════════════════════════ */
@@ -2342,6 +2564,20 @@
       </button>
     </div>
 
+    <!-- Barra de Identificación del Cliente dentro del Carrito -->
+    <div class="cart-customer-bar" id="cartCustomerBar">
+      <div class="ccb-info">
+        <div class="ccb-avatar">👤</div>
+        <div class="ccb-text-group">
+          <span class="ccb-label">Cliente</span>
+          <span class="ccb-name" id="cartCustomerName">Sin asignar</span>
+        </div>
+      </div>
+      <button type="button" class="ccb-edit-btn" onclick="openCustomerModal(true)" aria-label="Cambiar nombre del cliente">
+        ✏️ Cambiar
+      </button>
+    </div>
+
     <!-- Lista de Productos en el Carrito -->
     <div class="cart-drawer-body" id="cartItemsList">
       <!-- Inyectado por JS -->
@@ -2363,6 +2599,20 @@
       </div>
     </div>
   </aside>
+
+  <!-- Barra Flotante de Carrito en Móvil -->
+  <div class="mobile-floating-cart" id="mobileFloatingCart" onclick="openCartDrawer()" role="button" tabindex="0" aria-label="Ver carrito de compras">
+    <div class="mfc-left">
+      <span class="mfc-icon">🛒</span>
+      <span class="mfc-info">
+        <span id="mfcUnits">0 items</span> • <span class="mfc-total" id="mfcTotal">$0.00</span>
+      </span>
+    </div>
+    <div class="mfc-cta">
+      <span>VER PEDIDO</span>
+      <span class="mfc-arrow">→</span>
+    </div>
+  </div>
 
   <!-- ═══════ PAGE: HOME (TYANGO) ═══════ -->
   <main class="page active visible" id="page-home">
@@ -2699,6 +2949,27 @@
     <footer class="footer" id="footer-azuca" role="contentinfo"></footer>
   </main>
 
+  <!-- ═══════ MODAL: IDENTIFICACIÓN DEL CLIENTE ═══════ -->
+  <div class="custom-modal-overlay" id="customerModal" role="dialog" aria-modal="true" aria-labelledby="customerModalTitle">
+    <div class="custom-modal-box customer-modal-box">
+      <div class="customer-modal-icon">🥭👋</div>
+      <h2 id="customerModalTitle" class="customer-modal-title">¡Hola! 👋</h2>
+      <p class="customer-modal-desc">Para comenzar tu pedido, coloca tu nombre.</p>
+      <form id="customerNameForm" onsubmit="event.preventDefault(); submitCustomerName();">
+        <div class="customer-input-wrap">
+          <label for="customerNameInput" class="customer-input-label">Tu nombre</label>
+          <input type="text" id="customerNameInput" class="customer-input" placeholder="Tu nombre" autocomplete="name" required maxlength="50" autofocus>
+          <div id="customerNameError" class="customer-error-msg">
+            ⚠️ Por favor, ingresa tu nombre para continuar.
+          </div>
+        </div>
+        <button type="submit" class="btn-primary btn-customer-submit">
+          CONTINUAR 🚀
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- ═══════ MODAL SUCCESS ═══════ -->
   <div class="custom-modal-overlay" id="successModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="custom-modal-box">
@@ -2865,6 +3136,66 @@
     ];
 
     /* ═══════════════════════════════════════════════════════════════
+       GESTIÓN DEL CLIENTE (NOMBRE OBLIGATORIO)
+    ═══════════════════════════════════════════════════════════════ */
+    const CUSTOMER_STORAGE_KEY = 'tyango_customer_name';
+    let customerName = '';
+
+    function initCustomer() {
+      const savedName = localStorage.getItem(CUSTOMER_STORAGE_KEY) || sessionStorage.getItem(CUSTOMER_STORAGE_KEY);
+      if (savedName && savedName.trim().length > 0) {
+        customerName = savedName.trim();
+        updateCustomerUI();
+      } else {
+        openCustomerModal(false);
+      }
+    }
+
+    function openCustomerModal(allowCancel = false) {
+      const modal = document.getElementById('customerModal');
+      const input = document.getElementById('customerNameInput');
+      const err = document.getElementById('customerNameError');
+      if (!modal || !input) return;
+
+      if (err) err.style.display = 'none';
+      input.classList.remove('error');
+      input.value = customerName || '';
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => input.focus(), 250);
+    }
+
+    function submitCustomerName() {
+      const input = document.getElementById('customerNameInput');
+      const err = document.getElementById('customerNameError');
+      if (!input) return;
+
+      const val = input.value.trim();
+      if (!val) {
+        if (err) err.style.display = 'flex';
+        input.classList.add('error');
+        input.focus();
+        return;
+      }
+
+      customerName = val;
+      localStorage.setItem(CUSTOMER_STORAGE_KEY, customerName);
+      sessionStorage.setItem(CUSTOMER_STORAGE_KEY, customerName);
+      updateCustomerUI();
+
+      const modal = document.getElementById('customerModal');
+      if (modal) modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function updateCustomerUI() {
+      const display = document.getElementById('cartCustomerName');
+      if (display) {
+        display.textContent = customerName ? `${customerName} 👋` : 'Sin asignar';
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
        MOTOR DEL CARRITO GLOBAL (PERSISTENTE & MULTICATEGORÍA)
     ═══════════════════════════════════════════════════════════════ */
     const CART_STORAGE_KEY = 'tyango_global_cart_v1';
@@ -3005,10 +3336,27 @@
         totalEl.textContent = formatCurrency(totalPrice);
       }
 
-      // 4. Re-renderizar items dentro del Drawer
+      // 4. Barra Flotante en Móvil
+      const mfc = document.getElementById('mobileFloatingCart');
+      const mfcUnits = document.getElementById('mfcUnits');
+      const mfcTotal = document.getElementById('mfcTotal');
+      if (mfc) {
+        if (totalUnits > 0) {
+          mfc.classList.add('visible');
+          if (mfcUnits) mfcUnits.textContent = `${totalUnits} ${totalUnits === 1 ? 'producto' : 'productos'}`;
+          if (mfcTotal) mfcTotal.textContent = formatCurrency(totalPrice);
+        } else {
+          mfc.classList.remove('visible');
+        }
+      }
+
+      // 5. Nombre del cliente en drawer
+      updateCustomerUI();
+
+      // 6. Re-renderizar items dentro del Drawer
       renderCartDrawerItems();
 
-      // 5. Re-renderizar controles de tarjetas visibles
+      // 7. Re-renderizar controles de tarjetas visibles
       refreshAllProductCardButtons();
     }
 
@@ -3016,18 +3364,25 @@
       closeMobileDrawer();
       const drawer = document.getElementById('cartDrawer');
       const backdrop = document.getElementById('cartBackdrop');
+      const mfc = document.getElementById('mobileFloatingCart');
       if (drawer) drawer.classList.add('open');
       if (backdrop) backdrop.classList.add('open');
+      if (mfc) mfc.classList.remove('visible');
       document.body.style.overflow = 'hidden';
+      updateCustomerUI();
       renderCartDrawerItems();
     }
 
     function closeCartDrawer() {
       const drawer = document.getElementById('cartDrawer');
       const backdrop = document.getElementById('cartBackdrop');
+      const mfc = document.getElementById('mobileFloatingCart');
       if (drawer) drawer.classList.remove('open');
       if (backdrop) backdrop.classList.remove('open');
       document.body.style.overflow = '';
+      if (mfc && getCartTotalUnits() > 0) {
+        mfc.classList.add('visible');
+      }
     }
 
     function renderCartDrawerItems() {
@@ -3072,7 +3427,7 @@
                   <button type="button" class="cart-stepper-btn" onclick="updateCartQty('${item.id}', 1)" aria-label="Aumentar cantidad">+</button>
                 </div>
                 <div style="text-align:right;">
-                  <div style="font-size:0.72rem; color:var(--purple-mid);">${item.price} c/u</div>
+                  <div style="font-size:0.75rem; color:var(--purple-mid); font-weight:700;">${item.price} c/u</div>
                   <div class="cart-item-subtotal">${formatCurrency(item.priceNum * item.qty)}</div>
                 </div>
               </div>
@@ -3115,23 +3470,35 @@
     }
 
     function checkoutWhatsApp() {
+      // 1. Validar nombre del cliente
+      if (!customerName || !customerName.trim()) {
+        openCustomerModal(false);
+        return;
+      }
+
+      // 2. Validar carrito con productos
       const items = Object.values(cart);
       if (items.length === 0) {
         alert('Tu carrito está vacío. Agrega tus productos favoritos antes de pedir.');
         return;
       }
-      let msg = `¡Hola Tyango! 🥭 Quiero hacer el siguiente pedido:\n\n`;
-      items.forEach((item, i) => {
-        msg += `${i + 1}. *${item.name}* × ${item.qty} (${item.price})\n`;
-        if (item.desc) msg += `   _${item.desc}_\n`;
-        msg += `   Subtotal: ${formatCurrency(item.priceNum * item.qty)}\n\n`;
-      });
-      msg += `━━━━━━━━━━━━━━━━━━━\n`;
-      msg += `*TOTAL A PAGAR: ${formatCurrency(getCartTotalPrice())}*\n\n`;
-      msg += `📍 ¿Me confirman disponibilidad y tiempo de entrega? ¡Muchas gracias!`;
 
-      const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
+      // 3. Generar mensaje según formato solicitado
+      let msg = `Hola, soy ${customerName.trim()} 👋\n\nMi pedido es:\n\n`;
+
+      items.forEach(item => {
+        const itemSubtotal = formatCurrency(item.priceNum * item.qty);
+        msg += `• ${item.qty} × ${item.name} — ${itemSubtotal}\n`;
+        if (item.isCustom && item.desc) {
+          msg += `   _${item.desc}_\n`;
+        }
+      });
+
+      const total = formatCurrency(getCartTotalPrice());
+      msg += `\nTOTAL: ${total}`;
+
+      const targetUrl = `https://wa.me/message/HXXJ4PZHNIAQE1?text=${encodeURIComponent(msg)}`;
+      window.open(targetUrl, '_blank');
     }
 
     /* ═══════ DATOS DEL PERSONALIZADOR ═══════ */
@@ -3555,6 +3922,15 @@
     // Cerrar con tecla Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        const custModal = document.getElementById('customerModal');
+        if (custModal && custModal.classList.contains('open')) {
+          if (!customerName || !customerName.trim()) {
+            return; // No permitir cerrar modal de nombre obligatorio
+          }
+          custModal.classList.remove('open');
+          document.body.style.overflow = '';
+          return;
+        }
         closeMobileDrawer();
         closeCartDrawer();
         const menu = document.getElementById('secondaryMenu');
@@ -3570,12 +3946,15 @@
 
     /* ═══════ INICIALIZACIÓN ═══════ */
     document.addEventListener('DOMContentLoaded', () => {
+      loadCartFromStorage();
+      initCustomer();
       renderGrid('grid-hot', catalog.hot);
       renderGrid('grid-ice', catalog.ice);
       renderGrid('grid-bowls', catalog.bowls);
       renderGrid('grid-azuca', catalog.azuca);
       renderGrid('grid-favs', favorites);
       renderCustomizer();
+      updateCartUI();
 
       ['home','hot','ice','bowls','azuca'].forEach(cat => {
         const el = document.getElementById('footer-' + cat);
