@@ -1160,6 +1160,36 @@
       transform: scale(0.98);
     }
 
+    .btn-hero-secondary {
+      background: transparent;
+      color: var(--purple-dark);
+      border: 2px solid rgba(74, 25, 66, 0.22);
+      padding: 12px 28px;
+      border-radius: var(--radius-full);
+      font-weight: 800;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      font-family: var(--font-main);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: none;
+      white-space: nowrap;
+    }
+    .btn-hero-secondary:hover {
+      background: rgba(74, 25, 66, 0.06);
+      border-color: var(--purple-dark);
+      color: var(--purple-dark);
+      transform: translateY(-2px);
+    }
+    .btn-hero-secondary:active {
+      transform: scale(0.98);
+    }
+
     .section-badge {
       display: inline-block;
       background: var(--purple-dark);
@@ -1196,7 +1226,7 @@
     /* SECCIÓN 1: HERO */
     .home-hero {
       padding: 64px 20px 52px;
-      min-height: calc(82vh - 64px);
+      min-height: calc(80vh - 64px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1232,21 +1262,14 @@
       -webkit-text-fill-color: transparent;
     }
     .home-hero .hero-tagline {
-      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      font-size: clamp(1.15rem, 2.5vw, 1.4rem);
       font-weight: 800;
       color: var(--purple-dark);
-      margin-bottom: 8px;
-    }
-    .home-hero .hero-desc {
-      font-size: 0.96rem;
-      color: var(--purple-mid);
-      line-height: 1.6;
-      max-width: 480px;
-      margin: 0 auto 28px;
+      margin-bottom: 24px;
     }
     .hero-btn-group {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -1257,15 +1280,42 @@
       text-align: center;
       background: var(--cream);
     }
-    .home-about p {
-      font-size: 0.98rem;
-      color: var(--purple-mid);
-      line-height: 1.75;
-      max-width: 580px;
-      margin: 0 auto;
+    .about-punchline {
+      font-size: clamp(1.25rem, 3.2vw, 1.65rem);
+      font-weight: 900;
+      color: var(--purple-dark);
+      margin: 8px auto 6px;
+      letter-spacing: -0.01em;
     }
-    .home-about p + p {
-      margin-top: 14px;
+    .about-lead {
+      font-size: 0.95rem;
+      color: var(--purple-mid);
+      max-width: 480px;
+      margin: 0 auto 16px;
+      line-height: 1.5;
+    }
+    .about-story-btn {
+      background: none;
+      border: none;
+      color: var(--purple-dark);
+      font-family: var(--font-main);
+      font-size: 0.80rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      transition: all var(--transition-fast);
+      border-bottom: 1.5px solid rgba(74, 25, 66, 0.2);
+    }
+    .about-story-btn:hover {
+      color: var(--purple-surface);
+      border-bottom-color: var(--purple-dark);
+      transform: translateY(-1px);
     }
 
     /* SECCIÓN 3: DESCUBRE TYANGO */
@@ -3062,13 +3112,11 @@
       <div class="home-blob" style="width:340px;height:340px;background:var(--purple-dark);top:5%;left:-6%"></div>
       <div class="home-blob" style="width:240px;height:240px;background:var(--lime);bottom:8%;right:-4%;animation-delay:3s"></div>
       <div style="position:relative;z-index:2;max-width:620px">
-        <span class="section-badge">Bienvenido</span>
         <h1>BIENVENIDO A<br><em>TYANGO</em></h1>
         <p class="hero-tagline">Sabores que no pasan desapercibidos.</p>
-        <p class="hero-desc">Una experiencia llena de sabor, creatividad y combinaciones hechas para disfrutar.</p>
         <div class="hero-btn-group">
           <button type="button" class="btn-primary" onclick="document.getElementById('discover-section').scrollIntoView({behavior:'smooth'})">EXPLORAR MENÚ</button>
-          <button type="button" class="btn-secondary" onclick="document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'})">HAZLO A TU MANERA</button>
+          <button type="button" class="btn-hero-secondary" onclick="document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'})">HAZLO A TU MANERA</button>
         </div>
       </div>
     </section>
@@ -3076,8 +3124,11 @@
     <!-- SECCIÓN 2 — ¿QUÉ ES TYANGO? -->
     <section class="home-about" aria-label="Acerca de TYANGO">
       <h2 class="section-title">¿QUÉ ES TYANGO?</h2>
-      <p>TYANGO nació para transformar la manera de disfrutar sabores que ya conocemos y convertirlos en experiencias que quieras repetir.</p>
-      <p>Creamos combinaciones, bebidas y productos llenos de personalidad, siempre buscando ese equilibrio entre sabor, creatividad y diversión.</p>
+      <p class="about-punchline">Fruta. Sabor. Creatividad.</p>
+      <p class="about-lead">Combinaciones creadas para disfrutar y querer repetir.</p>
+      <button type="button" class="about-story-btn" onclick="openStoryModal()">
+        CONOCE NUESTRA HISTORIA →
+      </button>
     </section>
 
     <!-- SECCIÓN 3 — DESCUBRE TYANGO -->
@@ -3089,27 +3140,27 @@
         <div class="discover-card" onclick="navigate('hot')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')navigate('hot')" aria-label="Explorar categoría TYHOT">
           <span class="dc-emoji">🔥</span>
           <h3 class="dc-name">TYHOT</h3>
-          <p class="dc-desc">Fruta fresca con aderezos de Nochixtlán, Oaxaca. Un toque de picante y mucho sabor.</p>
+          <p class="dc-desc">Fruta fresca con aderezos de Nochixtlán, Oaxaca.</p>
           <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('hot')">VER TYHOT →</button>
         </div>
         <div class="discover-card" onclick="navigate('azuca')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')navigate('azuca')" aria-label="Explorar categoría TYAZUCA">
           <span class="dc-emoji">🍓</span>
           <h3 class="dc-name">TYAZUCA</h3>
-          <p class="dc-desc">Fresas frescas con aderezos únicos a tu manera.</p>
+          <p class="dc-desc">Frutas frescas combinadas a tu manera.</p>
           <button type="button" class="dc-btn" onclick="event.stopPropagation(); navigate('azuca')">VER TYAZUCA →</button>
         </div>
         <div class="discover-card locked-card" onclick="showComingSoonModal('TYICE')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')showComingSoonModal('TYICE')" aria-label="Categoría TYICE - Próximamente">
           <div class="dc-lock-badge">PRÓXIMAMENTE</div>
           <span class="dc-emoji">🔒</span>
           <h3 class="dc-name">TYICE</h3>
-          <p class="dc-desc">Bebidas frías, frescas y llenas de sabor.</p>
+          <p class="dc-desc">Bebidas frías y refrescantes.</p>
           <button type="button" class="dc-btn dc-btn-locked" onclick="event.stopPropagation(); showComingSoonModal('TYICE')">🔒 PRÓXIMAMENTE</button>
         </div>
         <div class="discover-card locked-card" onclick="showComingSoonModal('TYBOWLS')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')showComingSoonModal('TYBOWLS')" aria-label="Categoría TYBOWLS - Próximamente">
           <div class="dc-lock-badge">PRÓXIMAMENTE</div>
           <span class="dc-emoji">🔒</span>
           <h3 class="dc-name">TYBOWLS</h3>
-          <p class="dc-desc">Bowls nutritivos y deliciosos para disfrutar.</p>
+          <p class="dc-desc">Bowls nutritivos y deliciosos.</p>
           <button type="button" class="dc-btn dc-btn-locked" onclick="event.stopPropagation(); showComingSoonModal('TYBOWLS')">🔒 PRÓXIMAMENTE</button>
         </div>
       </div>
@@ -3319,7 +3370,7 @@
     <div class="cat-header bg-hot">
       <span class="section-badge" style="background:rgba(232,93,48,0.15);color:#D94E20">FRESCO, JUGOSO Y PICANTE</span>
       <h1 class="cat-title">TYHOT</h1>
-      <p class="cat-subtitle">Fruta fresca con aderezos de Nochixtlán, Oaxaca. Un toque de picante y mucho sabor.</p>
+      <p class="cat-subtitle">Fruta fresca con aderezos de Nochixtlán, Oaxaca.</p>
     </div>
     <div class="cat-products bg-hot">
       <div class="products-grid" id="grid-hot"></div>
@@ -3377,7 +3428,7 @@
       <span class="section-badge" style="background:rgba(236,72,153,0.15);color:#DB2777">FRESCO, CREMOSO Y DELICIOSO</span>
       <h1 class="cat-title">TYAZUCA</h1>
       <p class="cat-subtitle" style="font-weight: 800; color: var(--purple-dark); margin-bottom: 3px;">Frutas que puedes llevar a tu manera.</p>
-      <p class="cat-subtitle">Frutas frescas combinadas con cremas, chocolates y toppings irresistibles.</p>
+      <p class="cat-subtitle">Frutas frescas con cremas, chocolates y toppings irresistibles.</p>
     </div>
     <div class="cat-products bg-azuca">
       <div class="products-grid" id="grid-azuca"></div>
@@ -3395,7 +3446,7 @@
   <div class="custom-modal-overlay" id="customerModal" role="dialog" aria-modal="true" aria-labelledby="customerModalTitle">
     <div class="custom-modal-box customer-modal-box">
       <div class="customer-modal-icon" style="font-size: 2.6rem; margin-bottom: 8px;">👋</div>
-      <h2 id="customerModalTitle" class="customer-modal-title">¡Hola! 👋</h2>
+      <h2 id="customerModalTitle" class="customer-modal-title">¡Hola!</h2>
       <p class="customer-modal-desc">Para comenzar tu pedido, coloca tu nombre.</p>
       <form id="customerNameForm" onsubmit="event.preventDefault(); submitCustomerName();">
         <div class="customer-input-wrap">
@@ -3406,7 +3457,7 @@
           </div>
         </div>
         <button type="submit" class="btn-primary btn-customer-submit">
-          CONTINUAR 🚀
+          CONTINUAR
         </button>
       </form>
     </div>
@@ -3458,6 +3509,27 @@
     </div>
   </div>
 
+  <!-- ═══════ MODAL: NUESTRA HISTORIA ═══════ -->
+  <div class="custom-modal-overlay" id="storyModal" role="dialog" aria-modal="true" aria-labelledby="storyModalTitle" onclick="if(event.target === this) closeStoryModal();">
+    <div class="custom-modal-box" style="text-align: left; max-width: 440px; padding: 28px 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <span class="section-badge" style="margin: 0; padding: 4px 12px; font-size: 0.65rem;">NUESTRA ESENCIA</span>
+        <button type="button" class="orders-modal-close" onclick="closeStoryModal()" aria-label="Cerrar historia">✕</button>
+      </div>
+      <h3 id="storyModalTitle" style="font-size: 1.35rem; font-weight: 900; color: var(--purple-dark); margin-bottom: 12px; letter-spacing: -0.01em;">
+        ¿QUÉ ES TYANGO?
+      </h3>
+      <div style="font-size: 0.88rem; color: var(--purple-mid); line-height: 1.6; display: flex; flex-direction: column; gap: 10px;">
+        <p>TYANGO nació para transformar la manera de disfrutar sabores auténticos y convertirlos en experiencias que quieras repetir.</p>
+        <p>Creamos combinaciones y productos llenos de personalidad, cuidando cada detalle para encontrar el equilibrio perfecto entre sabor, frescura y creatividad.</p>
+        <p>Cada vaso y combinación se prepara al momento con fruta seleccionada y aderezos únicos.</p>
+      </div>
+      <button type="button" class="btn-primary" style="width: 100%; min-height: 44px; font-size: 0.84rem; margin-top: 20px;" onclick="closeStoryModal()">
+        VOLVER A EXPLORAR
+      </button>
+    </div>
+  </div>
+
   <!-- ═══════ JAVASCRIPT ENGINE ═══════ -->
   <script>
     /* ═══════ CATÁLOGOS EXISTENTES CON IDENTIFICADORES ÚNICOS ═══════ */
@@ -3469,7 +3541,7 @@
           badge: 'Popular', 
           badgeCss: 'background:rgba(255,100,50,0.12);color:#E85D30', 
           name: 'TYANGO CLÁSICO', 
-          desc: 'Mango con chamoy, limón y Tajín. Clásico, fresco y lleno de sabor.', 
+          desc: 'Mango jugoso con chamoy, limón y Tajín.', 
           price: '$2.50' 
         },
         { 
@@ -3478,7 +3550,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(236,72,153,0.12);color:#DB2777', 
           name: 'PICAZANA', 
-          desc: 'Manzana cubierta con masa de chamoy y tamarindo. Dulce, ácida y picosita.', 
+          desc: 'Manzana dulce, ácida y picante con tamarindo.', 
           price: '$2.50' 
         },
         { 
@@ -3487,7 +3559,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(123,91,123,0.12);color:#7B5B7B', 
           name: 'UVA PULPA', 
-          desc: 'Uva verde cubierta con Pulparindo y Tajín. Dulce, ácida y picosita.', 
+          desc: 'Uvas verdes congeladas con Pulparindo y Tajín.', 
           price: '$2.50' 
         },
         { 
@@ -3496,7 +3568,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(245,158,11,0.15);color:#D97706', 
           name: 'PIÑADIABLO', 
-          desc: 'Piña congelada con chamoy y Tajín. Dulce, fría y con un toque de picante.', 
+          desc: 'Piña fría con chamoy y toque picante.', 
           price: '$2.50' 
         },
         { 
@@ -3505,7 +3577,7 @@
           badge: 'MUY PICANTE', 
           badgeCss: 'background:rgba(239,68,68,0.15);color:#DC2626', 
           name: 'TAKIMANGO', 
-          desc: 'Takis Fuego con mango y chamoy. Muy picante, jugoso y lleno de sabor.', 
+          desc: 'Takis Fuego crujientes con mango y chamoy.', 
           price: '$2.50' 
         },
         { 
@@ -3514,7 +3586,7 @@
           badge: 'Fresco', 
           badgeCss: 'background:rgba(34,197,94,0.15);color:#15803D', 
           name: 'PEPINAZO', 
-          desc: 'Pepino fresco con chamoy, Tajín y limón. Jugoso, ácido y picosito.', 
+          desc: 'Pepino fresco con chamoy, limón y Tajín.', 
           price: '$2.50' 
         },
         { 
@@ -3523,7 +3595,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(59,130,246,0.12);color:#2563EB', 
           name: 'ICEUVA', 
-          desc: 'Uva congelada con Sprite y Tajín. Fría, refrescante y llena de sabor.', 
+          desc: 'Uva congelada refrescante con Sprite y Tajín.', 
           price: '$2.50' 
         },
         { 
@@ -3534,7 +3606,7 @@
           badgeCss: 'background:#FFFFFF;color:#0B6F9E;font-weight:900;',
           seasonInfo: 'Disponible durante septiembre',
           name: 'BENDITO MANGO', 
-          desc: 'Mango con chamoy y gomitas azules. Una edición especial, intensa y llena de sabor.', 
+          desc: 'Mango fresco con chamoy y gomitas azules.', 
           price: '$2.99' 
         },
       ],
@@ -3557,7 +3629,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(236,72,153,0.12);color:#DB2777', 
           name: 'RAFFAELLO', 
-          desc: 'Crema de coco Velvet con fresas frescas, coco rallado y dulce Raffaello.', 
+          desc: 'Fresas frescas con crema de coco Velvet y Raffaello.', 
           price: '$4.50' 
         },
         { 
@@ -3566,7 +3638,7 @@
           badge: 'Popular', 
           badgeCss: 'background:rgba(255,100,50,0.12);color:#E85D30', 
           name: 'PACCARI', 
-          desc: 'Fresas frescas con chocolate Paccari premium, intenso, cremoso y lleno de sabor.', 
+          desc: 'Fresas cremosas con chocolate Paccari.', 
           price: '$4.50' 
         },
         { 
@@ -3575,7 +3647,7 @@
           badge: 'Nuevo', 
           badgeCss: 'background:rgba(236,72,153,0.12);color:#DB2777', 
           name: 'FRANUI', 
-          desc: 'Fresas frescas y crema Velvet, coronadas con Franui para un toque dulce y chocolatoso.', 
+          desc: 'Fresas con crema Velvet y Franui.', 
           price: '$4.50' 
         },
         { 
@@ -3584,7 +3656,7 @@
           badge: 'Popular', 
           badgeCss: 'background:rgba(255,100,50,0.12);color:#E85D30', 
           name: 'KINDER BUENO', 
-          desc: 'Fresas frescas con crema Velvet y Kinder Bueno. Cremoso, crocante y deliciosamente indulgente.', 
+          desc: 'Fresas frescas con crema Velvet y Kinder Bueno.', 
           price: '$4.50' 
         },
         { 
@@ -3593,7 +3665,7 @@
           badge: 'EDICIÓN LIMITADA', 
           badgeCss: 'background:rgba(245,158,11,0.15);color:#D97706;font-weight:900;', 
           name: 'MANGO & RAFFAELLO', 
-          desc: 'Mango fresco con crema de coco Velvet, coco rallado y el dulce toque de Raffaello.', 
+          desc: 'Mango fresco, crema de coco y Raffaello.', 
           price: '$4.50' 
         },
       ]
@@ -4777,7 +4849,7 @@
           : `<span class="card-emoji" aria-hidden="true">${item.emoji}</span>`;
         
         const seasonMarkup = item.seasonInfo 
-          ? `<div class="card-season">📅 ${item.seasonInfo}</div>` 
+          ? `<div class="card-season">${item.seasonInfo}</div>` 
           : '';
 
         const qty = (item.id && cart[item.id]) ? cart[item.id].qty : 0;
@@ -4820,6 +4892,20 @@
 
     function closeComingSoonModal() {
       const modal = document.getElementById('comingSoonModal');
+      if (modal) modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ═══════ MODAL: NUESTRA HISTORIA ═══════ */
+    function openStoryModal() {
+      const modal = document.getElementById('storyModal');
+      if (!modal) return;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeStoryModal() {
+      const modal = document.getElementById('storyModal');
       if (modal) modal.classList.remove('open');
       document.body.style.overflow = '';
     }
@@ -4936,6 +5022,11 @@
         const succModal = document.getElementById('successModal');
         if (succModal && succModal.classList.contains('open')) {
           closeSuccessModal();
+          return;
+        }
+        const storyModal = document.getElementById('storyModal');
+        if (storyModal && storyModal.classList.contains('open')) {
+          closeStoryModal();
           return;
         }
         const csModal = document.getElementById('comingSoonModal');
