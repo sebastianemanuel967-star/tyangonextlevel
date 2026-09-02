@@ -3413,7 +3413,7 @@
   </div>
 
   <!-- ═══════ MODAL SUCCESS ═══════ -->
-  <div class="custom-modal-overlay" id="successModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="custom-modal-overlay" id="successModal" role="dialog" aria-modal="true" aria-labelledby="modal-title" onclick="if(event.target === this) closeSuccessModal();">
     <div class="custom-modal-box">
       <div style="font-size: 2.6rem; margin-bottom: 8px;">🎉</div>
       <h3 id="modal-title" style="font-size: 1.5rem; font-weight: 900; color: var(--purple-dark); margin-bottom: 6px;">¡TU TYANGO ESTÁ LISTO!</h3>
@@ -3424,7 +3424,7 @@
       </div>
       <div style="display: flex; gap: 10px;">
         <button type="button" class="btn-primary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal(); openCartDrawer();">Ver Carrito</button>
-        <button type="button" class="btn-secondary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal()">Crear Otro</button>
+        <button type="button" class="btn-secondary" style="flex: 1; padding: 11px 16px; font-size: 0.8rem;" onclick="closeSuccessModal(); resetCustomizer();">Crear Otro</button>
       </div>
     </div>
   </div>
@@ -4388,7 +4388,6 @@
                   aria-label="Fruta ${f.name}">
             <span class="ingredient-emoji">${f.emoji}</span>
             <span class="ingredient-name">${f.name}</span>
-            <span class="check-icon">✓</span>
           </button>
         `).join('');
       }
@@ -4406,7 +4405,6 @@
                   aria-label="Topping ${t.name}">
             <span class="ingredient-emoji">${t.emoji}</span>
             <span class="ingredient-name">${t.name}</span>
-            <span class="check-icon">✓</span>
           </button>
         `).join('');
       }
@@ -4432,10 +4430,96 @@
       updateCustomizerUI();
     }
 
+    /* ═══════ SELECCIÓN DE INGREDIENTES Y CONFIGURACIÓN DEL PERSONALIZADOR ═══════ */
+    function toggleFruit(fruitId) {
+      if (customState.fruitMode === 'individual') {
+        if (customState.selectedFruits.includes(fruitId)) {
+          customState.selectedFruits = [];
+        } else {
+          customState.selectedFruits = [fruitId]; // Reemplaza automáticamente la fruta anterior
+        }
+      } else {
+        // Modo MIX (hasta 3 frutas)
+        if (customState.selectedFruits.includes(fruitId)) {
+          customState.selectedFruits = customState.selectedFruits.filter(id => id !== fruitId);
+        } else {
+          if (customState.selectedFruits.length < 3) {
+            customState.selectedFruits.push(fruitId);
+          } else {
+            showToast('Límite de 3 frutas alcanzado en modo Mix.');
+          }
+        }
+      }
+      updateCustomizerUI();
+    }
+
     /* ═══════ MODO DE FRUTAS (Individual vs Mix) ═══════ */
     function setFruitMode(mode) {
       if (customState.fruitMode === mode) return;
       customState.fruitMode = mode;
+      
+      // Si cambia a individual y tenía más de 1 fruta, conservar solo la primera
+      if (mode === 'individual' && customState.selectedFruits.length > 1) {
+        customState.selectedFruits = [customState.selectedFruits[0]];
+      }
+
+      const btnInd = document.getElementById('mode-individual');
+      const btnMix = document.getElementById('mode-mix');
+      if (btnInd) {
+        btnInd.classList.toggle('active', mode === 'individual');
+        btnInd.setAttribute('aria-selected', mode === 'individual');
+      }
+      if (btnMix) {
+        btnMix.classList.toggle('active', mode === 'mix');
+        btnMix.setAttribute('aria-selected', mode === 'mix');
+      }
+
+      updateCustomizerUI();
+    }
+
+    function toggleTopping(toppingId) {
+      if (customState.selectedToppings.includes(toppingId)) {
+        customState.selectedToppings = customState.selectedToppings.filter(id => id !== toppingId);
+      } else {
+        if (customState.selectedToppings.length < 3) {
+          customState.selectedToppings.push(toppingId);
+        } else {
+          showToast('Límite de 3 toppings alcanzado.');
+        }
+      }
+      updateCustomizerUI();
+    }
+
+    function selectSize(sizeId) {
+      customState.selectedSize = sizeId;
+      updateCustomizerUI();
+    }
+
+    function changeQuantity(delta) {
+      customState.quantity = Math.max(1, customState.quantity + delta);
+      updateCustomizerUI();
+    }
+
+    function toggleDisclaimerAccept() {
+      const chk = document.getElementById('accept-disclaimer');
+      customState.disclaimerAccepted = !!(chk && chk.checked);
+      updateCustomizerUI();
+    }
+
+    function closeSuccessModal() {
+      const modal = document.getElementById('successModal');
+      if (modal) modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function resetCustomizer() {
+      customState.selectedFruits = [];
+      customState.selectedToppings = [];
+      customState.selectedSize = 'grande';
+      customState.quantity = 1;
+      customState.disclaimerAccepted = false;
+      const chk = document.getElementById('accept-disclaimer');
+      if (chk) chk.checked = false;
       updateCustomizerUI();
     }
 
@@ -4472,26 +4556,43 @@
       const fruitCount = customState.selectedFruits.length;
       const maxFruits = customState.fruitMode === 'individual' ? 1 : 3;
 
-      // 1. Contador Frutas
+      // 1. Selector de modo (botones)
+      const btnInd = document.getElementById('mode-individual');
+      const btnMix = document.getElementById('mode-mix');
+      if (btnInd) {
+        btnInd.classList.toggle('active', customState.fruitMode === 'individual');
+        btnInd.setAttribute('aria-selected', customState.fruitMode === 'individual');
+      }
+      if (btnMix) {
+        btnMix.classList.toggle('active', customState.fruitMode === 'mix');
+        btnMix.setAttribute('aria-selected', customState.fruitMode === 'mix');
+      }
+
+      // 2. Contador Frutas y aviso
       const fruitCounter = document.getElementById('fruit-counter');
       if (fruitCounter) {
         fruitCounter.textContent = `${fruitCount} / ${maxFruits} fruta${maxFruits > 1 ? 's' : ''}`;
-        fruitCounter.classList.toggle('limit-reached', fruitCount === maxFruits);
+        fruitCounter.classList.toggle('limit-reached', fruitCount === maxFruits && fruitCount > 0);
       }
 
-      // Estado visual de frutas
+      const fruitLimitMsg = document.getElementById('fruit-limit-msg');
+      if (fruitLimitMsg) {
+        fruitLimitMsg.classList.toggle('show', fruitCount >= maxFruits && fruitCount > 0);
+      }
+
+      // Estado visual de tarjetas de frutas
       customizerData.fruits.forEach(f => {
         const item = document.getElementById(`fruit-item-${f.id}`);
         if (item) {
           const isSelected = customState.selectedFruits.includes(f.id);
-          const isFull = fruitCount >= maxFruits;
+          const isFull = fruitCount >= maxFruits && !isSelected;
           item.classList.toggle('selected', isSelected);
-          item.classList.toggle('disabled', !isSelected && isFull);
+          item.classList.toggle('disabled', isFull);
           item.setAttribute('aria-checked', isSelected ? 'true' : 'false');
         }
       });
 
-      // 2. Contador Toppings
+      // 3. Contador Toppings y aviso
       const toppingCount = customState.selectedToppings.length;
       const toppingCounter = document.getElementById('topping-counter');
       if (toppingCounter) {
@@ -4499,19 +4600,40 @@
         toppingCounter.classList.toggle('limit-reached', toppingCount === 3);
       }
 
-      // Estado visual de toppings
+      const toppingLimitMsg = document.getElementById('topping-limit-msg');
+      if (toppingLimitMsg) {
+        toppingLimitMsg.classList.toggle('show', toppingCount >= 3);
+      }
+
+      // Estado visual de tarjetas de toppings
       customizerData.toppings.forEach(t => {
         const item = document.getElementById(`topping-item-${t.id}`);
         if (item) {
           const isSelected = customState.selectedToppings.includes(t.id);
-          const isFull = toppingCount >= 3;
+          const isFull = toppingCount >= 3 && !isSelected;
           item.classList.toggle('selected', isSelected);
-          item.classList.toggle('disabled', !isSelected && isFull);
+          item.classList.toggle('disabled', isFull);
           item.setAttribute('aria-checked', isSelected ? 'true' : 'false');
         }
       });
 
-      // 3. Resumen en tiempo real
+      // 4. Estado visual de tarjetas de tamaño
+      customizerData.sizes.forEach(s => {
+        const sizeEl = document.getElementById(`size-card-${s.id}`);
+        if (sizeEl) {
+          const isSel = s.id === customState.selectedSize;
+          sizeEl.classList.toggle('selected', isSel);
+          sizeEl.setAttribute('aria-checked', isSel ? 'true' : 'false');
+        }
+      });
+
+      // 5. Contador de cantidad
+      const qtyDisplay = document.getElementById('qty-display');
+      if (qtyDisplay) {
+        qtyDisplay.textContent = customState.quantity;
+      }
+
+      // 6. Resumen en tiempo real en panel derecho "TU TYANGO"
       const summaryFruits = document.getElementById('summary-fruits');
       if (summaryFruits) {
         if (fruitCount === 0) {
@@ -4519,7 +4641,7 @@
         } else {
           summaryFruits.innerHTML = customState.selectedFruits.map(fId => {
             const f = customizerData.fruits.find(x => x.id === fId);
-            return `<span class="summary-tag">${f.emoji} ${f.name}</span>`;
+            return `<span class="summary-tag">${f ? f.emoji + ' ' + f.name : fId}</span>`;
           }).join('');
         }
       }
@@ -4531,7 +4653,7 @@
         } else {
           summaryToppings.innerHTML = customState.selectedToppings.map(tId => {
             const t = customizerData.toppings.find(x => x.id === tId);
-            return `<span class="summary-tag">${t.emoji} ${t.name}</span>`;
+            return `<span class="summary-tag">${t ? t.emoji + ' ' + t.name : tId}</span>`;
           }).join('');
         }
       }
@@ -4548,50 +4670,75 @@
         summaryTotal.textContent = formatCurrency(subtotal);
       }
 
+      // 7. Checkbox
+      const chk = document.getElementById('accept-disclaimer');
+      if (chk) {
+        chk.checked = customState.disclaimerAccepted;
+      }
+
       checkWittyReactions();
 
-      // 4. Habilitación del Botón
+      // 8. Habilitación interactiva del Botón
       const btnCreate = document.getElementById('btn-create-tyango');
       if (btnCreate) {
-        const canSubmit = fruitCount > 0 && customState.disclaimerAccepted;
+        const canSubmit = fruitCount > 0 && !!customState.selectedSize && customState.disclaimerAccepted;
         btnCreate.disabled = !canSubmit;
       }
     }
 
     /* ═══════ SUBMIT DEL PERSONALIZADOR & INTEGRACIÓN AL CARRITO ═══════ */
     function submitCustomTyango() {
-      if (customState.selectedFruits.length === 0 || !customState.disclaimerAccepted) return;
+      const fruitCount = customState.selectedFruits.length;
+      if (fruitCount === 0 || !customState.disclaimerAccepted) {
+        if (fruitCount === 0) {
+          showToast('Elige al menos 1 fruta para tu TYANGO.');
+        } else if (!customState.disclaimerAccepted) {
+          showToast('Marca la casilla de aceptación para continuar.');
+        }
+        return;
+      }
+
+      const currentSize = customizerData.sizes.find(s => s.id === customState.selectedSize) || customizerData.sizes[1];
 
       const fruitNames = customState.selectedFruits.map(fId => {
         const f = customizerData.fruits.find(x => x.id === fId);
-        return `${f.emoji} ${f.name}`;
+        return f ? `${f.emoji} ${f.name}` : fId;
       }).join(' + ');
 
       const toppingNames = customState.selectedToppings.length > 0 
         ? customState.selectedToppings.map(tId => {
             const t = customizerData.toppings.find(x => x.id === tId);
-            return `${t.emoji} ${t.name}`;
-          }).join(', ')
-        : 'Sin toppings adicionales';
+            return t ? `${t.emoji} ${t.name}` : tId;
+          }).join(' + ')
+        : 'Sin toppings';
 
-      const currentSize = customizerData.sizes.find(s => s.id === customState.selectedSize) || customizerData.sizes[1];
       const unitPrice = currentSize.price;
-      const customId = 'custom_' + Date.now();
+      const customId = 'custom_' + customState.selectedFruits.slice().sort().join('_') + '_' +
+                       customState.selectedToppings.slice().sort().join('_') + '_' + 
+                       currentSize.id;
 
-      // Agregar como línea única al Carrito Global
-      cart[customId] = {
-        id: customId,
-        name: '🎨 TYANGO PERSONALIZADO',
-        desc: `${fruitNames} | ${toppingNames} | ${currentSize.name}`,
-        price: formatCurrency(unitPrice),
-        priceNum: unitPrice,
-        qty: customState.quantity,
-        emoji: '🥭',
-        isCustom: true
-      };
+      const descLine = `${fruitNames} • ${toppingNames} • ${currentSize.name}`;
+
+      // Si ya existe la misma combinación personalizada en el carrito, sumar cantidades
+      if (cart[customId]) {
+        cart[customId].qty += customState.quantity;
+      } else {
+        cart[customId] = {
+          id: customId,
+          name: '🎨 TYANGO PERSONALIZADO',
+          desc: descLine,
+          price: formatCurrency(unitPrice),
+          priceNum: unitPrice,
+          qty: customState.quantity,
+          emoji: '🥭',
+          isCustom: true
+        };
+      }
+
       saveCartToStorage();
       triggerCartBadgeBump();
 
+      // Inyectar resumen en modal de confirmación
       const detailsEl = document.getElementById('modal-order-details');
       if (detailsEl) {
         detailsEl.innerHTML = `
@@ -4605,7 +4752,12 @@
         `;
       }
 
-      document.getElementById('successModal').classList.add('open');
+      const modal = document.getElementById('successModal');
+      if (modal) {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      showToast('¡Tu TYANGO personalizado se agregó al carrito!');
     }
 
     /* ═══════ RENDER CARDS ═══════ */
@@ -4781,6 +4933,11 @@
     // Cerrar con tecla Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        const succModal = document.getElementById('successModal');
+        if (succModal && succModal.classList.contains('open')) {
+          closeSuccessModal();
+          return;
+        }
         const csModal = document.getElementById('comingSoonModal');
         if (csModal && csModal.classList.contains('open')) {
           closeComingSoonModal();
