@@ -2021,20 +2021,45 @@
     }
     .dna-item {
       text-align: center;
-      padding: 20px 14px;
+      padding: 24px 16px;
       background: var(--white);
       border-radius: var(--radius-md);
       box-shadow: var(--shadow-sm);
-      border: 1px solid rgba(74, 25, 66, 0.04);
-      transition: transform var(--transition-fast);
+      border: 1px solid rgba(74, 25, 66, 0.05);
+      transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .dna-item:hover {
       transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
     }
-    .dna-item .dna-emoji {
-      font-size: 2.3rem;
+    .dna-icon-wrap {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: #F4EAF3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--purple-dark);
+      border: 1px solid rgba(74, 25, 66, 0.08);
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .dna-item:hover .dna-icon-wrap {
+      background: var(--lime);
+      color: var(--purple-dark);
+      border-color: rgba(74, 25, 66, 0.15);
+      transform: scale(1.06);
+    }
+    .dna-icon {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2;
       display: block;
-      margin-bottom: 10px;
     }
     .dna-item .dna-title {
       font-size: 0.85rem;
@@ -2203,56 +2228,72 @@
       animation: scaleUp var(--transition-bounce);
     }
 
-    /* Modal de Identificación del Cliente */
+    /* Modal de Identificación del Cliente (Checkout) */
     .customer-modal-box {
-      max-width: 410px;
-      width: 92%;
-      padding: 34px 26px 30px;
+      max-width: 360px;
+      width: 90%;
+      padding: 26px 22px 22px;
       text-align: center;
-      border: 2px solid rgba(212, 217, 140, 0.45);
+      border: 1.5px solid rgba(74, 25, 66, 0.12);
       background: var(--white);
-      border-radius: var(--radius-xl);
-      box-shadow: 0 24px 60px rgba(45, 12, 39, 0.45);
-    }
-    .customer-modal-icon {
-      font-size: 3.2rem;
-      margin-bottom: 8px;
-      line-height: 1;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 50px rgba(45, 12, 39, 0.28);
+      position: relative;
     }
     .customer-modal-title {
-      font-size: 1.75rem;
+      font-size: 1.25rem;
       font-weight: 900;
       color: var(--purple-dark);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       letter-spacing: -0.01em;
+      text-transform: uppercase;
     }
     .customer-modal-desc {
-      font-size: 0.94rem;
+      font-size: 0.85rem;
       color: var(--purple-mid);
-      line-height: 1.45;
-      margin-bottom: 22px;
-    }
-    .customer-input-wrap {
+      line-height: 1.4;
       margin-bottom: 18px;
-      text-align: left;
     }
-    .customer-input-label {
-      display: block;
-      font-size: 0.74rem;
+    .returning-customer-box {
+      background: var(--cream);
+      border: 1.5px solid rgba(74, 25, 66, 0.1);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .returning-customer-name {
+      font-size: 1.2rem;
       font-weight: 900;
       color: var(--purple-dark);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+    }
+    .btn-change-name {
+      background: transparent;
+      border: none;
+      color: var(--purple-mid);
+      font-size: 0.74rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 2px 4px;
+      transition: color var(--transition-fast);
+    }
+    .btn-change-name:hover {
+      color: var(--purple-dark);
+    }
+    .customer-input-wrap {
+      margin-bottom: 16px;
+      text-align: left;
     }
     .customer-input {
       width: 100%;
-      padding: 14px 16px;
+      padding: 12px 14px;
       background: var(--cream);
       border: 2px solid rgba(74, 25, 66, 0.16);
       border-radius: var(--radius-md);
       font-family: var(--font-main);
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 800;
       color: var(--purple-dark);
       outline: none;
@@ -2262,7 +2303,7 @@
     .customer-input:focus {
       border-color: var(--purple-dark);
       background: var(--white);
-      box-shadow: 0 0 0 4px rgba(74, 25, 66, 0.12);
+      box-shadow: 0 0 0 4px rgba(74, 25, 66, 0.10);
     }
     .customer-input.error {
       border-color: #DC2626;
@@ -2271,18 +2312,18 @@
     .customer-error-msg {
       display: none;
       color: #DC2626;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 800;
-      margin-top: 6px;
+      margin-top: 5px;
       align-items: center;
       gap: 4px;
     }
     .btn-customer-submit {
       width: 100%;
-      min-height: 48px;
-      font-size: 0.95rem;
+      min-height: 44px;
+      font-size: 0.88rem;
       font-weight: 900;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       cursor: pointer;
       display: flex;
@@ -3347,22 +3388,44 @@
       <h2 class="section-title">EL ADN DE TYANGO</h2>
       <div class="dna-grid">
         <div class="dna-item">
-          <span class="dna-emoji">🥭</span>
+          <div class="dna-icon-wrap" aria-hidden="true">
+            <svg class="dna-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2v6a3 3 0 0 1-3 3 3 3 0 0 1-3-3V2"/>
+              <path d="M15 2v19"/>
+              <path d="M5 2v4a3 3 0 0 0 3 3 3 3 0 0 0 3-3V2"/>
+              <path d="M8 2v19"/>
+            </svg>
+          </div>
           <div class="dna-title">Sabor</div>
           <div class="dna-desc">Combinaciones que no pasan desapercibidas.</div>
         </div>
         <div class="dna-item">
-          <span class="dna-emoji">✨</span>
+          <div class="dna-icon-wrap" aria-hidden="true">
+            <svg class="dna-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+              <path d="M9 18h6"/>
+              <path d="M10 22h4"/>
+            </svg>
+          </div>
           <div class="dna-title">Creatividad</div>
           <div class="dna-desc">Siempre buscamos una nueva forma de disfrutar.</div>
         </div>
         <div class="dna-item">
-          <span class="dna-emoji">❤️</span>
+          <div class="dna-icon-wrap" aria-hidden="true">
+            <svg class="dna-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+            </svg>
+          </div>
           <div class="dna-title">Hecho con amor</div>
           <div class="dna-desc">Cada producto lleva nuestra esencia.</div>
         </div>
         <div class="dna-item">
-          <span class="dna-emoji">🌱</span>
+          <div class="dna-icon-wrap" aria-hidden="true">
+            <svg class="dna-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+            </svg>
+          </div>
           <div class="dna-title">Fresco</div>
           <div class="dna-desc">Ingredientes pensados para disfrutar.</div>
         </div>
@@ -3435,22 +3498,29 @@
     <footer class="footer" id="footer-azuca" role="contentinfo"></footer>
   </main>
 
-  <!-- ═══════ MODAL: IDENTIFICACIÓN DEL CLIENTE ═══════ -->
-  <div class="custom-modal-overlay" id="customerModal" role="dialog" aria-modal="true" aria-labelledby="customerModalTitle">
+  <!-- ═══════ MODAL: ¿A NOMBRE DE QUIÉN? (CHECKOUT) ═══════ -->
+  <div class="custom-modal-overlay" id="customerModal" role="dialog" aria-modal="true" aria-labelledby="customerModalTitle" onclick="if(event.target === this) closeCustomerModal();">
     <div class="custom-modal-box customer-modal-box">
-      <div class="customer-modal-icon" style="font-size: 2.6rem; margin-bottom: 8px;">👋</div>
-      <h2 id="customerModalTitle" class="customer-modal-title">¡Hola!</h2>
-      <p class="customer-modal-desc">Para comenzar tu pedido, coloca tu nombre.</p>
-      <form id="customerNameForm" onsubmit="event.preventDefault(); submitCustomerName();">
-        <div class="customer-input-wrap">
-          <label for="customerNameInput" class="customer-input-label">TU NOMBRE</label>
-          <input type="text" id="customerNameInput" class="customer-input" placeholder="Tu nombre" autocomplete="name" required maxlength="50" autofocus>
+      <button type="button" class="orders-modal-close" onclick="closeCustomerModal()" aria-label="Cerrar modal" style="position: absolute; top: 12px; right: 14px;">✕</button>
+      <h3 id="customerModalTitle" class="customer-modal-title">¿A NOMBRE DE QUIÉN?</h3>
+      <p class="customer-modal-desc">Para preparar tu pedido.</p>
+
+      <!-- Estado: Cliente Recurrente -->
+      <div id="returningCustomerBox" class="returning-customer-box" style="display: none;">
+        <div class="returning-customer-name" id="returningCustomerName"></div>
+        <button type="button" class="btn-change-name" onclick="enableEditCustomerName()">¿No eres <span id="changeNameTarget"></span>? Cambiar nombre</button>
+      </div>
+
+      <!-- Estado: Cliente Nuevo / Edición -->
+      <form id="customerNameForm" onsubmit="event.preventDefault(); confirmAndCheckoutWhatsApp();">
+        <div class="customer-input-wrap" id="customerInputWrap">
+          <input type="text" id="customerNameInput" class="customer-input" placeholder="Tu nombre" autocomplete="name" maxlength="50">
           <div id="customerNameError" class="customer-error-msg">
             Ingresa tu nombre para continuar.
           </div>
         </div>
         <button type="submit" class="btn-primary btn-customer-submit">
-          CONTINUAR
+          CONTINUAR A WHATSAPP →
         </button>
       </form>
     </div>
@@ -3771,51 +3841,113 @@
       if (customerProfile && customerProfile.name && customerProfile.name.trim().length > 0) {
         customerName = customerProfile.name.trim();
         updateCustomerUI();
-      } else {
-        openCustomerModal(false);
       }
+      // FLUJO NO INVASIVO: El usuario entra directamente a explorar y comprar sin popups.
     }
 
-    function openCustomerModal(allowCancel = false) {
+    function openCustomerModal(forceEdit = false) {
       const modal = document.getElementById('customerModal');
+      const returningBox = document.getElementById('returningCustomerBox');
+      const returningName = document.getElementById('returningCustomerName');
+      const changeTarget = document.getElementById('changeNameTarget');
+      const inputWrap = document.getElementById('customerInputWrap');
       const input = document.getElementById('customerNameInput');
       const err = document.getElementById('customerNameError');
       if (!modal || !input) return;
 
       if (err) {
-        err.textContent = 'Ingresa tu nombre para continuar.';
         err.style.display = 'none';
+        err.textContent = 'Ingresa tu nombre para continuar.';
       }
       input.classList.remove('error');
-      input.value = customerName || '';
-      modal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-      setTimeout(() => input.focus(), 250);
-    }
 
-    function submitCustomerName() {
-      const input = document.getElementById('customerNameInput');
-      const err = document.getElementById('customerNameError');
-      if (!input) return;
-
-      const val = input.value.trim();
-      if (!val) {
-        if (err) {
-          err.textContent = 'Ingresa tu nombre para continuar.';
-          err.style.display = 'block';
+      // Si ya existe un cliente con nombre guardado (Cliente Recurrente)
+      if (!forceEdit && customerProfile && customerProfile.name && customerProfile.name.trim().length > 0) {
+        const savedName = customerProfile.name.trim();
+        if (returningBox && returningName && changeTarget) {
+          returningName.textContent = savedName;
+          changeTarget.textContent = savedName;
+          returningBox.style.display = 'block';
         }
-        input.classList.add('error');
-        input.focus();
-        return;
+        if (inputWrap) {
+          inputWrap.style.display = 'none';
+        }
+        input.value = savedName;
+      } else {
+        // Cliente nuevo o edición de nombre
+        if (returningBox) {
+          returningBox.style.display = 'none';
+        }
+        if (inputWrap) {
+          inputWrap.style.display = 'block';
+        }
+        input.value = (customerProfile && customerProfile.name) ? customerProfile.name : '';
+        setTimeout(() => input.focus(), 250);
       }
 
-      customerProfile = CustomerRepository.updateName(val);
-      customerName = customerProfile.name;
-      updateCustomerUI();
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
+    function closeCustomerModal() {
       const modal = document.getElementById('customerModal');
       if (modal) modal.classList.remove('open');
       document.body.style.overflow = '';
+    }
+
+    function enableEditCustomerName() {
+      const returningBox = document.getElementById('returningCustomerBox');
+      const inputWrap = document.getElementById('customerInputWrap');
+      const input = document.getElementById('customerNameInput');
+      if (returningBox) returningBox.style.display = 'none';
+      if (inputWrap) inputWrap.style.display = 'block';
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function confirmAndCheckoutWhatsApp() {
+      const inputWrap = document.getElementById('customerInputWrap');
+      const input = document.getElementById('customerNameInput');
+      const err = document.getElementById('customerNameError');
+
+      let confirmedName = '';
+
+      // Si está visible el campo de texto
+      if (inputWrap && inputWrap.style.display !== 'none') {
+        const val = input ? input.value.trim() : '';
+        if (!val) {
+          if (err) {
+            err.textContent = 'Ingresa tu nombre para continuar.';
+            err.style.display = 'block';
+          }
+          if (input) {
+            input.classList.add('error');
+            input.focus();
+          }
+          return;
+        }
+        customerProfile = CustomerRepository.updateName(val);
+        customerName = customerProfile.name;
+        confirmedName = customerName;
+      } else if (customerProfile && customerProfile.name && customerProfile.name.trim().length > 0) {
+        confirmedName = customerProfile.name.trim();
+        customerName = confirmedName;
+      } else {
+        enableEditCustomerName();
+        return;
+      }
+
+      updateCustomerUI();
+      closeCustomerModal();
+
+      // Proceder con el pedido en el orden estricto
+      executeOrderCheckout(confirmedName);
+    }
+
+    function submitCustomerName() {
+      confirmAndCheckoutWhatsApp();
     }
 
     function updateCustomerUI() {
@@ -4284,21 +4416,27 @@
     }
 
     function checkoutWhatsApp() {
-      // 1. Verificar que exista un cliente identificado
-      if (!customerName || !customerName.trim()) {
-        showToast('Ingresa tu nombre para continuar.');
-        openCustomerModal(false);
-        return;
-      }
-
-      // 2. Verificar que el carrito no esté vacío
+      // 1. Verificar que el carrito no esté vacío
       const items = Object.values(cart);
       if (items.length === 0) {
         showToast('Agrega al menos un producto para realizar tu pedido.');
         return;
       }
 
-      // 3. Crear y guardar una copia completa del pedido en el HISTORIAL
+      // 2. Abrir modal "¿A NOMBRE DE QUIÉN?" para solicitar o confirmar el nombre al final del pedido
+      openCustomerModal(false);
+    }
+
+    function executeOrderCheckout(confirmedName) {
+      const items = Object.values(cart);
+      if (items.length === 0) {
+        showToast('Agrega al menos un producto para realizar tu pedido.');
+        return;
+      }
+
+      const clientDisplayName = (confirmedName || customerName || 'Cliente').trim();
+
+      // 1. Guardar copia en HISTORIAL
       let savedOrder = null;
       try {
         const now = new Date();
@@ -4327,7 +4465,7 @@
           id: orderIdStr,
           orderNumber: orderNumberStr,
           customerId: (customerProfile && customerProfile.id) ? customerProfile.id : 'cust_anon',
-          customerName: customerName.trim(),
+          customerName: clientDisplayName,
           date: formatSpanishDate(now),
           time: formatSpanishTime(now),
           timestamp: now.getTime(),
@@ -4344,13 +4482,13 @@
         }
       } catch (err) {
         console.error('Error al guardar pedido:', err);
-        // PROTECCIÓN: Si existe un error al guardar el pedido, NO vaciar el carrito
+        // PROTECCIÓN: Si ocurre un error al guardar el pedido, NO vaciar el carrito
         showToast('No pudimos guardar tu pedido. Inténtalo nuevamente.');
         return;
       }
 
-      // 4. Generar el mensaje completo de WhatsApp
-      let msg = `Hola, soy ${customerName.trim()} 👋\n\nMi pedido es:\n\n`;
+      // 2. Generar el mensaje completo de WhatsApp
+      let msg = `Hola, soy ${clientDisplayName} 👋\n\nMi pedido es:\n\n`;
 
       items.forEach(item => {
         const itemSubtotal = formatCurrency(item.priceNum * item.qty);
@@ -4363,18 +4501,18 @@
       const totalFormatted = formatCurrency(getCartTotalPrice());
       msg += `\nTOTAL: ${totalFormatted}`;
 
-      // 5. Generar y validar el enlace de WhatsApp con el número oficial 593994124996
+      // 3. Generar y validar el enlace de WhatsApp con el número oficial 593994124996
       const targetUrl = `https://wa.me/593994124996?text=${encodeURIComponent(msg)}`;
 
-      // 6. Vaciar completamente el carrito actual
+      // 4. Vaciar completamente el carrito actual
       cart = {};
       saveCartToStorage();
 
-      // 7. Actualizar inmediatamente la interfaz del carrito y cerrar el drawer
+      // 5. Actualizar inmediatamente la interfaz del carrito y cerrar el drawer
       closeCartDrawer();
       updateCustomerUI();
 
-      // 8. Abrir WhatsApp con el pedido ya prellenado en el campo de mensaje
+      // 6. Abrir WhatsApp con el pedido ya prellenado en el campo de mensaje
       copyToClipboard(msg);
       try {
         window.open(targetUrl, '_blank');
@@ -5019,11 +5157,7 @@
         }
         const custModal = document.getElementById('customerModal');
         if (custModal && custModal.classList.contains('open')) {
-          if (!customerName || !customerName.trim()) {
-            return; // No permitir cerrar modal de nombre obligatorio
-          }
-          custModal.classList.remove('open');
-          document.body.style.overflow = '';
+          closeCustomerModal();
           return;
         }
         closeMobileDrawer();
