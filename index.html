@@ -2553,6 +2553,175 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════
+       PROMOCIÓN TEMPORAL — ELIGE 1 GRATIS
+    ═══════════════════════════════════════════════════════════════ */
+    .promo-banner-global {
+      background: linear-gradient(135deg, #3D1236 0%, #4A1942 100%);
+      color: var(--white);
+      padding: 10px 20px;
+      text-align: center;
+      border-bottom: 1.5px solid rgba(212, 217, 140, 0.28);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      position: relative;
+      z-index: 90;
+      transition: all var(--transition-fast);
+    }
+    .promo-banner-badge {
+      display: inline-block;
+      font-size: 0.64rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lime);
+      background: rgba(212, 217, 140, 0.14);
+      border: 1px solid rgba(212, 217, 140, 0.35);
+      padding: 2px 9px;
+      border-radius: var(--radius-full);
+    }
+    .promo-banner-title {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--white);
+      margin: 1px 0 0;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .promo-banner-subtitle {
+      font-size: 0.74rem;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 0;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    .btn-banner-change {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: var(--white);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: 0.70rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .btn-banner-change:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .btn-choose-gift {
+      background: var(--lime) !important;
+      color: var(--purple-dark) !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.06em !important;
+      box-shadow: 0 4px 12px rgba(212, 217, 140, 0.4);
+      border: 1.5px solid rgba(74, 25, 66, 0.15) !important;
+      transition: all var(--transition-fast);
+    }
+    .btn-choose-gift:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 16px rgba(212, 217, 140, 0.6);
+    }
+    .card-price-free {
+      color: #15803D !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.04em;
+    }
+    .card-qty-gift {
+      border: 1.5px solid var(--lime) !important;
+      background: rgba(212, 217, 140, 0.15) !important;
+    }
+    .cart-promo-pill {
+      background: rgba(212, 217, 140, 0.14);
+      border: 1px solid rgba(212, 217, 140, 0.45);
+      color: var(--purple-dark);
+      padding: 8px 12px;
+      margin: 10px 14px 4px;
+      border-radius: var(--radius-md);
+      font-size: 0.76rem;
+      line-height: 1.4;
+      text-align: center;
+    }
+    .cart-promo-pill strong {
+      color: var(--purple-dark);
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+    .cart-gift-tag {
+      display: inline-block;
+      font-size: 0.64rem;
+      font-weight: 900;
+      color: #15803D;
+      background: #DCFCE7;
+      border: 1px solid #86EFAC;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      margin-top: 2px;
+      margin-bottom: 3px;
+      letter-spacing: 0.03em;
+    }
+    .btn-switch-gift {
+      background: transparent;
+      border: none;
+      color: var(--purple-mid);
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+      margin-top: 2px;
+      display: block;
+      text-align: left;
+      transition: color var(--transition-fast);
+    }
+    .btn-switch-gift:hover {
+      color: var(--purple-dark);
+    }
+    .cart-summary-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--purple-mid);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .cart-summary-line.cart-promo-line {
+      color: #15803D;
+      font-weight: 800;
+    }
+    .cip-tag-free {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 900;
+      color: #15803D;
+      background: #DCFCE7;
+      border: 1px solid #86EFAC;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      margin-bottom: 3px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .price-strikethrough {
+      text-decoration: line-through;
+      color: var(--purple-mid);
+      opacity: 0.60;
+      margin-right: 5px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .price-free {
+      color: #15803D;
+      font-weight: 900;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
        ANIMACIONES
     ═══════════════════════════════════════════════════════════════ */
     @keyframes fadeIn {
@@ -3015,6 +3184,13 @@
     </div>
   </header>
 
+  <!-- ═══════ BANNER DE PROMOCIÓN TEMPORAL — ELIGE 1 GRATIS ═══════ -->
+  <aside class="promo-banner-global" id="globalPromoBanner" aria-label="Promoción especial activa: Elige 1 Gratis">
+    <span class="promo-banner-badge" id="promoBannerBadge">ELIGE 1 GRATIS</span>
+    <h3 class="promo-banner-title" id="promoBannerTitle">Escoge cualquier producto de nuestro menú como regalo.</h3>
+    <p class="promo-banner-subtitle" id="promoBannerSubtitle">1 unidad gratis por pedido. Las unidades adicionales se cobran a precio normal.</p>
+  </aside>
+
   <!-- Menú secundario (Desktop) -->
   <aside class="secondary-menu" id="secondaryMenu" aria-label="Menú secundario">
     <a href="#" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); toggleMenu();">Hazlo a tu manera</a>
@@ -3126,6 +3302,11 @@
       </div>
     </div>
 
+    <!-- Banner de Promoción en Carrito -->
+    <div class="cart-promo-pill" id="cartPromoPill">
+      <strong>ELIGE 1 GRATIS:</strong> Escoge cualquier producto de nuestro menú como regalo.
+    </div>
+
     <!-- Lista de Productos en el Carrito -->
     <div class="cart-drawer-body" id="cartItemsList">
       <!-- Inyectado por JS -->
@@ -3133,6 +3314,16 @@
 
     <!-- Footer del Carrito -->
     <div class="cart-drawer-footer" id="cartDrawerFooter">
+      <div id="cartSummaryBlock" style="width: 100%;">
+        <div class="cart-summary-line" id="cartSubtotalRow" style="display:none;">
+          <span>SUBTOTAL:</span>
+          <span id="cartSubtotalAmount">$0.00</span>
+        </div>
+        <div class="cart-summary-line cart-promo-line" id="cartDiscountRow" style="display:none;">
+          <span>REGALO TYANGO:</span>
+          <span id="cartDiscountAmount">-$0.00</span>
+        </div>
+      </div>
       <div class="cart-subtotal-row">
         <span class="cart-subtotal-label">TOTAL:</span>
         <span class="cart-subtotal-amount" id="cartTotalAmount">$0.00</span>
@@ -3967,10 +4158,23 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════
+       CONFIGURACIÓN DE PROMOCIÓN TEMPORAL — ELIGE 1 GRATIS
+    ═══════════════════════════════════════════════════════════════ */
+    let PROMOTION_ENABLED = true;
+    window.PROMOTION_ENABLED = PROMOTION_ENABLED;
+
+    const FREE_GIFT_STORAGE_KEY = 'tyango_free_gift_id_v2';
+    let freeGiftId = null;
+    let isGiftChangeActive = false;
+    window.freeGiftId = freeGiftId;
+
+    let cartSequenceCounter = 1;
+
+    /* ═══════════════════════════════════════════════════════════════
        MOTOR DEL CARRITO GLOBAL (PERSISTENTE & MULTICATEGORÍA)
     ═══════════════════════════════════════════════════════════════ */
     const CART_STORAGE_KEY = 'tyango_global_cart_v1';
-    let cart = {}; // id -> { id, name, desc, price, priceNum, qty, img, emoji, customCardClass, isCustom }
+    let cart = {}; // id -> { id, name, desc, price, priceNum, qty, addedSeq, addedAt, img, emoji, customCardClass, isCustom }
 
     function parsePriceNumber(priceStr) {
       if (typeof priceStr === 'number') return priceStr;
@@ -3992,16 +4196,184 @@
       return null;
     }
 
+    function isProductPromoEligible(productId) {
+      if (!productId) return false;
+      const inHot = catalog.hot && catalog.hot.some(p => p.id === productId);
+      const inAzuca = catalog.azuca && catalog.azuca.some(p => p.id === productId);
+      const isCustom = typeof productId === 'string' && productId.startsWith('custom_');
+      return inHot || inAzuca || isCustom;
+    }
+
+    function getCartItemsSorted() {
+      return Object.values(cart).sort((a, b) => (a.addedSeq || 0) - (b.addedSeq || 0));
+    }
+
+    function loadFreeGiftFromStorage() {
+      try {
+        const saved = localStorage.getItem(FREE_GIFT_STORAGE_KEY);
+        if (saved && cart[saved]) {
+          freeGiftId = saved;
+        } else {
+          freeGiftId = null;
+        }
+      } catch (e) {
+        freeGiftId = null;
+      }
+      window.freeGiftId = freeGiftId;
+    }
+
+    function saveFreeGiftToStorage() {
+      try {
+        if (freeGiftId && cart[freeGiftId]) {
+          localStorage.setItem(FREE_GIFT_STORAGE_KEY, freeGiftId);
+        } else {
+          localStorage.removeItem(FREE_GIFT_STORAGE_KEY);
+        }
+      } catch (e) {}
+      window.freeGiftId = freeGiftId;
+    }
+
+    function getPromoDetails() {
+      const sortedItems = getCartItemsSorted();
+      const subtotalNum = sortedItems.reduce((sum, item) => sum + (item.priceNum * item.qty), 0);
+
+      if (!PROMOTION_ENABLED || sortedItems.length === 0) {
+        return {
+          active: false,
+          freeItemId: null,
+          freeItemName: '',
+          discountNum: 0,
+          subtotalNum: subtotalNum,
+          totalNum: subtotalNum
+        };
+      }
+
+      // Si hay un regalo elegido y está en el carrito, ese es el regalo
+      let freeItem = null;
+      if (freeGiftId && cart[freeGiftId]) {
+        freeItem = cart[freeGiftId];
+      } else if (!isGiftChangeActive && sortedItems.length > 0) {
+        // Asignación por defecto si hay items en carrito (ej. llamadas programáticas o directas)
+        const eligibleFirst = sortedItems.find(it => isProductPromoEligible(it.id)) || sortedItems[0];
+        freeItem = eligibleFirst;
+        freeGiftId = freeItem.id;
+        saveFreeGiftToStorage();
+      }
+
+      const discountNum = freeItem ? freeItem.priceNum : 0;
+      const totalNum = Math.max(0, subtotalNum - discountNum);
+
+      return {
+        active: !!freeItem,
+        freeItemId: freeItem ? freeItem.id : null,
+        freeItemName: freeItem ? freeItem.name : '',
+        discountNum: discountNum,
+        subtotalNum: subtotalNum,
+        totalNum: totalNum
+      };
+    }
+
+    function getCartTotalUnits() {
+      return Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
+    }
+
+    function getCartSubtotalPrice() {
+      return getPromoDetails().subtotalNum;
+    }
+
+    function getCartTotalPrice() {
+      return getPromoDetails().totalNum;
+    }
+
+    function getCartDiscount() {
+      return getPromoDetails().discountNum;
+    }
+
+    function setPromotionEnabled(enabled) {
+      PROMOTION_ENABLED = !!enabled;
+      window.PROMOTION_ENABLED = PROMOTION_ENABLED;
+      updateCartUI();
+    }
+    window.setPromotionEnabled = setPromotionEnabled;
+
+    function chooseFreeGift(productId) {
+      const prod = findProductInCatalog(productId);
+      if (!prod) return;
+
+      isGiftChangeActive = false;
+      freeGiftId = productId;
+      saveFreeGiftToStorage();
+
+      if (cart[productId]) {
+        saveCartToStorage();
+      } else {
+        const priceNum = parsePriceNumber(prod.price);
+        cart[productId] = {
+          id: prod.id,
+          name: prod.name,
+          desc: prod.desc || '',
+          price: prod.price,
+          priceNum: priceNum,
+          qty: 1,
+          addedSeq: ++cartSequenceCounter,
+          addedAt: Date.now(),
+          img: prod.img || null,
+          emoji: prod.emoji || null,
+          customCardClass: prod.customCardClass || null
+        };
+        saveCartToStorage();
+        triggerCartBadgeBump();
+      }
+      showToast(`🎁 ¡Elegiste ${prod.name} como tu regalo gratis!`);
+    }
+    window.chooseFreeGift = chooseFreeGift;
+
+    function setFreeGiftItem(productId) {
+      if (!cart[productId]) return;
+      isGiftChangeActive = false;
+      freeGiftId = productId;
+      saveFreeGiftToStorage();
+      saveCartToStorage();
+      updateCartUI();
+      showToast(`🎁 Regalo cambiado a: ${cart[productId].name}`);
+    }
+    window.setFreeGiftItem = setFreeGiftItem;
+
+    function triggerChangeGift() {
+      isGiftChangeActive = true;
+      freeGiftId = null;
+      saveFreeGiftToStorage();
+      updateCartUI();
+      showToast('Selecciona cualquier producto para tu regalo gratis.');
+      if (currentPage !== 'hot' && currentPage !== 'azuca' && currentPage !== 'home') {
+        navigate('hot');
+      }
+    }
+    window.triggerChangeGift = triggerChangeGift;
+
     function loadCartFromStorage() {
       try {
         const raw = localStorage.getItem(CART_STORAGE_KEY);
         if (raw) {
           cart = JSON.parse(raw);
+          let maxSeq = 0;
+          Object.values(cart).forEach(item => {
+            if (typeof item.addedSeq === 'number' && item.addedSeq > maxSeq) {
+              maxSeq = item.addedSeq;
+            }
+          });
+          cartSequenceCounter = Math.max(cartSequenceCounter, maxSeq);
+          Object.values(cart).forEach(item => {
+            if (typeof item.addedSeq !== 'number') {
+              item.addedSeq = ++cartSequenceCounter;
+            }
+          });
         }
       } catch (e) {
         console.error('Error al cargar carrito:', e);
         cart = {};
       }
+      loadFreeGiftFromStorage();
       updateCartUI();
     }
 
@@ -4011,12 +4383,20 @@
       } catch (e) {
         console.error('Error al guardar carrito:', e);
       }
+      saveFreeGiftToStorage();
       updateCartUI();
     }
 
     function addToCart(productId) {
       const prod = findProductInCatalog(productId);
       if (!prod) return;
+
+      // Si la promoción está activa y no hay ningún regalo seleccionado, este se convierte en el regalo
+      if (PROMOTION_ENABLED && !freeGiftId && isProductPromoEligible(productId)) {
+        isGiftChangeActive = false;
+        freeGiftId = productId;
+        saveFreeGiftToStorage();
+      }
 
       const priceNum = parsePriceNumber(prod.price);
       if (cart[productId]) {
@@ -4029,6 +4409,8 @@
           price: prod.price,
           priceNum: priceNum,
           qty: 1,
+          addedSeq: ++cartSequenceCounter,
+          addedAt: Date.now(),
           img: prod.img || null,
           emoji: prod.emoji || null,
           customCardClass: prod.customCardClass || null
@@ -4046,8 +4428,18 @@
       const newQty = cart[productId].qty + delta;
       if (newQty <= 0) {
         delete cart[productId];
+        if (freeGiftId === productId) {
+          freeGiftId = null;
+          isGiftChangeActive = true;
+          saveFreeGiftToStorage();
+        }
       } else {
         cart[productId].qty = newQty;
+      }
+      if (Object.keys(cart).length === 0) {
+        freeGiftId = null;
+        isGiftChangeActive = false;
+        saveFreeGiftToStorage();
       }
       saveCartToStorage();
       triggerCartBadgeBump();
@@ -4056,6 +4448,16 @@
     function removeFromCart(productId) {
       if (cart[productId]) {
         delete cart[productId];
+        if (freeGiftId === productId) {
+          freeGiftId = null;
+          isGiftChangeActive = true;
+          saveFreeGiftToStorage();
+        }
+        if (Object.keys(cart).length === 0) {
+          freeGiftId = null;
+          isGiftChangeActive = false;
+          saveFreeGiftToStorage();
+        }
         saveCartToStorage();
       }
     }
@@ -4063,16 +4465,11 @@
     function clearCart() {
       if (confirm('¿Deseas vaciar todos los productos del carrito?')) {
         cart = {};
+        freeGiftId = null;
+        isGiftChangeActive = false;
+        saveFreeGiftToStorage();
         saveCartToStorage();
       }
-    }
-
-    function getCartTotalUnits() {
-      return Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
-    }
-
-    function getCartTotalPrice() {
-      return Object.values(cart).reduce((sum, item) => sum + (item.priceNum * item.qty), 0);
     }
 
     function triggerCartBadgeBump() {
@@ -4085,9 +4482,55 @@
       }
     }
 
+    function updatePromoBannersUI() {
+      const banner = document.getElementById('globalPromoBanner');
+      if (banner) {
+        banner.style.display = PROMOTION_ENABLED ? 'flex' : 'none';
+      }
+      const cartPill = document.getElementById('cartPromoPill');
+      if (cartPill) {
+        cartPill.style.display = PROMOTION_ENABLED ? 'block' : 'none';
+      }
+
+      if (!PROMOTION_ENABLED) return;
+
+      const badgeEl = document.getElementById('promoBannerBadge');
+      const titleEl = document.getElementById('promoBannerTitle');
+      const subtitleEl = document.getElementById('promoBannerSubtitle');
+      const promo = getPromoDetails();
+      const hasGift = promo.active && !!promo.freeItemId;
+
+      if (hasGift) {
+        if (badgeEl) badgeEl.textContent = 'REGALO SELECCIONADO';
+        if (titleEl) {
+          titleEl.innerHTML = `1 REGALO ELEGIDO: <strong>${promo.freeItemName}</strong> <button type="button" class="btn-banner-change" onclick="triggerChangeGift()">Cambiar</button>`;
+        }
+        if (subtitleEl) {
+          subtitleEl.textContent = 'Tu primera unidad es gratis. Las unidades adicionales se cobran a precio normal.';
+        }
+        if (cartPill) {
+          cartPill.innerHTML = `<strong>1 REGALO ELEGIDO:</strong> ${promo.freeItemName} (Gratis) · Puedes cambiarlo en cualquier momento.`;
+        }
+      } else {
+        if (badgeEl) badgeEl.textContent = 'ELIGE 1 GRATIS';
+        if (titleEl) {
+          titleEl.textContent = 'Escoge cualquier producto de nuestro menú como regalo.';
+        }
+        if (subtitleEl) {
+          subtitleEl.textContent = '1 unidad gratis por pedido. Las unidades adicionales se cobran a precio normal.';
+        }
+        if (cartPill) {
+          cartPill.innerHTML = `<strong>ELIGE 1 GRATIS:</strong> Escoge cualquier producto de nuestro menú como regalo.`;
+        }
+      }
+    }
+
     function updateCartUI() {
       const totalUnits = getCartTotalUnits();
-      const totalPrice = getCartTotalPrice();
+      const promo = getPromoDetails();
+      const totalPrice = promo.totalNum;
+      const subtotalPrice = promo.subtotalNum;
+      const discountPrice = promo.discountNum;
 
       // 1. Actualizar Badge en Header
       const badge = document.getElementById('cartBadge');
@@ -4101,8 +4544,23 @@
         drawerCount.textContent = `${totalUnits} ${totalUnits === 1 ? 'item' : 'items'}`;
       }
 
-      // 3. Actualizar Total en Drawer
+      // 3. Actualizar Desglose y Total en Drawer
+      const subtotalRow = document.getElementById('cartSubtotalRow');
+      const subtotalEl = document.getElementById('cartSubtotalAmount');
+      const discountRow = document.getElementById('cartDiscountRow');
+      const discountEl = document.getElementById('cartDiscountAmount');
       const totalEl = document.getElementById('cartTotalAmount');
+
+      if (promo.active && discountPrice > 0 && totalUnits > 0) {
+        if (subtotalRow) subtotalRow.style.display = 'flex';
+        if (subtotalEl) subtotalEl.textContent = formatCurrency(subtotalPrice);
+        if (discountRow) discountRow.style.display = 'flex';
+        if (discountEl) discountEl.textContent = `-${formatCurrency(discountPrice)}`;
+      } else {
+        if (subtotalRow) subtotalRow.style.display = 'none';
+        if (discountRow) discountRow.style.display = 'none';
+      }
+
       if (totalEl) {
         totalEl.textContent = formatCurrency(totalPrice);
       }
@@ -4129,6 +4587,14 @@
 
       // 7. Re-renderizar controles de tarjetas visibles
       refreshAllProductCardButtons();
+
+      // 8. Actualizar visibilidad de banners de promoción
+      updatePromoBannersUI();
+
+      // 9. Actualizar botón del personalizador si está cargado
+      if (typeof updateCustomizerUI === 'function') {
+        updateCustomizerUI();
+      }
     }
 
     function openCartDrawer() {
@@ -4160,7 +4626,9 @@
       const list = document.getElementById('cartItemsList');
       if (!list) return;
 
-      const items = Object.values(cart);
+      const items = getCartItemsSorted();
+      const promo = getPromoDetails();
+
       if (items.length === 0) {
         const lastOrder = OrdersRepository.getLastOrder();
         if (lastOrder) {
@@ -4211,6 +4679,43 @@
           ? `<img src="${item.img}" alt="${item.name}">` 
           : `<span class="ci-emoji">${item.emoji || '🥭'}</span>`;
         
+        const isFreeItem = promo.active && item.id === promo.freeItemId;
+        let pricingMarkup = '';
+
+        if (isFreeItem) {
+          if (item.qty === 1) {
+            pricingMarkup = `
+              <span class="cart-gift-tag">🎁 PRODUCTO GRATIS</span>
+              <div style="font-size:0.72rem; color:var(--purple-mid); font-weight:700;">
+                <span class="price-strikethrough">${formatCurrency(item.priceNum)}</span>
+                <span class="price-free">GRATIS</span>
+              </div>
+              <div class="cart-item-subtotal price-free">$0.00</div>
+            `;
+          } else {
+            const paidQty = item.qty - 1;
+            const paidSubtotal = item.priceNum * paidQty;
+            pricingMarkup = `
+              <span class="cart-gift-tag">🎁 PRODUCTO GRATIS</span>
+              <span class="cip-tag-free">1 GRATIS + ${paidQty} × ${item.price}</span>
+              <div style="font-size:0.72rem; color:var(--purple-mid); font-weight:700;">
+                <span class="price-strikethrough">${formatCurrency(item.priceNum * item.qty)}</span>
+                <span style="color:var(--purple-dark); font-weight:800;">${formatCurrency(paidSubtotal)}</span>
+              </div>
+              <div class="cart-item-subtotal">${formatCurrency(paidSubtotal)}</div>
+            `;
+          }
+        } else {
+          const switchGiftBtn = (PROMOTION_ENABLED && isProductPromoEligible(item.id)) 
+            ? `<button type="button" class="btn-switch-gift" onclick="setFreeGiftItem('${item.id}')">🎁 Elegir como regalo</button>` 
+            : '';
+          pricingMarkup = `
+            <div style="font-size:0.75rem; color:var(--purple-mid); font-weight:700;">${item.price} c/u</div>
+            <div class="cart-item-subtotal">${formatCurrency(item.priceNum * item.qty)}</div>
+            ${switchGiftBtn}
+          `;
+        }
+
         return `
           <div class="cart-item-row" id="cart-item-${item.id}">
             <div class="cart-item-thumb">
@@ -4229,8 +4734,7 @@
                   <button type="button" class="cart-stepper-btn" onclick="updateCartQty('${item.id}', 1)" aria-label="Aumentar cantidad">+</button>
                 </div>
                 <div style="text-align:right;">
-                  <div style="font-size:0.75rem; color:var(--purple-mid); font-weight:700;">${item.price} c/u</div>
-                  <div class="cart-item-subtotal">${formatCurrency(item.priceNum * item.qty)}</div>
+                  ${pricingMarkup}
                 </div>
               </div>
             </div>
@@ -4239,36 +4743,84 @@
       }).join('');
     }
 
-    function refreshAllProductCardButtons() {
-      document.querySelectorAll('.card[data-product-id]').forEach(card => {
-        const prodId = card.dataset.productId;
-        const actionBar = card.querySelector('.card-action-bar');
-        const prod = findProductInCatalog(prodId);
-        if (actionBar && prod) {
-          const qty = cart[prodId] ? cart[prodId].qty : 0;
-          actionBar.innerHTML = `
-            <span class="card-price">${prod.price}</span>
-            ${renderCardButtonMarkup(prodId, qty, prod.name)}
-          `;
-        }
-      });
-    }
+    function renderCardActionBar(prodId) {
+      const prod = findProductInCatalog(prodId);
+      if (!prod) return '';
+      const qty = cart[prodId] ? cart[prodId].qty : 0;
+      const promo = getPromoDetails();
+      const hasGift = promo.active && !!promo.freeItemId;
+      const isThisGift = promo.active && promo.freeItemId === prodId && qty > 0;
+      const eligible = PROMOTION_ENABLED && isProductPromoEligible(prodId);
 
-    function renderCardButtonMarkup(prodId, qty, prodName) {
-      if (qty > 0) {
-        return `
-          <div class="card-qty-stepper">
+      let priceMarkup = `<span class="card-price">${prod.price}</span>`;
+      let buttonMarkup = '';
+
+      if (isThisGift) {
+        priceMarkup = `<span class="card-price card-price-free">GRATIS</span>`;
+        buttonMarkup = `
+          <div class="card-qty-stepper card-qty-gift">
             <button type="button" class="cqty-btn" onclick="event.stopPropagation(); updateCartQty('${prodId}', -1)" aria-label="Quitar una unidad">−</button>
             <span class="cqty-num">${qty}</span>
             <button type="button" class="cqty-btn" onclick="event.stopPropagation(); updateCartQty('${prodId}', 1)" aria-label="Agregar una unidad">+</button>
           </div>
         `;
+      } else if (eligible && !hasGift) {
+        // Estado inicial de la promoción: el cliente aún no ha elegido su regalo
+        priceMarkup = `<span class="card-price">${prod.price}</span>`;
+        if (qty > 0) {
+          buttonMarkup = `
+            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:3px;">
+              <div class="card-qty-stepper">
+                <button type="button" class="cqty-btn" onclick="event.stopPropagation(); updateCartQty('${prodId}', -1)" aria-label="Quitar una unidad">−</button>
+                <span class="cqty-num">${qty}</span>
+                <button type="button" class="cqty-btn" onclick="event.stopPropagation(); updateCartQty('${prodId}', 1)" aria-label="Agregar una unidad">+</button>
+              </div>
+              <button type="button" class="btn-switch-gift" onclick="event.stopPropagation(); setFreeGiftItem('${prodId}')" style="font-size:0.65rem; padding:0; margin:0;">🎁 Elegir como regalo</button>
+            </div>
+          `;
+        } else {
+          buttonMarkup = `
+            <button type="button" class="btn-add-cart btn-choose-gift" onclick="event.stopPropagation(); chooseFreeGift('${prodId}')" aria-label="Elegir ${prod.name} gratis">
+              GRATIS
+            </button>
+          `;
+        }
+      } else {
+        // Estado estándar: regalo ya elegido o promoción inactiva
+        priceMarkup = `<span class="card-price">${prod.price}</span>`;
+        if (qty > 0) {
+          buttonMarkup = `
+            <div class="card-qty-stepper">
+              <button type="button" class="cqty-btn" onclick="event.stopPropagation(); updateCartQty('${prodId}', -1)" aria-label="Quitar una unidad">−</button>
+              <span class="cqty-num">${qty}</span>
+              <button type="button" class="cqty-btn" onclick="event.stopPropagation(); updateCartQty('${prodId}', 1)" aria-label="Agregar una unidad">+</button>
+            </div>
+          `;
+        } else {
+          buttonMarkup = `
+            <button type="button" class="btn-add-cart" onclick="event.stopPropagation(); addToCart('${prodId}')" aria-label="Agregar ${prod.name} al carrito">
+              + AGREGAR
+            </button>
+          `;
+        }
       }
-      return `
-        <button type="button" class="btn-add-cart" onclick="event.stopPropagation(); addToCart('${prodId}')" aria-label="Agregar ${prodName} al carrito">
-          + AGREGAR
-        </button>
-      `;
+
+      return `${priceMarkup}${buttonMarkup}`;
+    }
+
+    function refreshAllProductCardButtons() {
+      document.querySelectorAll('.card[data-product-id]').forEach(card => {
+        const prodId = card.dataset.productId;
+        const actionBar = card.querySelector('.card-action-bar');
+        if (actionBar && prodId) {
+          actionBar.innerHTML = renderCardActionBar(prodId);
+        }
+      });
+    }
+
+    function renderCardButtonMarkup(prodId, qty, prodName) {
+      // Compatibilidad con invocaciones directas
+      return renderCardActionBar(prodId);
     }
 
     /* ═══════ FUNCIONALIDAD DE VOLVER A PEDIR (SIN DUPLICADOS) ═══════ */
@@ -4293,6 +4845,8 @@
             price: (catProd && catProd.price) ? catProd.price : item.price,
             priceNum: (catProd && catProd.price) ? parsePriceNumber(catProd.price) : item.priceNum,
             qty: item.qty,
+            addedSeq: ++cartSequenceCounter,
+            addedAt: Date.now(),
             img: (catProd && catProd.img) ? catProd.img : (item.img || null),
             emoji: (catProd && catProd.emoji) ? catProd.emoji : (item.emoji || null),
             customCardClass: (catProd && catProd.customCardClass) ? catProd.customCardClass : null,
@@ -4358,10 +4912,19 @@
           <div class="order-items-box">
             ${order.items.map(it => `
               <div class="order-item-line">
-                <span class="oil-name"><strong>${it.qty} ×</strong> ${it.name}</span>
+                <span class="oil-name">
+                  <strong>${it.qty} ×</strong> ${it.name}
+                  ${it.isFreeUnit ? '<span class="cip-tag-free" style="font-size:0.55rem; padding:1px 5px; margin-left:4px;">1ª GRATIS</span>' : ''}
+                </span>
                 <span class="oil-subtotal">${it.subtotal || formatCurrency(it.priceNum * it.qty)}</span>
               </div>
             `).join('')}
+            ${(order.promoApplied && order.discountNum > 0) ? `
+              <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#15803D; font-weight:800; border-top:1px dashed rgba(74,25,66,0.1); padding-top:4px; margin-top:2px;">
+                <span>Descuento Día TYANGO:</span>
+                <span>-${order.discount}</span>
+              </div>
+            ` : ''}
           </div>
           <div class="order-card-bottom">
             <div class="order-card-total">TOTAL: ${order.total}</div>
@@ -4428,13 +4991,20 @@
     }
 
     function executeOrderCheckout(confirmedName) {
-      const items = Object.values(cart);
+      const items = getCartItemsSorted();
       if (items.length === 0) {
         showToast('Agrega al menos un producto para realizar tu pedido.');
         return;
       }
 
       const clientDisplayName = (confirmedName || customerName || 'Cliente').trim();
+      const promo = getPromoDetails();
+      const subtotalNum = promo.subtotalNum;
+      const discountNum = promo.discountNum;
+      const totalNum = promo.totalNum;
+      const subtotalFormatted = formatCurrency(subtotalNum);
+      const discountFormatted = formatCurrency(discountNum);
+      const totalFormatted = formatCurrency(totalNum);
 
       // 1. Guardar copia en HISTORIAL
       let savedOrder = null;
@@ -4445,21 +5015,22 @@
         const orderNumberStr = '#' + String(orderSeq).padStart(3, '0');
         const orderIdStr = 'ORD-' + String(orderSeq).padStart(3, '0') + '-' + Date.now().toString(36);
 
-        const orderItems = items.map(item => ({
-          id: item.id,
-          name: item.name,
-          qty: item.qty,
-          price: item.price,
-          priceNum: item.priceNum,
-          subtotal: formatCurrency(item.priceNum * item.qty),
-          img: item.img || null,
-          emoji: item.emoji || null,
-          desc: item.desc || '',
-          isCustom: !!item.isCustom
-        }));
-
-        const totalNum = getCartTotalPrice();
-        const totalFormatted = formatCurrency(totalNum);
+        const orderItems = items.map(item => {
+          const isFree = promo.active && item.id === promo.freeItemId;
+          return {
+            id: item.id,
+            name: item.name,
+            qty: item.qty,
+            price: item.price,
+            priceNum: item.priceNum,
+            subtotal: formatCurrency(item.priceNum * item.qty),
+            isFreeUnit: isFree,
+            img: item.img || null,
+            emoji: item.emoji || null,
+            desc: item.desc || '',
+            isCustom: !!item.isCustom
+          };
+        });
 
         const newOrder = {
           id: orderIdStr,
@@ -4471,6 +5042,13 @@
           timestamp: now.getTime(),
           items: orderItems,
           totalUnits: getCartTotalUnits(),
+          subtotal: subtotalFormatted,
+          subtotalNum: subtotalNum,
+          discount: discountFormatted,
+          discountNum: discountNum,
+          promoApplied: promo.active && discountNum > 0,
+          freeItemId: promo.freeItemId,
+          freeItemName: promo.freeItemName,
           total: totalFormatted,
           totalNum: totalNum,
           status: 'ENVIADO A WHATSAPP'
@@ -4491,14 +5069,27 @@
       let msg = `Hola, soy ${clientDisplayName} 👋\n\nMi pedido es:\n\n`;
 
       items.forEach(item => {
-        const itemSubtotal = formatCurrency(item.priceNum * item.qty);
-        msg += `• ${item.qty} × ${item.name} — ${itemSubtotal}\n`;
+        const isFree = promo.active && item.id === promo.freeItemId;
+        if (isFree) {
+          msg += `• 1 × ${item.name} — GRATIS\n`;
+          if (item.qty > 1) {
+            const paidQty = item.qty - 1;
+            const paidSubtotal = formatCurrency(item.priceNum * paidQty);
+            msg += `• ${paidQty} × ${item.name} — ${paidSubtotal}\n`;
+          }
+        } else {
+          const itemSubtotal = formatCurrency(item.priceNum * item.qty);
+          msg += `• ${item.qty} × ${item.name} — ${itemSubtotal}\n`;
+        }
         if (item.isCustom && item.desc) {
           msg += `   (${item.desc})\n`;
         }
       });
 
-      const totalFormatted = formatCurrency(getCartTotalPrice());
+      if (promo.active && discountNum > 0) {
+        msg += `\nDescuento Día TYANGO: -${discountFormatted}\n`;
+      }
+
       msg += `\nTOTAL: ${totalFormatted}`;
 
       // 3. Generar y validar el enlace de WhatsApp con el número oficial 593994124996
@@ -4871,6 +5462,14 @@
       if (btnCreate) {
         const canSubmit = fruitCount > 0 && !!customState.selectedSize && customState.disclaimerAccepted;
         btnCreate.disabled = !canSubmit;
+        const currentSize = customizerData.sizes.find(s => s.id === customState.selectedSize) || customizerData.sizes[0];
+        const promo = getPromoDetails();
+        const hasGift = promo.active && !!promo.freeItemId;
+        if (PROMOTION_ENABLED && !hasGift) {
+          btnCreate.textContent = 'CREAR MI TYANGO — GRATIS';
+        } else {
+          btnCreate.textContent = `AGREGAR AL CARRITO — ${formatCurrency(currentSize.price * customState.quantity)}`;
+        }
       }
     }
 
@@ -4907,6 +5506,14 @@
 
       const descLine = `${fruitNames} • ${toppingNames} • ${currentSize.name}`;
 
+      const promo = getPromoDetails();
+      const hasGift = promo.active && !!promo.freeItemId;
+      if (PROMOTION_ENABLED && !hasGift) {
+        isGiftChangeActive = false;
+        freeGiftId = customId;
+        saveFreeGiftToStorage();
+      }
+
       // Si ya existe la misma combinación personalizada en el carrito, sumar cantidades
       if (cart[customId]) {
         cart[customId].qty += customState.quantity;
@@ -4918,6 +5525,8 @@
           price: formatCurrency(unitPrice),
           priceNum: unitPrice,
           qty: customState.quantity,
+          addedSeq: ++cartSequenceCounter,
+          addedAt: Date.now(),
           emoji: '🥭',
           isCustom: true
         };
@@ -4968,8 +5577,7 @@
           ? `<div class="card-season">${item.seasonInfo}</div>` 
           : '';
 
-        const qty = (item.id && cart[item.id]) ? cart[item.id].qty : 0;
-        const buttonMarkup = item.id ? renderCardButtonMarkup(item.id, qty, item.name) : '';
+        const actionBarMarkup = item.id ? renderCardActionBar(item.id) : `<span class="card-price">${item.price}</span>`;
 
         card.innerHTML = `
           <div class="card-img" style="${item.bg ? 'background:' + item.bg : ''}">
@@ -4981,8 +5589,7 @@
             ${seasonMarkup}
             <p class="card-desc">${item.desc}</p>
             <div class="card-action-bar">
-              <span class="card-price">${item.price}</span>
-              ${buttonMarkup}
+              ${actionBarMarkup}
             </div>
           </div>`;
         grid.appendChild(card);
