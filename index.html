@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>TYANGO — Frescura y sabor en cada creación</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +12,13 @@
        TYANGO DESIGN SYSTEM — TOKENS & VARIABLES GLOBALES
     ═══════════════════════════════════════════════════════════════ */
     :root {
+      /* Layout & Safe Areas */
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --header-nav-h: 60px;
+      --promo-banner-h: 34px;
+      --header-total-h: calc(var(--header-nav-h) + var(--promo-banner-h));
+
       /* Paleta de Color Oficial */
       --purple-dark: #4A1942;
       --purple-mid: #7B5B7B;
@@ -92,12 +99,13 @@
       right: 0;
       z-index: 100;
       background: var(--purple-dark);
-      height: 64px;
+      padding-top: var(--safe-top);
+      height: auto;
       transition: box-shadow var(--transition-base), background var(--transition-base);
     }
     .header.scrolled {
-      box-shadow: 0 4px 24px rgba(74, 25, 66, 0.4);
-      background: rgba(74, 25, 66, 0.96);
+      box-shadow: 0 4px 20px rgba(74, 25, 66, 0.45);
+      background: rgba(74, 25, 66, 0.98);
       backdrop-filter: blur(8px);
     }
 
@@ -108,7 +116,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 100%;
+      height: var(--header-nav-h);
     }
 
     /* Logo TYANGO */
@@ -1089,8 +1097,10 @@
     ═══════════════════════════════════════════════════════════════ */
     .page {
       display: none;
-      margin-top: 64px;
-      min-height: calc(100vh - 64px);
+      padding-top: var(--header-actual-h, calc(var(--header-total-h) + var(--safe-top)));
+      margin-top: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
       opacity: 0;
       transition: opacity var(--transition-base);
     }
@@ -1225,8 +1235,9 @@
 
     /* SECCIÓN 1: HERO */
     .home-hero {
-      padding: 64px 20px 52px;
-      min-height: calc(80vh - 64px);
+      padding: 44px 20px 44px;
+      min-height: calc(75vh - var(--header-total-h));
+      min-height: calc(75dvh - var(--header-total-h));
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2553,66 +2564,73 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════
-       PROMOCIÓN TEMPORAL — ELIGE 1 GRATIS
+       AVISO COMPACTO DE PROMOCIÓN — ELIGE 1 GRATIS
     ═══════════════════════════════════════════════════════════════ */
     .promo-banner-global {
-      background: linear-gradient(135deg, #3D1236 0%, #4A1942 100%);
+      background: linear-gradient(90deg, #320e2c 0%, #3D1236 50%, #320e2c 100%);
       color: var(--white);
-      padding: 10px 20px;
+      padding: 4px 16px;
       text-align: center;
-      border-bottom: 1.5px solid rgba(212, 217, 140, 0.28);
+      border-bottom: 1px solid rgba(212, 217, 140, 0.22);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
-      position: relative;
-      z-index: 90;
+      width: 100%;
+      min-height: var(--promo-banner-h);
+      box-sizing: border-box;
+      line-height: 1.25;
       transition: all var(--transition-fast);
     }
-    .promo-banner-badge {
-      display: inline-block;
-      font-size: 0.64rem;
-      font-weight: 900;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--lime);
-      background: rgba(212, 217, 140, 0.14);
-      border: 1px solid rgba(212, 217, 140, 0.35);
-      padding: 2px 9px;
-      border-radius: var(--radius-full);
-    }
-    .promo-banner-title {
-      font-size: 1rem;
-      font-weight: 900;
-      color: var(--white);
-      margin: 1px 0 0;
-      letter-spacing: 0.02em;
+    .promo-banner-inner {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .promo-banner-headline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      color: var(--lime);
+      text-transform: uppercase;
+    }
+    .promo-gift-icon {
+      color: var(--lime);
+      flex-shrink: 0;
+      width: 13px;
+      height: 13px;
+      vertical-align: middle;
+    }
+    .promo-banner-title {
+      display: inline;
+      font-weight: 900;
+      color: var(--lime);
     }
     .promo-banner-subtitle {
-      font-size: 0.74rem;
+      font-size: 0.70rem;
       color: rgba(255, 255, 255, 0.85);
-      margin: 0;
       font-weight: 500;
       letter-spacing: 0.01em;
     }
     .btn-banner-change {
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: var(--white);
-      padding: 2px 8px;
+      padding: 1px 7px;
       border-radius: var(--radius-full);
-      font-size: 0.70rem;
+      font-size: 0.65rem;
       font-weight: 800;
       cursor: pointer;
+      margin-left: 4px;
       transition: all var(--transition-fast);
     }
     .btn-banner-change:hover {
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.28);
     }
     .btn-choose-gift {
       background: var(--lime) !important;
@@ -2755,16 +2773,25 @@
     }
 
     @media (max-width: 768px) {
+      :root {
+        --header-nav-h: 52px;
+        --promo-banner-h: 32px;
+      }
+
       /* Header en Mobile: Ocultar barra horizontal para dar espacio limpio al logo y ☰ */
       .header-nav {
         display: none !important;
       }
+      .header {
+        height: auto;
+      }
       .header-inner {
+        height: var(--header-nav-h);
         padding: 0 16px;
       }
       .header-logo-img {
-        height: 36px;
-        max-width: 115px;
+        height: 34px;
+        max-width: 110px;
       }
       .header-hamburger {
         padding: 8px;
@@ -2774,21 +2801,46 @@
         height: 3px;
       }
 
-      /* Hero Mobile */
+      /* Banner de Promoción Ultra Compacto en Mobile */
+      .promo-banner-global {
+        padding: 4px 12px;
+        min-height: var(--promo-banner-h);
+      }
+      .promo-banner-inner {
+        gap: 4px 8px;
+      }
+      .promo-banner-headline {
+        font-size: 0.72rem;
+      }
+      .promo-banner-subtitle {
+        font-size: 0.67rem;
+      }
+
+      /* Layout de Página Mobile */
+      .page {
+        margin-top: 0;
+        padding-top: var(--header-actual-h, calc(var(--header-total-h) + var(--safe-top)));
+        min-height: 100dvh;
+        padding-bottom: calc(70px + var(--safe-bottom));
+      }
+
+      /* Hero Mobile — Compacto, visible de inmediato bajo el banner */
       .home-hero {
-        padding: 44px 16px 36px;
+        padding: 20px 16px 22px;
         min-height: auto;
       }
       .home-hero h1 {
-        font-size: clamp(2.1rem, 8vw, 3rem);
+        font-size: clamp(1.75rem, 6.5vw, 2.15rem);
+        margin-bottom: 6px;
+        line-height: 1.15;
       }
-      .header {
-        height: 52px;
+      .hero-tagline {
+        font-size: 0.92rem;
+        margin-bottom: 6px;
       }
-      .page {
-        margin-top: 52px;
-        min-height: calc(100vh - 52px);
-        padding-bottom: 70px;
+      .hero-desc {
+        font-size: 0.82rem;
+        margin-bottom: 16px;
       }
       .hero-btn-group {
         flex-direction: column;
@@ -2799,23 +2851,6 @@
         width: 100%;
         min-height: 46px;
         font-size: 0.88rem;
-      }
-
-      /* Secciones Mobile más compactas */
-      .home-hero {
-        padding: 30px 16px 20px;
-      }
-      .home-hero h1 {
-        font-size: 1.85rem;
-        margin-bottom: 6px;
-      }
-      .hero-tagline {
-        font-size: 0.92rem;
-        margin-bottom: 6px;
-      }
-      .hero-desc {
-        font-size: 0.82rem;
-        margin-bottom: 16px;
       }
       .home-about, .home-discover, .home-favs, .home-dna, .home-customizer {
         padding: 26px 16px;
@@ -3182,14 +3217,18 @@
       </div>
 
     </div>
-  </header>
 
-  <!-- ═══════ BANNER DE PROMOCIÓN TEMPORAL — ELIGE 1 GRATIS ═══════ -->
-  <aside class="promo-banner-global" id="globalPromoBanner" aria-label="Promoción especial activa: Elige 1 Gratis">
-    <span class="promo-banner-badge" id="promoBannerBadge">ELIGE 1 GRATIS</span>
-    <h3 class="promo-banner-title" id="promoBannerTitle">Escoge cualquier producto de nuestro menú como regalo.</h3>
-    <p class="promo-banner-subtitle" id="promoBannerSubtitle">1 unidad gratis por pedido. Las unidades adicionales se cobran a precio normal.</p>
-  </aside>
+    <!-- ═══════ AVISO COMPACTO DE PROMOCIÓN — ELIGE 1 GRATIS ═══════ -->
+    <aside class="promo-banner-global" id="globalPromoBanner" aria-label="Promoción activa: Elige 1 Gratis">
+      <div class="promo-banner-inner" id="promoBannerInner">
+        <div class="promo-banner-headline">
+          <svg class="promo-gift-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+          <span class="promo-banner-title" id="promoBannerTitle">ELIGE 1 GRATIS</span>
+        </div>
+        <span class="promo-banner-subtitle" id="promoBannerSubtitle">Los demás se cobran a precio normal.</span>
+      </div>
+    </aside>
+  </header>
 
   <!-- Menú secundario (Desktop) -->
   <aside class="secondary-menu" id="secondaryMenu" aria-label="Menú secundario">
@@ -4482,6 +4521,13 @@
       }
     }
 
+    function syncHeaderHeight() {
+      const header = typeof document !== 'undefined' && document.getElementById ? document.getElementById('header') : null;
+      if (header && typeof header.offsetHeight === 'number' && header.offsetHeight > 0 && document.documentElement && document.documentElement.style) {
+        document.documentElement.style.setProperty('--header-actual-h', `${header.offsetHeight}px`);
+      }
+    }
+
     function updatePromoBannersUI() {
       const banner = document.getElementById('globalPromoBanner');
       if (banner) {
@@ -4492,7 +4538,10 @@
         cartPill.style.display = PROMOTION_ENABLED ? 'block' : 'none';
       }
 
-      if (!PROMOTION_ENABLED) return;
+      if (!PROMOTION_ENABLED) {
+        syncHeaderHeight();
+        return;
+      }
 
       const badgeEl = document.getElementById('promoBannerBadge');
       const titleEl = document.getElementById('promoBannerTitle');
@@ -4506,7 +4555,7 @@
           titleEl.innerHTML = `1 REGALO ELEGIDO: <strong>${promo.freeItemName}</strong> <button type="button" class="btn-banner-change" onclick="triggerChangeGift()">Cambiar</button>`;
         }
         if (subtitleEl) {
-          subtitleEl.textContent = 'Tu primera unidad es gratis. Las unidades adicionales se cobran a precio normal.';
+          subtitleEl.textContent = 'Los demás se cobran a precio normal.';
         }
         if (cartPill) {
           cartPill.innerHTML = `<strong>1 REGALO ELEGIDO:</strong> ${promo.freeItemName} (Gratis) · Puedes cambiarlo en cualquier momento.`;
@@ -4514,15 +4563,17 @@
       } else {
         if (badgeEl) badgeEl.textContent = 'ELIGE 1 GRATIS';
         if (titleEl) {
-          titleEl.textContent = 'Escoge cualquier producto de nuestro menú como regalo.';
+          titleEl.textContent = 'ELIGE 1 GRATIS';
         }
         if (subtitleEl) {
-          subtitleEl.textContent = '1 unidad gratis por pedido. Las unidades adicionales se cobran a precio normal.';
+          subtitleEl.textContent = 'Los demás se cobran a precio normal.';
         }
         if (cartPill) {
           cartPill.innerHTML = `<strong>ELIGE 1 GRATIS:</strong> Escoge cualquier producto de nuestro menú como regalo.`;
         }
       }
+
+      syncHeaderHeight();
     }
 
     function updateCartUI() {
@@ -5791,12 +5842,16 @@
       renderGrid('grid-favs', favorites);
       renderCustomizer();
       updateCartUI();
+      syncHeaderHeight();
 
       ['home','hot','ice','bowls','azuca'].forEach(cat => {
         const el = document.getElementById('footer-' + cat);
         if (el) el.innerHTML = footerHTML;
       });
     });
+
+    window.addEventListener('resize', syncHeaderHeight);
+    window.addEventListener('orientationchange', () => setTimeout(syncHeaderHeight, 100));
   </script>
 
 </body>
