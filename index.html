@@ -3219,7 +3219,7 @@
     </div>
 
     <!-- ═══════ AVISO COMPACTO DE PROMOCIÓN — ELIGE 1 GRATIS ═══════ -->
-    <aside class="promo-banner-global" id="globalPromoBanner" aria-label="Promoción activa: Elige 1 Gratis">
+    <aside class="promo-banner-global" id="globalPromoBanner" style="display: none;" aria-label="Promoción activa: Elige 1 Gratis">
       <div class="promo-banner-inner" id="promoBannerInner">
         <div class="promo-banner-headline">
           <svg class="promo-gift-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
@@ -3342,7 +3342,7 @@
     </div>
 
     <!-- Banner de Promoción en Carrito -->
-    <div class="cart-promo-pill" id="cartPromoPill">
+    <div class="cart-promo-pill" id="cartPromoPill" style="display: none;">
       <strong>ELIGE 1 GRATIS:</strong> Escoge cualquier producto de nuestro menú como regalo.
     </div>
 
@@ -4199,7 +4199,7 @@
     /* ═══════════════════════════════════════════════════════════════
        CONFIGURACIÓN DE PROMOCIÓN TEMPORAL — ELIGE 1 GRATIS
     ═══════════════════════════════════════════════════════════════ */
-    let PROMOTION_ENABLED = true;
+    let PROMOTION_ENABLED = false;
     window.PROMOTION_ENABLED = PROMOTION_ENABLED;
 
     const FREE_GIFT_STORAGE_KEY = 'tyango_free_gift_id_v2';
@@ -4248,6 +4248,14 @@
     }
 
     function loadFreeGiftFromStorage() {
+      if (!PROMOTION_ENABLED) {
+        freeGiftId = null;
+        try {
+          localStorage.removeItem(FREE_GIFT_STORAGE_KEY);
+        } catch (e) {}
+        window.freeGiftId = null;
+        return;
+      }
       try {
         const saved = localStorage.getItem(FREE_GIFT_STORAGE_KEY);
         if (saved && cart[saved]) {
