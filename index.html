@@ -4850,16 +4850,139 @@
     <footer class="footer" id="footer-home" role="contentinfo"></footer>
   </main>
 
-  <!-- ═══════ PAGE: TYHOT ═══════ -->
+  <!-- ═══════ PAGE: TYHOT (CARRUSEL INTERACTIVO 3D AGRUMEA) ═══════ -->
   <main class="page" id="page-hot" role="main">
-    <div class="cat-header bg-hot">
-      <span class="section-badge" style="background:rgba(232,93,48,0.15);color:#D94E20">FRESCO, JUGOSO Y PICANTE</span>
-      <h1 class="cat-title">TYHOT</h1>
-      <p class="cat-subtitle">Fruta fresca con aderezos de Nochixtlán, Oaxaca.</p>
-    </div>
-    <div class="cat-products bg-hot">
-      <div class="products-grid" id="grid-hot"></div>
-    </div>
+    <section class="tyazuca-agrumea-section" id="tyhotAgrumeaRoot">
+      <!-- 1. CABECERA DINÁMICA QUE LLENA EL ESPACIO BLANCO SUPERIOR -->
+      <div class="tyazuca-agrumea-header">
+        <span class="tyazuca-eyebrow">Línea Picosita &amp; Frutas Frescas</span>
+        <div class="tyazuca-dynamic-header-inner" id="tyhotDynamicHeaderInner">
+          <span class="tyazuca-header-tag-pill" id="tyhotHeaderTagPill">FAVORITO</span>
+          <h2 class="tyazuca-header-active-name" id="tyhotHeaderActiveName">TYANGO CLÁSICO</h2>
+          <p class="tyazuca-header-active-desc" id="tyhotHeaderActiveDesc">Trocitos de mango fresco con salsas picantes y chilito en polvo</p>
+        </div>
+      </div>
+
+      <!-- Título Display Gigante & Resplandor (Vista Detalle) -->
+      <div class="tyazuca-detail-backdrop" id="tyhotDetailBackdrop">
+        <div class="tyazuca-display-watermark" id="tyhotWatermark">TYANGO CLÁSICO</div>
+        <div class="tyazuca-glow-orb" id="tyhotGlowOrb"></div>
+      </div>
+
+      <!-- 2. Escenario del Carrusel Interactivo -->
+      <div class="tyazuca-stage" id="tyhotStage">
+        <!-- Flechas de navegación -->
+        <button type="button" class="tyazuca-arrow-btn prev-btn" id="tyhotPrevBtn" aria-label="Producto anterior">←</button>
+        <button type="button" class="tyazuca-arrow-btn next-btn" id="tyhotNextBtn" aria-label="Producto siguiente">→</button>
+
+        <!-- Vasos 3D: Izquierdo, Central, Derecho -->
+        <div class="tyazuca-cup cup-prev" id="tyhotCupPrev" title="Clic para ir al anterior">
+          <div class="tyazuca-cup-inner">
+            <img src="uva-pulpa.jpg" alt="" class="tyazuca-cup-photo" id="tyhotImgPrev">
+            <div class="tyazuca-cup-glare"></div>
+            <span class="tyazuca-cup-pill" id="tyhotPillPrev">UVA PULPA</span>
+          </div>
+        </div>
+
+        <div class="tyazuca-cup cup-active" id="tyhotCupActive" title="Haz clic para ver detalles">
+          <div class="tyazuca-cup-inner">
+            <img src="tyango-clasico.jpg" alt="" class="tyazuca-cup-photo" id="tyhotImgActive">
+            <div class="tyazuca-cup-glare"></div>
+            <span class="tyazuca-cup-pill" id="tyhotPillActive">✨ VER DETALLES</span>
+          </div>
+        </div>
+
+        <div class="tyazuca-cup cup-next" id="tyhotCupNext" title="Clic para ir al siguiente">
+          <div class="tyazuca-cup-inner">
+            <img src="bendito-mango.jpg" alt="" class="tyazuca-cup-photo" id="tyhotImgNext">
+            <div class="tyazuca-cup-glare"></div>
+            <span class="tyazuca-cup-pill" id="tyhotPillNext">BENDITO MANGO</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. OVERLAY DE INFORMACIÓN A PANTALLA COMPLETA (VISTA DETALLE FIJA) -->
+      <div class="tyazuca-detail-overlay" id="tyhotDetailOverlay">
+        <!-- Mitad Superior: Halo de color suave + Tarjeta interactiva con swipe horizontal -->
+        <div class="tyazuca-detail-top-half">
+          <div class="tyazuca-detail-watermark-wrap">
+            <div class="tyazuca-detail-top-glow" id="tyhotTopGlow"></div>
+          </div>
+          <div class="tyazuca-detail-active-card" id="tyhotDetailActiveCard" title="Desliza para cambiar de vaso">
+            <img src="tyango-clasico.jpg" alt="" class="tyazuca-detail-active-img" id="tyhotDetailActiveImg">
+          </div>
+        </div>
+
+        <!-- Mitad Inferior: Bottom Sheet blanco más alto y deslizable -->
+        <div class="tyazuca-detail-sheet-card" id="tyhotSheetCard">
+          <div class="tyazuca-sheet-handle" onclick="setTyhotDetail(false)" title="Cerrar detalle"></div>
+
+          <div class="tyazuca-detail-info-block">
+            <div class="tyazuca-detail-header-row">
+              <span class="tyazuca-tag-badge tag-orange" id="tyhotTagBadge">FAVORITO</span>
+              <button type="button" class="tyazuca-close-x-btn" onclick="setTyhotDetail(false)" aria-label="Cerrar">✕</button>
+            </div>
+            <h2 class="tyazuca-detail-name" id="tyhotDetailName">TYANGO CLÁSICO</h2>
+            <p class="tyazuca-detail-desc" id="tyhotDetailDesc">Trocitos de mango fresco con salsas picantes y chilito en polvo</p>
+            <p class="tyazuca-detail-trust-line">
+              <span class="tyazuca-detail-trust-dot" id="tyhotTrustDot" style="background:#C84B31"></span>
+              <span>Preparado al momento con fruta 100% fresca</span>
+            </p>
+
+            <!-- 2. Personaliza tu vaso (Opcional) -->
+            <div class="tyazuca-extras-section">
+              <span class="tyazuca-extras-title">PERSONALIZA TU VASO (OPCIONAL)</span>
+              <div class="tyazuca-extras-pills" id="tyhotExtrasContainer"></div>
+            </div>
+          </div>
+
+          <div class="tyazuca-detail-action-block">
+            <div class="tyazuca-price-wrap">
+              <span class="tyazuca-price-label">PRECIO OFICIAL</span>
+              <div class="tyazuca-price-val" id="tyhotDetailPrice">$4.50</div>
+            </div>
+            <button type="button" class="tyazuca-btn-add" id="tyhotBtnAdd" style="background:#C84B31">
+              <span>+</span>
+              <span>AGREGAR</span>
+            </button>
+          </div>
+
+          <button type="button" class="tyazuca-btn-back" id="tyhotBtnBack" onclick="setTyhotDetail(false)">
+            <span>← VOLVER AL MENÚ</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CÍRCULO RESPONSIVE: 240vw en móvil para que cubra todo hasta abajo y mantenga la curva de PC -->
+      <div class="tyazuca-arc-disk" id="tyhotArcDisk" style="background-color:#C84B31">
+        <svg viewBox="0 0 1200 1200" class="tyazuca-svg-text" id="tyhotSvgText">
+          <defs>
+            <path
+              id="tyhotCircleArc"
+              d="M 55,600 A 545,545 0 1,1 1145,600 A 545,545 0 1,1 55,600"
+              fill="transparent"
+            />
+          </defs>
+          <text class="fill-white text-[48px] md:text-[68px] font-serif uppercase tracking-[0.16em]" font-family="'Playfair Display', Georgia, serif" fill="#FFFFFF" letter-spacing="0.16em">
+            <textPath href="#tyhotCircleArc" startOffset="0%">
+              • FRUTAS FRESCAS • CHAMOY Y CHILITO • TYHOT • PICANTE Y SABOR • FRUTA CON CHAMOY • TYHOT • PICANTE Y SABOR •
+            </textPath>
+          </text>
+        </svg>
+      </div>
+
+      <!-- Dots y Botón para ver detalles -->
+      <div class="tyazuca-bottom-bar-wrap" id="tyhotBottomBarWrap">
+        <div class="tyazuca-dots" id="tyhotDots"></div>
+
+        <button type="button" class="tyazuca-scroll-hint-btn" onclick="setTyhotDetail(true)">
+          <span>Toca el vaso para ver detalles y pedir ↑</span>
+        </button>
+      </div>
+
+      <!-- Cuadrícula oculta por compatibilidad -->
+      <div id="grid-hot" style="display: none;"></div>
+    </section>
     <footer class="footer" id="footer-hot" role="contentinfo"></footer>
   </main>
 
@@ -7043,6 +7166,11 @@
             if (typeof updateTyazucaCarouselUI === 'function') updateTyazucaCarouselUI();
           }
 
+          if (page === 'hot' && typeof setTyhotDetail === 'function') {
+            setTyhotDetail(false);
+            if (typeof updateTyhotCarouselUI === 'function') updateTyhotCarouselUI();
+          }
+
           // Re-animar tarjetas
           if (page !== 'home') {
             next.querySelectorAll('.card').forEach((c, i) => {
@@ -7633,6 +7761,499 @@
       updateTyazucaCarouselUI();
     }
 
+    /* ═══════ CARRUSEL 3D INTERACTIVO AGRUMEA — TYHOT ═══════ */
+    const tyhotItems = [
+      {
+        id: 'hot_tyango_clasico',
+        name: 'TYANGO CLÁSICO',
+        displayName: 'TYANGO CLÁSICO',
+        tag: 'FAVORITO',
+        tagType: 'orange',
+        desc: 'Trocitos de mango fresco con salsas picantes y chilito en polvo',
+        price: '$4.50',
+        priceNum: 4.50,
+        arcColor: '#C84B31',
+        themeColor: '#C84B31',
+        img: 'tyango-clasico.jpg'
+      },
+      {
+        id: 'hot_bendito_mango',
+        name: 'BENDITO MANGO',
+        displayName: 'BENDITO MANGO',
+        tag: 'POPULAR',
+        tagType: 'orange',
+        desc: 'Mango fresco bañado en chamoy con cintas de gomita ácida azul',
+        price: '$4.80',
+        priceNum: 4.80,
+        arcColor: '#D05A28',
+        themeColor: '#D05A28',
+        img: 'bendito-mango.jpg'
+      },
+      {
+        id: 'hot_takimango',
+        name: 'TAKIMANGO',
+        displayName: 'TAKIMANGO',
+        tag: 'NUEVO',
+        tagType: 'red',
+        desc: 'Delicioso mango en cubos mezclado con crujientes Takis fuego',
+        price: '$5.00',
+        priceNum: 5.00,
+        arcColor: '#9E2A2B',
+        themeColor: '#9E2A2B',
+        img: 'takimango.jpg'
+      },
+      {
+        id: 'hot_pinadiablo',
+        name: 'PINADIABLO',
+        displayName: 'PIÑA DIABLO',
+        tag: 'PICANTE',
+        tagType: 'red',
+        desc: 'Piña fresca en cubos con salsa especial picante y chilito de la casa',
+        price: '$4.50',
+        priceNum: 4.50,
+        arcColor: '#B83B1E',
+        themeColor: '#B83B1E',
+        img: 'pinadiablo.jpg'
+      },
+      {
+        id: 'hot_pepinazo',
+        name: 'PEPINAZO',
+        displayName: 'PEPINAZO FRESH',
+        tag: 'REFRESCANTE',
+        tagType: 'green',
+        desc: 'Pepino crujiente en cubos con limón, salsa picante y chilito',
+        price: '$4.00',
+        priceNum: 4.00,
+        arcColor: '#2D6A4F',
+        themeColor: '#2D6A4F',
+        img: 'pepinazo.jpg'
+      },
+      {
+        id: 'hot_picazana',
+        name: 'PICAZANA',
+        displayName: 'MANZANA PICAZANA',
+        tag: 'CLÁSICO',
+        tagType: 'red',
+        desc: 'Manzana crujiente en cubos y gajos con chamoy y chilito en polvo',
+        price: '$4.50',
+        priceNum: 4.50,
+        arcColor: '#A3333D',
+        themeColor: '#A3333D',
+        img: 'picazana.jpg'
+      },
+      {
+        id: 'hot_iceuva',
+        name: 'ICEUVA',
+        displayName: 'ICE UVA HELADA',
+        tag: 'EDICIÓN LIMITADA',
+        tagType: 'green',
+        desc: 'Uvas verdes congeladas y escarchadas con limón y chilito',
+        price: '$4.50',
+        priceNum: 4.50,
+        arcColor: '#52B788',
+        themeColor: '#52B788',
+        img: 'iceuva.jpg'
+      },
+      {
+        id: 'hot_uva_pulpa',
+        name: 'UVA PULPA',
+        displayName: 'UVA TAMARINDO',
+        tag: 'TOP VENTAS',
+        tagType: 'orange',
+        desc: 'Uvas envueltas en pulpa de tamarindo natural y escarchadas',
+        price: '$4.80',
+        priceNum: 4.80,
+        arcColor: '#7B2CBF',
+        themeColor: '#7B2CBF',
+        img: 'uva-pulpa.jpg'
+      }
+    ];
+
+    const TYHOT_EXTRAS = [
+      { id: 'extra-chamoy', name: 'Extra Chamoy de la casa', price: 0.75, label: '+ Extra Chamoy (+$0.75)' },
+      { id: 'extra-takis', name: 'Topping extra de Takis', price: 1.00, label: '+ Extra Takis (+$1.00)' },
+      { id: 'extra-gomitas', name: 'Cintas ácidas extra', price: 0.75, label: '+ Cintas ácidas (+$0.75)' }
+    ];
+
+    let tyhotCurrentIdx = 0;
+    let tyhotIsDetail = false;
+    let tyhotSelectedExtras = [];
+
+    function getTyhotCurrentPrice() {
+      const current = tyhotItems[tyhotCurrentIdx];
+      const base = current.priceNum || parsePriceNumber(current.price) || 4.50;
+      const extrasCost = tyhotSelectedExtras.reduce((sum, id) => {
+        const ex = TYHOT_EXTRAS.find(e => e.id === id);
+        return sum + (ex ? ex.price : 0);
+      }, 0);
+      return base + extrasCost;
+    }
+
+    function toggleTyhotExtra(extraId) {
+      const idx = tyhotSelectedExtras.indexOf(extraId);
+      if (idx > -1) {
+        tyhotSelectedExtras.splice(idx, 1);
+      } else {
+        tyhotSelectedExtras.push(extraId);
+      }
+      renderTyhotExtrasUI();
+      const priceEl = document.getElementById('tyhotDetailPrice');
+      if (priceEl) {
+        priceEl.textContent = formatCurrency(getTyhotCurrentPrice());
+      }
+    }
+
+    function renderTyhotExtrasUI() {
+      const container = document.getElementById('tyhotExtrasContainer');
+      if (!container) return;
+      const current = tyhotItems[tyhotCurrentIdx];
+      container.innerHTML = TYHOT_EXTRAS.map(extra => {
+        const isSel = tyhotSelectedExtras.includes(extra.id);
+        const activeStyle = isSel ? `style="background-color:${current.themeColor};border-color:${current.themeColor};color:#FFFFFF;"` : '';
+        return `<button type="button" class="tyazuca-extra-pill ${isSel ? 'selected' : ''}" ${activeStyle} onclick="toggleTyhotExtra('${extra.id}')">${extra.label}</button>`;
+      }).join('');
+    }
+
+    function addCustomTyhotToCart(prod, extrasList, totalPriceNum) {
+      const current = prod || tyhotItems[tyhotCurrentIdx];
+      const extras = extrasList || tyhotSelectedExtras;
+      if (!extras || extras.length === 0) {
+        addToCart(current.id);
+        return;
+      }
+      const extraObjs = extras.map(id => TYHOT_EXTRAS.find(e => e.id === id)).filter(Boolean);
+      const extraNames = extraObjs.map(e => e.name);
+      const extraCost = extraObjs.reduce((sum, e) => sum + e.price, 0);
+      const baseNum = current.priceNum || parsePriceNumber(current.price) || 4.50;
+      const totalNum = totalPriceNum || (baseNum + extraCost);
+      const totalFormatted = formatCurrency(totalNum);
+      const sortedIds = extras.slice().sort().join('_');
+      const cartItemId = `${current.id}_extras_${sortedIds}`;
+      const customDesc = `Con extras: ${extraNames.join(', ')}`;
+
+      if (cart[cartItemId]) {
+        cart[cartItemId].qty += 1;
+      } else {
+        cart[cartItemId] = {
+          id: cartItemId,
+          baseId: current.id,
+          name: `${current.name} (Personalizado)`,
+          desc: customDesc,
+          price: totalFormatted,
+          priceNum: totalNum,
+          qty: 1,
+          addedSeq: ++cartSequenceCounter,
+          addedAt: Date.now(),
+          img: current.img || null,
+          emoji: '🔥',
+          customCardClass: null,
+          isCustom: true,
+          extras: extraNames
+        };
+      }
+      saveCartToStorage();
+      triggerCartBadgeBump();
+    }
+
+    window.toggleTyhotExtra = toggleTyhotExtra;
+    window.addCustomTyhotToCart = addCustomTyhotToCart;
+    window.TYHOT_EXTRAS = TYHOT_EXTRAS;
+    window.tyhotItems = tyhotItems;
+
+    function updateTyhotCarouselUI() {
+      const total = tyhotItems.length;
+      const prevIdx = (tyhotCurrentIdx - 1 + total) % total;
+      const nextIdx = (tyhotCurrentIdx + 1) % total;
+
+      const current = tyhotItems[tyhotCurrentIdx];
+      const prev = tyhotItems[prevIdx];
+      const next = tyhotItems[nextIdx];
+
+      const imgPrev = document.getElementById('tyhotImgPrev');
+      const pillPrev = document.getElementById('tyhotPillPrev');
+      if (imgPrev) imgPrev.src = prev.img;
+      if (pillPrev) pillPrev.textContent = prev.name;
+
+      const imgActive = document.getElementById('tyhotImgActive');
+      if (imgActive) imgActive.src = current.img;
+
+      const imgNext = document.getElementById('tyhotImgNext');
+      const pillNext = document.getElementById('tyhotPillNext');
+      if (imgNext) imgNext.src = next.img;
+      if (pillNext) pillNext.textContent = next.name;
+
+      const arcDisk = document.getElementById('tyhotArcDisk');
+      if (arcDisk) {
+        arcDisk.style.backgroundColor = current.arcColor || current.themeColor;
+        arcDisk.style.boxShadow = `0 -18px 50px ${current.arcColor || current.themeColor}55`;
+      }
+      const glowOrb = document.getElementById('tyhotGlowOrb');
+      if (glowOrb) glowOrb.style.backgroundColor = current.arcColor || current.themeColor;
+
+      const svgText = document.getElementById('tyhotSvgText');
+      if (svgText) {
+        svgText.style.transform = `rotate(${tyhotCurrentIdx * -25}deg)`;
+      }
+
+      const headerTagPill = document.getElementById('tyhotHeaderTagPill');
+      if (headerTagPill) {
+        headerTagPill.textContent = current.tag || 'ESPECIALIDAD TYHOT';
+        headerTagPill.style.backgroundColor = `${current.themeColor}18`;
+        headerTagPill.style.color = current.themeColor;
+      }
+
+      const headerActiveName = document.getElementById('tyhotHeaderActiveName');
+      if (headerActiveName) {
+        headerActiveName.textContent = current.name;
+      }
+
+      const headerActiveDesc = document.getElementById('tyhotHeaderActiveDesc');
+      if (headerActiveDesc) {
+        headerActiveDesc.textContent = current.desc;
+      }
+
+      const detailImg = document.getElementById('tyhotDetailActiveImg');
+      if (detailImg) detailImg.src = current.img;
+
+      const topGlow = document.getElementById('tyhotTopGlow');
+      if (topGlow) topGlow.style.backgroundColor = current.themeColor;
+
+      const watermark = document.getElementById('tyhotWatermark');
+      if (watermark) watermark.textContent = current.displayName || current.name;
+
+      const detailName = document.getElementById('tyhotDetailName');
+      if (detailName) detailName.textContent = current.name;
+
+      const detailDesc = document.getElementById('tyhotDetailDesc');
+      if (detailDesc) detailDesc.textContent = current.desc;
+
+      const detailPrice = document.getElementById('tyhotDetailPrice');
+      if (detailPrice) detailPrice.textContent = formatCurrency(getTyhotCurrentPrice());
+
+      const tagBadge = document.getElementById('tyhotTagBadge');
+      if (tagBadge) {
+        tagBadge.textContent = current.tag || 'ESPECIALIDAD TYHOT';
+        tagBadge.style.backgroundColor = `${current.themeColor}18`;
+        tagBadge.style.color = current.themeColor;
+      }
+
+      const btnAdd = document.getElementById('tyhotBtnAdd');
+      if (btnAdd) {
+        btnAdd.style.backgroundColor = current.themeColor;
+      }
+
+      const trustDot = document.getElementById('tyhotTrustDot');
+      if (trustDot) {
+        trustDot.style.backgroundColor = current.themeColor;
+      }
+
+      renderTyhotExtrasUI();
+
+      const dotsWrap = document.getElementById('tyhotDots');
+      if (dotsWrap) {
+        dotsWrap.innerHTML = '';
+        tyhotItems.forEach((it, idx) => {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'tyazuca-dot' + (idx === tyhotCurrentIdx ? ' active' : '');
+          dot.setAttribute('aria-label', 'Vaso ' + it.name);
+          dot.onclick = () => {
+            tyhotCurrentIdx = idx;
+            tyhotSelectedExtras = [];
+            updateTyhotCarouselUI();
+          };
+          dotsWrap.appendChild(dot);
+        });
+      }
+    }
+
+    function setTyhotDetail(open) {
+      tyhotIsDetail = open;
+      const root = document.getElementById('tyhotAgrumeaRoot');
+      const overlay = document.getElementById('tyhotDetailOverlay');
+      if (root) {
+        root.classList.toggle('is-detail', open);
+      }
+      if (overlay) {
+        overlay.classList.toggle('is-open', open);
+      }
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    function initTyhotCarousel() {
+      const prevBtn = document.getElementById('tyhotPrevBtn');
+      const nextBtn = document.getElementById('tyhotNextBtn');
+      const cupPrev = document.getElementById('tyhotCupPrev');
+      const cupNext = document.getElementById('tyhotCupNext');
+      const cupActive = document.getElementById('tyhotCupActive');
+      const btnBack = document.getElementById('tyhotBtnBack');
+      const btnAdd = document.getElementById('tyhotBtnAdd');
+
+      if (prevBtn) {
+        prevBtn.onclick = () => {
+          tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
+          tyhotSelectedExtras = [];
+          updateTyhotCarouselUI();
+        };
+      }
+      if (nextBtn) {
+        nextBtn.onclick = () => {
+          tyhotCurrentIdx = (tyhotCurrentIdx + 1) % tyhotItems.length;
+          tyhotSelectedExtras = [];
+          updateTyhotCarouselUI();
+        };
+      }
+      if (cupPrev) {
+        cupPrev.onclick = () => {
+          if (!tyhotIsDetail) {
+            tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
+            tyhotSelectedExtras = [];
+            updateTyhotCarouselUI();
+          }
+        };
+      }
+      if (cupNext) {
+        cupNext.onclick = () => {
+          if (!tyhotIsDetail) {
+            tyhotCurrentIdx = (tyhotCurrentIdx + 1) % tyhotItems.length;
+            tyhotSelectedExtras = [];
+            updateTyhotCarouselUI();
+          }
+        };
+      }
+      if (cupActive) {
+        cupActive.onclick = () => {
+          if (!tyhotIsDetail) setTyhotDetail(true);
+        };
+      }
+      if (btnBack) {
+        btnBack.onclick = () => setTyhotDetail(false);
+      }
+      if (btnAdd) {
+        btnAdd.onclick = () => {
+          const current = tyhotItems[tyhotCurrentIdx];
+          if (tyhotSelectedExtras.length > 0) {
+            addCustomTyhotToCart(current, tyhotSelectedExtras, getTyhotCurrentPrice());
+          } else {
+            addToCart(current.id);
+          }
+          const orig = btnAdd.innerHTML;
+          btnAdd.innerHTML = '<span>✓</span><span>¡AGREGADO AL PEDIDO!</span>';
+          btnAdd.style.transform = 'scale(0.95)';
+          btnAdd.style.backgroundColor = '#059669';
+          showToast(`¡${current.name} agregado al pedido!`);
+          setTimeout(() => {
+            btnAdd.innerHTML = orig;
+            btnAdd.style.transform = '';
+            btnAdd.style.backgroundColor = current.themeColor;
+          }, 1000);
+        };
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (currentPage === 'hot') {
+          if (e.key === 'ArrowRight' && !tyhotIsDetail) {
+            tyhotCurrentIdx = (tyhotCurrentIdx + 1) % tyhotItems.length;
+            tyhotSelectedExtras = [];
+            updateTyhotCarouselUI();
+          } else if (e.key === 'ArrowLeft' && !tyhotIsDetail) {
+            tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
+            tyhotSelectedExtras = [];
+            updateTyhotCarouselUI();
+          } else if (e.key === 'Escape' && tyhotIsDetail) {
+            setTyhotDetail(false);
+          }
+        }
+      });
+
+      const stage = document.getElementById('tyhotStage');
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchEndX = 0;
+      let touchEndY = 0;
+
+      if (stage && typeof stage.addEventListener === 'function') {
+        stage.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches.length > 0) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        stage.addEventListener('touchend', (e) => {
+          if (e.changedTouches && e.changedTouches.length > 0) {
+            touchEndX = e.changedTouches[0].clientX;
+            touchEndY = e.changedTouches[0].clientY;
+            const deltaX = touchStartX - touchEndX;
+            const deltaY = touchStartY - touchEndY;
+
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+              if (!tyhotIsDetail) {
+                if (deltaX > 0) {
+                  tyhotCurrentIdx = (tyhotCurrentIdx + 1) % tyhotItems.length;
+                  tyhotSelectedExtras = [];
+                  updateTyhotCarouselUI();
+                } else {
+                  tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
+                  tyhotSelectedExtras = [];
+                  updateTyhotCarouselUI();
+                }
+              }
+            }
+          }
+        }, { passive: true });
+      }
+
+      const detailCard = document.getElementById('tyhotDetailActiveCard') || document.querySelector('#tyhotDetailActiveCard');
+      let detailCardStartX = 0;
+      let detailCardStartY = 0;
+      if (detailCard && typeof detailCard.addEventListener === 'function') {
+        detailCard.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches.length > 0) {
+            detailCardStartX = e.touches[0].clientX;
+            detailCardStartY = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        detailCard.addEventListener('touchend', (e) => {
+          if (e.changedTouches && e.changedTouches.length > 0) {
+            const deltaX = detailCardStartX - e.changedTouches[0].clientX;
+            const deltaY = detailCardStartY - e.changedTouches[0].clientY;
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40 && tyhotIsDetail) {
+              if (deltaX > 0) {
+                tyhotCurrentIdx = (tyhotCurrentIdx + 1) % tyhotItems.length;
+              } else {
+                tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
+              }
+              tyhotSelectedExtras = [];
+              updateTyhotCarouselUI();
+            }
+          }
+        }, { passive: true });
+      }
+
+      const sheet = document.getElementById('tyhotSheetCard');
+      let sheetStartY = 0;
+      if (sheet && typeof sheet.addEventListener === 'function') {
+        sheet.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches.length > 0) {
+            sheetStartY = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        sheet.addEventListener('touchend', (e) => {
+          if (e.changedTouches && e.changedTouches.length > 0) {
+            const sheetEndY = e.changedTouches[0].clientY;
+            if (sheetEndY - sheetStartY > 50 && tyhotIsDetail) {
+              setTyhotDetail(false);
+            }
+          }
+        }, { passive: true });
+      }
+
+      updateTyhotCarouselUI();
+    }
+
     /* ═══════ PLANTILLA REUTILIZABLE DEL FOOTER ═══════ */
     const footerHTML = `
       <div class="footer-grid">
@@ -7676,6 +8297,7 @@
       updateCartUI();
       syncHeaderHeight();
       initTyazucaCarousel();
+      initTyhotCarousel();
 
       ['home','hot','ice','bowls','azuca'].forEach(cat => {
         const el = document.getElementById('footer-' + cat);
