@@ -475,7 +475,7 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
               </div>
             </motion.div>
 
-            {/* Panel Blanco Inferior Optimizado y Compacto */}
+            {/* PANEL BLANCO INFERIOR COMPACTO Y LIMPIO */}
             <motion.div
               drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
@@ -486,47 +486,48 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="relative z-30 w-full max-w-lg bg-white rounded-t-[32px] px-6 pt-4 pb-8 shadow-[0_-15px_40px_rgba(0,0,0,0.15)] flex flex-col justify-between touch-pan-y"
+              className="relative z-30 w-full max-w-lg bg-white rounded-t-[32px] px-6 pt-4 pb-8 shadow-[0_-15px_40px_rgba(0,0,0,0.15)] flex flex-col justify-between"
             >
-              {/* Barra superior de arrastre */}
-              <div
-                onClick={() => setIsDetailView(false)}
-                className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-3 cursor-pointer active:scale-95 transition-transform"
-                title="Cerrar detalle"
-              />
+              {/* Barrita superior para deslizar */}
+              <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-2" />
 
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-1">
+              {/* Encabezado con la X de cierre en la esquina */}
+              <div className="relative flex items-start justify-between mb-2">
+                <div>
                   {activeProduct.tag && (
-                    <span className="inline-block rounded-full bg-[#E6F4F1] text-[#2A9D8F] px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest">
+                    <span className="inline-block rounded-full bg-[#E6F4F1] text-[#2A9D8F] px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest mb-1">
                       {activeProduct.tag}
                     </span>
                   )}
-                  <button
-                    type="button"
-                    onClick={() => setIsDetailView(false)}
-                    className="text-gray-400 hover:text-gray-700 text-sm font-bold p-1 rounded-full active:scale-90 transition-transform cursor-pointer ml-auto"
-                    aria-label="Cerrar detalle"
-                  >
-                    ✕
-                  </button>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-black text-[#1E222D] uppercase leading-tight">
+                    {activeProduct.name}
+                  </h3>
                 </div>
 
-                <h3 className="font-serif text-2xl sm:text-3xl font-black text-[#1E222D] uppercase leading-tight">
-                  {activeProduct.name}
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-600 mt-1">{activeProduct.description}</p>
-                
-                <p className="text-[11px] font-medium text-gray-500 mt-2.5 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: activeProduct.themeColor }} /> 
-                  Preparado al momento con fruta 100% fresca
-                </p>
+                {/* Botón X intuitivo para cerrar */}
+                <button
+                  type="button"
+                  onClick={() => setIsDetailView(false)}
+                  className="p-2 text-gray-400 hover:text-gray-700 transition rounded-full -mr-2 -mt-1 cursor-pointer"
+                  aria-label="Cerrar detalles"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
 
-              {/* Línea Divisoria Sutil */}
+              <p className="text-xs sm:text-sm text-gray-600 mt-0.5">{activeProduct.description}</p>
+              
+              <p className="text-[11px] font-medium text-gray-500 mt-2.5 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: activeProduct.themeColor }} /> 
+                Preparado al momento con fruta 100% fresca
+              </p>
+
+              {/* Línea Divisoria */}
               <div className="my-3 border-t border-gray-100" />
 
-              {/* Fila de Compra Optimizada */}
+              {/* Fila de Compra Oficial */}
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <span className="block text-[10px] font-bold uppercase tracking-wider text-gray-400">
@@ -548,14 +549,6 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
                   {justAdded ? "¡AGREGADO AL PEDIDO!" : "AGREGAR"}
                 </button>
               </div>
-
-              <button
-                type="button"
-                onClick={() => setIsDetailView(false)}
-                className="mt-3 text-center text-xs font-extrabold uppercase tracking-widest text-gray-400 hover:text-gray-700 cursor-pointer transition-colors"
-              >
-                ← Volver al menú
-              </button>
             </motion.div>
           </motion.div>
         )}
