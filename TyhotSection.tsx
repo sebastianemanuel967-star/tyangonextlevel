@@ -19,19 +19,6 @@ export interface TyhotProduct {
   image: string;
 }
 
-export interface TyhotExtra {
-  id: string;
-  name: string;
-  price: number;
-  label: string;
-}
-
-export const TYHOT_EXTRAS: TyhotExtra[] = [
-  { id: 'extra-chamoy', name: 'Extra Chamoy de la casa', price: 0.75, label: '+ Extra Chamoy (+$0.75)' },
-  { id: 'extra-takis', name: 'Topping extra de Takis', price: 1.00, label: '+ Extra Takis (+$1.00)' },
-  { id: 'extra-gomitas', name: 'Cintas ácidas extra', price: 0.75, label: '+ Cintas ácidas (+$0.75)' },
-];
-
 export const TYHOT_PRODUCTS: TyhotProduct[] = [
   {
     id: 'tyango-clasico',
@@ -163,7 +150,6 @@ interface TyhotSectionProps {
 export default function TyhotSection({ onAddToCart, className = '' }: TyhotSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDetailView, setIsDetailView] = useState(false);
-  const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [justAdded, setJustAdded] = useState(false);
 
   const total = TYHOT_PRODUCTS.length;
@@ -175,18 +161,8 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
   const prevProduct = TYHOT_PRODUCTS[prevIndex];
   const nextProduct = TYHOT_PRODUCTS[nextIndex];
 
-  // Reset de extras al cambiar de vaso
-  useEffect(() => {
-    setSelectedExtras([]);
-  }, [activeIndex]);
-
-  // Suma dinámica de extras
-  const extrasTotal = selectedExtras.reduce((sum, extraId) => {
-    const found = TYHOT_EXTRAS.find((e) => e.id === extraId);
-    return sum + (found ? found.price : 0);
-  }, 0);
-  const currentTotal = activeProduct.basePrice + extrasTotal;
-  const formattedPrice = `$${currentTotal.toFixed(2)}`;
+  // Precio estrictamente oficial del producto
+  const formattedPrice = `$${activeProduct.basePrice.toFixed(2)}`;
 
   // 1. Congelar el scroll nativo de la página cuando la vista de detalles esté abierta
   useEffect(() => {
@@ -243,33 +219,14 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleNext, handlePrev, isDetailView]);
 
-  const toggleExtra = (extraId: string) => {
-    setSelectedExtras((prev) =>
-      prev.includes(extraId) ? prev.filter((id) => id !== extraId) : [...prev, extraId]
-    );
-  };
-
+  // Conexión del botón al carrito real global de la app
   const handleAddToCart = (e?: React.MouseEvent) => {
     if (e && typeof e.stopPropagation === 'function') {
       e.stopPropagation();
     }
 
-    const extraNames = selectedExtras.map(
-      (id) => TYHOT_EXTRAS.find((ex) => ex.id === id)?.name || id
-    );
-
     const formattedProduct = {
       ...activeProduct,
-      id: selectedExtras.length > 0 ? `${activeProduct.id}_custom_${selectedExtras.slice().sort().join('_')}` : activeProduct.id,
-      baseId: activeProduct.id,
-      price: formattedPrice,
-      priceNum: currentTotal,
-      description: selectedExtras.length > 0
-        ? `${activeProduct.description} (+ ${extraNames.join(', ')})`
-        : activeProduct.description,
-      extras: extraNames,
-      selectedExtras: extraNames,
-      isCustom: selectedExtras.length > 0,
       category: 'TYHOT',
     };
 
@@ -279,9 +236,7 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
 
     // Compatibilidad directa con la función global de la app
     if (typeof window !== 'undefined') {
-      if (typeof (window as any).addCustomTyhotToCart === 'function') {
-        (window as any).addCustomTyhotToCart(activeProduct, selectedExtras, currentTotal);
-      } else if (typeof (window as any).addToCart === 'function') {
+      if (typeof (window as any).addToCart === 'function') {
         (window as any).addToCart(activeProduct.id);
       }
     }
@@ -604,7 +559,7 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
                 className="relative z-10 cursor-grab active:cursor-grabbing touch-pan-y"
                 title="Desliza horizontalmente para ver otros vasos"
               >
-                <div className="w-[245px] h-[305px] sm:w-[280px] sm:h-[350px] rounded-[28px] overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.35)] relative border-4 border-white/70 bg-[#3E1F14] p-3 flex items-center justify-center">
+                <div className="w-[220px] h-[270px] sm:w-[260px] sm:h-[320px] rounded-[28px] overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.35)] relative border-4 border-white/70 bg-[#3E1F14] p-3 flex items-center justify-center">
                   <img
                     src={activeProduct.image}
                     alt={activeProduct.name}
@@ -615,7 +570,7 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
               </motion.div>
             </div>
 
-            {/* MITAD INFERIOR: Bottom Sheet blanco alto con extras y precio */}
+            {/* MITAD INFERIOR: Bottom Sheet blanco compacto y estilizado */}
             <motion.div
               drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
@@ -629,29 +584,27 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-lg mx-auto bg-white rounded-t-[36px] pt-5 px-7 pb-28 sm:pb-12 shadow-[0_-15px_40px_rgba(0,0,0,0.12)] relative z-20 flex flex-col justify-between -mt-6 sm:-mt-8 min-h-[46vh] touch-pan-y"
+              className="w-full max-w-lg mx-auto bg-white rounded-t-[32px] sm:rounded-t-[36px] pt-4 pb-6 px-6 shadow-[0_-15px_40px_rgba(0,0,0,0.12)] relative z-20 flex flex-col justify-between touch-pan-y"
             >
-              {/* Handle bar para deslizar hacia abajo */}
+              {/* Barra gris superior para arrastrar */}
               <div
                 onClick={() => setIsDetailView(false)}
-                className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 cursor-pointer active:scale-95 transition-transform"
+                className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-2 cursor-pointer active:scale-95 transition-transform"
                 title="Cerrar detalle"
               />
 
               {/* Info del producto */}
               <div className="flex flex-col">
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  {activeProduct.tag && (
-                    <span
-                      style={{
-                        backgroundColor: `${activeProduct.themeColor}18`,
-                        color: activeProduct.themeColor,
-                      }}
-                      className="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest border border-current/20"
-                    >
-                      {activeProduct.tag}
-                    </span>
-                  )}
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <span
+                    style={{
+                      backgroundColor: `${activeProduct.themeColor}18`,
+                      color: activeProduct.themeColor,
+                    }}
+                    className="inline-flex items-center rounded-full px-3 py-0.5 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-widest border border-current/20"
+                  >
+                    {activeProduct.tag || 'ESPECIALIDAD TYHOT'}
+                  </span>
 
                   <button
                     type="button"
@@ -663,62 +616,34 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
                   </button>
                 </div>
 
-                <h3 className="font-serif text-3xl sm:text-4xl font-black text-[#1E222D] tracking-tight uppercase leading-tight mt-1">
+                <h3 className="font-serif text-2xl sm:text-3xl font-black text-[#1E222D] uppercase leading-tight">
                   {activeProduct.name}
                 </h3>
 
-                <p className="text-sm sm:text-base text-gray-600 mt-1.5 leading-relaxed">
+                <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
                   {activeProduct.description}
                 </p>
 
-                <p className="text-xs font-medium text-gray-500 mt-2.5 flex items-center gap-1.5">
+                {/* Línea de confianza con dot de color */}
+                <p className="text-[11px] font-medium text-gray-500 mt-2 flex items-center gap-1.5">
                   <span
                     className="w-2 h-2 rounded-full inline-block shrink-0"
                     style={{ backgroundColor: activeProduct.themeColor }}
                   />
                   <span>Preparado al momento con fruta 100% fresca</span>
                 </p>
-
-                {/* PERSONALIZA TU VASO (EXTRAS) */}
-                <div className="mt-4 pt-3 border-t border-gray-100">
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">
-                    PERSONALIZA TU VASO (OPCIONAL)
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {TYHOT_EXTRAS.map((extra) => {
-                      const isSelected = selectedExtras.includes(extra.id);
-                      return (
-                        <button
-                          key={extra.id}
-                          type="button"
-                          onClick={() => toggleExtra(extra.id)}
-                          className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 cursor-pointer border ${
-                            isSelected
-                              ? 'text-white shadow-sm border-transparent'
-                              : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300'
-                          } active:scale-95`}
-                          style={
-                            isSelected
-                              ? { backgroundColor: activeProduct.themeColor }
-                              : undefined
-                          }
-                        >
-                          <span>{extra.label}</span>
-                          {isSelected && <span>✓</span>}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
               </div>
 
-              {/* Fila de Precio Oficial y Botón Agregar */}
-              <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100 mt-4 sm:mt-6">
+              {/* Línea divisoria sutil */}
+              <div className="my-3 border-t border-gray-100" />
+
+              {/* Fila de compra: Precio Oficial a la izquierda y Botón + AGREGAR a la derecha con color temático */}
+              <div className="flex items-center justify-between gap-3">
                 <div className="flex flex-col">
                   <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 block mb-0.5">
                     PRECIO OFICIAL
                   </span>
-                  <span className="text-3xl sm:text-4xl font-black font-serif text-[#1E222D] leading-none">
+                  <span className="font-serif text-2xl sm:text-3xl font-black text-[#1E222D] leading-none">
                     {formattedPrice}
                   </span>
                 </div>
@@ -734,7 +659,7 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
                       ? { backgroundColor: activeProduct.themeColor }
                       : undefined
                   }
-                  className={`py-4 px-8 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase text-white shadow-lg flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
+                  className={`py-3.5 px-7 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase text-white shadow-lg flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
                     justAdded ? 'bg-emerald-600' : 'hover:brightness-95'
                   }`}
                 >
@@ -752,11 +677,11 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
                 </motion.button>
               </div>
 
-              {/* Botón Volver al Menú */}
+              {/* Botón Volver al Menú con margen moderado mt-3 */}
               <button
                 type="button"
                 onClick={() => setIsDetailView(false)}
-                className="mt-5 text-center text-[11px] font-extrabold tracking-wider text-gray-400 hover:text-gray-700 uppercase py-1 transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer"
+                className="mt-3 text-center text-[11px] font-extrabold tracking-wider text-gray-400 hover:text-gray-700 uppercase py-1 transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer"
               >
                 ← VOLVER AL MENÚ
               </button>

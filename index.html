@@ -3735,12 +3735,12 @@
       }
     }
 
-    /* 2. Tarjeta del vaso en detalle más imponente (w-[245px] h-[305px] / w-[280px] h-[350px]) */
+    /* 3. Tarjeta del vaso en detalle centrada y proporcionada (w-[220px] h-[270px] / w-[260px] h-[320px]) */
     .tyazuca-detail-active-card {
       position: relative;
       z-index: 10;
-      width: 245px;
-      height: 305px;
+      width: 220px;
+      height: 270px;
       border-radius: 28px;
       overflow: hidden;
       box-shadow: 0 25px 50px rgba(0, 0, 0, 0.28);
@@ -3750,8 +3750,8 @@
     }
     @media (min-width: 640px) {
       .tyazuca-detail-active-card {
-        width: 280px;
-        height: 350px;
+        width: 260px;
+        height: 320px;
         border-radius: 32px;
       }
     }
@@ -3763,17 +3763,16 @@
       user-select: none;
     }
 
-    /* 1 & 5. Bottom Sheet Blanco más alto (min-h-[46vh], -mt-6, pb-28) */
+    /* 2. Bottom Sheet Blanco compacto y estilizado (pt-4 pb-6 px-6) */
     .tyazuca-detail-sheet-card {
       position: relative;
       z-index: 20;
       width: 100%;
       max-width: 520px;
-      margin: -24px auto 0;
-      min-height: 46vh;
+      margin: 0 auto;
       background: #FFFFFF;
-      border-radius: 36px 36px 0 0;
-      padding: 20px 28px calc(112px + env(safe-area-inset-bottom, 20px));
+      border-radius: 32px 32px 0 0;
+      padding: 16px 24px 24px;
       box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.12);
       box-sizing: border-box;
       display: flex;
@@ -3784,8 +3783,8 @@
     }
     @media (min-width: 640px) {
       .tyazuca-detail-sheet-card {
-        margin-top: -32px;
-        padding-bottom: 48px;
+        border-radius: 36px 36px 0 0;
+        padding: 20px 28px 28px;
       }
     }
     .tyazuca-agrumea-section.is-detail .tyazuca-detail-sheet-card,
@@ -3795,10 +3794,10 @@
 
     .tyazuca-sheet-handle {
       width: 48px;
-      height: 5px;
+      height: 6px;
       background: #D1D5DB;
       border-radius: 9999px;
-      margin: 0 auto 16px;
+      margin: 0 auto 8px;
       cursor: pointer;
     }
 
@@ -3806,7 +3805,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .tyazuca-close-x-btn {
       background: none;
@@ -3824,28 +3823,28 @@
     }
 
     .tyazuca-detail-name {
-      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-size: clamp(1.5rem, 3.5vw, 1.85rem);
       font-weight: 900;
       color: #1E222D;
-      line-height: 1.1;
-      margin-bottom: 6px;
+      line-height: 1.15;
+      margin-bottom: 4px;
       font-family: 'Playfair Display', Georgia, serif;
       text-transform: uppercase;
       letter-spacing: -0.01em;
     }
     .tyazuca-detail-desc {
-      font-size: 0.92rem;
+      font-size: 0.85rem;
       color: #4B5563;
-      line-height: 1.5;
-      margin-bottom: 8px;
+      line-height: 1.45;
+      margin-bottom: 4px;
     }
 
     /* Línea de confianza */
     .tyazuca-detail-trust-line {
-      font-size: 0.78rem;
+      font-size: 0.72rem;
       font-weight: 600;
       color: #6B7280;
-      margin-top: 10px;
+      margin-top: 8px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -3884,66 +3883,14 @@
       border: 1px solid rgba(91, 75, 138, 0.28);
     }
 
-    /* 2. Personaliza tu vaso (Opcional) */
-    .tyazuca-extras-section {
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(0, 0, 0, 0.06);
-    }
-    .tyazuca-extras-title {
-      display: block;
-      font-size: 10px;
-      font-weight: 800;
-      color: #9CA3AF;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 8px;
-    }
-    .tyazuca-extras-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-    .tyazuca-extra-pill {
-      padding: 6px 12px;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 700;
-      border: 1px solid #E5E7EB;
-      background-color: #F9FAFB;
-      color: #4B5563;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    @media (min-width: 640px) {
-      .tyazuca-extra-pill {
-        font-size: 12px;
-        padding: 7px 14px;
-      }
-    }
-    .tyazuca-extra-pill:hover {
-      border-color: #D1D5DB;
-    }
-    .tyazuca-extra-pill.selected {
-      background-color: rgba(91, 75, 138, 0.12);
-      border-color: #5B4B8A;
-      color: #5B4B8A;
-      box-shadow: 0 2px 6px rgba(91, 75, 138, 0.12);
-    }
-    .tyazuca-extra-pill:active {
-      transform: scale(0.96);
-    }
-
     .tyazuca-detail-action-block {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding-top: 14px;
+      padding-top: 12px;
       border-top: 1px solid #F3F4F6;
-      margin-top: 16px;
+      margin-top: 12px;
     }
     .tyazuca-price-wrap {
       text-align: left;
@@ -3958,7 +3905,7 @@
       margin-bottom: 2px;
     }
     .tyazuca-price-val {
-      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-size: clamp(1.6rem, 3.5vw, 2rem);
       font-weight: 900;
       color: #1E222D;
       font-family: 'Playfair Display', Georgia, serif;
@@ -3968,24 +3915,24 @@
     .tyazuca-btn-add {
       background: #5B4B8A;
       color: #FFFFFF;
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 16px 32px;
+      letter-spacing: 0.1em;
+      padding: 13px 26px;
       border-radius: 9999px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 14px 30px rgba(91, 75, 138, 0.38);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .tyazuca-btn-add:hover {
       background: #493b6e;
       transform: scale(1.03);
-      box-shadow: 0 18px 36px rgba(91, 75, 138, 0.45);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
     }
     .tyazuca-btn-add:active {
       transform: scale(0.96);
@@ -3994,22 +3941,23 @@
     .tyazuca-btn-back {
       background: none;
       border: none;
-      color: #7B5B7B;
-      font-size: 0.74rem;
-      font-weight: 900;
+      color: #9CA3AF;
+      font-size: 0.72rem;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       cursor: pointer;
-      padding: 8px 14px;
+      padding: 4px 10px;
       border-radius: 9999px;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      margin-top: 20px;
+      margin: 12px auto 0;
       transition: all 0.2s ease;
     }
     .tyazuca-btn-back:hover {
-      color: #2B1627;
+      color: #4B5563;
     }
 
     /* Botón Morado Característico #5B4B8A */
@@ -4928,12 +4876,6 @@
               <span class="tyazuca-detail-trust-dot" id="tyhotTrustDot" style="background:#C84B31"></span>
               <span>Preparado al momento con fruta 100% fresca</span>
             </p>
-
-            <!-- 2. Personaliza tu vaso (Opcional) -->
-            <div class="tyazuca-extras-section">
-              <span class="tyazuca-extras-title">PERSONALIZA TU VASO (OPCIONAL)</span>
-              <div class="tyazuca-extras-pills" id="tyhotExtrasContainer"></div>
-            </div>
           </div>
 
           <div class="tyazuca-detail-action-block">
@@ -5090,12 +5032,6 @@
               <span class="tyazuca-detail-trust-dot"></span>
               <span>Preparado con frutas frescas al momento</span>
             </p>
-
-            <!-- 2. Personaliza tu vaso (Opcional) -->
-            <div class="tyazuca-extras-section">
-              <span class="tyazuca-extras-title">PERSONALIZA TU VASO (OPCIONAL)</span>
-              <div class="tyazuca-extras-pills" id="tyazucaExtrasContainer"></div>
-            </div>
           </div>
 
           <div class="tyazuca-detail-action-block">
@@ -5257,42 +5193,42 @@
           badgeCss: 'background:rgba(255,100,50,0.12);color:#E85D30', 
           name: 'TYANGO CLÁSICO', 
           desc: 'Mango jugoso con chamoy y Tajín.', 
-          price: '$2.50' 
+          price: '$4.50' 
         },
         { 
           id: 'hot_picazana',
           img: 'picazana.jpg', 
           name: 'PICAZANA', 
           desc: 'Manzana dulce, ácida y picante.', 
-          price: '$2.50' 
+          price: '$4.50' 
         },
         { 
           id: 'hot_uva_pulpa',
           img: 'uva-pulpa.jpg', 
           name: 'UVA PULPA', 
           desc: 'Uvas verdes congeladas con Pulparindo y Tajín.', 
-          price: '$2.50' 
+          price: '$4.80' 
         },
         { 
           id: 'hot_pinadiablo',
           img: 'pinadiablo.jpg', 
           name: 'PIÑADIABLO', 
           desc: 'Piña fría con chamoy y toque picante.', 
-          price: '$2.50' 
+          price: '$4.50' 
         },
         { 
           id: 'hot_takimango',
           img: 'takimango.jpg', 
           name: 'TAKIMANGO', 
           desc: 'Takis Fuego crujientes con mango y chamoy.', 
-          price: '$2.50' 
+          price: '$5.00' 
         },
         { 
           id: 'hot_pepinazo',
           img: 'pepinazo.jpg', 
           name: 'PEPINAZO', 
           desc: 'Pepino fresco con chamoy, limón y Tajín.', 
-          price: '$2.50' 
+          price: '$4.00' 
         },
         { 
           id: 'hot_iceuva',
@@ -5301,7 +5237,7 @@
           badgeCss: 'background:rgba(59,130,246,0.12);color:#2563EB', 
           name: 'ICEUVA', 
           desc: 'Uva congelada refrescante con Sprite y Tajín.', 
-          price: '$2.50' 
+          price: '$4.50' 
         },
         { 
           id: 'hot_bendito_mango',
@@ -5312,7 +5248,7 @@
           seasonInfo: 'Disponible durante septiembre',
           name: 'BENDITO MANGO', 
           desc: 'Mango fresco con chamoy y gomitas azules.', 
-          price: '$2.99' 
+          price: '$4.80' 
         },
       ],
       ice: [
@@ -5656,6 +5592,14 @@
       for (const cat in catalog) {
         const found = catalog[cat].find(item => item.id === productId);
         if (found) return found;
+      }
+      if (typeof tyhotItems !== 'undefined') {
+        const inHot = tyhotItems.find(item => item.id === productId);
+        if (inHot) return inHot;
+      }
+      if (typeof tyazucaItems !== 'undefined') {
+        const inAzuca = tyazucaItems.find(item => item.id === productId);
+        if (inAzuca) return inAzuca;
       }
       return null;
     }
@@ -7353,91 +7297,6 @@
     let tyazucaCurrentIdx = 0;
     let tyazucaIsDetail = false;
 
-    const TYAZUCA_EXTRAS = [
-      { id: 'extra_topping', name: 'Extra Topping', price: 1.00, label: '+ Extra Topping (+$1.00)' },
-      { id: 'extra_crema', name: 'Extra Crema Velvet', price: 0.75, label: '+ Extra Crema Velvet (+$0.75)' },
-      { id: 'extra_paccari', name: 'Chocolate Paccari', price: 0.75, label: '+ Chocolate Paccari (+$0.75)' }
-    ];
-    let tyazucaSelectedExtras = [];
-
-    function getTyazucaCurrentPrice() {
-      const current = tyazucaItems[tyazucaCurrentIdx];
-      const base = parsePriceNumber(current.price) || 4.50;
-      const extrasCost = tyazucaSelectedExtras.reduce((sum, id) => {
-        const ex = TYAZUCA_EXTRAS.find(e => e.id === id);
-        return sum + (ex ? ex.price : 0);
-      }, 0);
-      return base + extrasCost;
-    }
-
-    function toggleTyazucaExtra(extraId) {
-      const idx = tyazucaSelectedExtras.indexOf(extraId);
-      if (idx > -1) {
-        tyazucaSelectedExtras.splice(idx, 1);
-      } else {
-        tyazucaSelectedExtras.push(extraId);
-      }
-      renderTyazucaExtrasUI();
-      const priceEl = document.getElementById('tyazucaDetailPrice');
-      if (priceEl) {
-        priceEl.textContent = formatCurrency(getTyazucaCurrentPrice());
-      }
-    }
-
-    function renderTyazucaExtrasUI() {
-      const container = document.getElementById('tyazucaExtrasContainer');
-      if (!container) return;
-      container.innerHTML = TYAZUCA_EXTRAS.map(extra => {
-        const isSel = tyazucaSelectedExtras.includes(extra.id);
-        return `<button type="button" class="tyazuca-extra-pill ${isSel ? 'selected' : ''}" onclick="toggleTyazucaExtra('${extra.id}')">${extra.label}</button>`;
-      }).join('');
-    }
-
-    function addCustomTyazucaToCart(prod, extrasList, totalPriceNum) {
-      const current = prod || tyazucaItems[tyazucaCurrentIdx];
-      const extras = extrasList || tyazucaSelectedExtras;
-      if (!extras || extras.length === 0) {
-        addToCart(current.id);
-        return;
-      }
-      const extraObjs = extras.map(id => TYAZUCA_EXTRAS.find(e => e.id === id)).filter(Boolean);
-      const extraNames = extraObjs.map(e => e.name);
-      const extraCost = extraObjs.reduce((sum, e) => sum + e.price, 0);
-      const baseNum = parsePriceNumber(current.price) || 4.50;
-      const totalNum = totalPriceNum || (baseNum + extraCost);
-      const totalFormatted = formatCurrency(totalNum);
-      const sortedIds = extras.slice().sort().join('_');
-      const cartItemId = `${current.id}_extras_${sortedIds}`;
-      const customDesc = `Con extras: ${extraNames.join(', ')}`;
-
-      if (cart[cartItemId]) {
-        cart[cartItemId].qty += 1;
-      } else {
-        cart[cartItemId] = {
-          id: cartItemId,
-          baseId: current.id,
-          name: `${current.name} (Personalizado)`,
-          desc: customDesc,
-          price: totalFormatted,
-          priceNum: totalNum,
-          qty: 1,
-          addedSeq: ++cartSequenceCounter,
-          addedAt: Date.now(),
-          img: current.img || null,
-          emoji: '🍓',
-          customCardClass: null,
-          isCustom: true,
-          extras: extraNames
-        };
-      }
-      saveCartToStorage();
-      triggerCartBadgeBump();
-    }
-
-    window.toggleTyazucaExtra = toggleTyazucaExtra;
-    window.addCustomTyazucaToCart = addCustomTyazucaToCart;
-    window.TYAZUCA_EXTRAS = TYAZUCA_EXTRAS;
-
     function updateTyazucaCarouselUI() {
       const total = tyazucaItems.length;
       const prevIdx = (tyazucaCurrentIdx - 1 + total) % total;
@@ -7522,9 +7381,7 @@
       if (detailDesc) detailDesc.textContent = current.desc;
 
       const detailPrice = document.getElementById('tyazucaDetailPrice');
-      if (detailPrice) detailPrice.textContent = formatCurrency(getTyazucaCurrentPrice());
-
-      renderTyazucaExtrasUI();
+      if (detailPrice) detailPrice.textContent = current.price;
 
       const tagBadge = document.getElementById('tyazucaTagBadge');
       if (tagBadge) {
@@ -7544,7 +7401,6 @@
           dot.setAttribute('aria-label', 'Vaso ' + it.name);
           dot.onclick = () => {
             tyazucaCurrentIdx = idx;
-            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           };
           dotsWrap.appendChild(dot);
@@ -7595,14 +7451,12 @@
       if (prevBtn) {
         prevBtn.onclick = () => {
           tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
-          tyazucaSelectedExtras = [];
           updateTyazucaCarouselUI();
         };
       }
       if (nextBtn) {
         nextBtn.onclick = () => {
           tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
-          tyazucaSelectedExtras = [];
           updateTyazucaCarouselUI();
         };
       }
@@ -7610,7 +7464,6 @@
         cupPrev.onclick = () => {
           if (!tyazucaIsDetail) {
             tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
-            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           }
         };
@@ -7619,7 +7472,6 @@
         cupNext.onclick = () => {
           if (!tyazucaIsDetail) {
             tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
-            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           }
         };
@@ -7635,11 +7487,7 @@
       if (btnAdd) {
         btnAdd.onclick = () => {
           const current = tyazucaItems[tyazucaCurrentIdx];
-          if (tyazucaSelectedExtras.length > 0) {
-            addCustomTyazucaToCart(current, tyazucaSelectedExtras, getTyazucaCurrentPrice());
-          } else {
-            addToCart(current.id);
-          }
+          addToCart(current.id);
           const orig = btnAdd.innerHTML;
           btnAdd.innerHTML = '<span>✓</span><span>¡AGREGADO AL PEDIDO!</span>';
           btnAdd.style.transform = 'scale(0.95)';
@@ -7657,11 +7505,9 @@
         if (currentPage === 'azuca') {
           if (e.key === 'ArrowRight' && !tyazucaIsDetail) {
             tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
-            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           } else if (e.key === 'ArrowLeft' && !tyazucaIsDetail) {
             tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
-            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           } else if (e.key === 'Escape' && tyazucaIsDetail) {
             setTyazucaDetail(false);
@@ -7696,11 +7542,9 @@
               if (!tyazucaIsDetail) {
                 if (deltaX > 0) {
                   tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
-                  tyazucaSelectedExtras = [];
                   updateTyazucaCarouselUI();
                 } else {
                   tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
-                  tyazucaSelectedExtras = [];
                   updateTyazucaCarouselUI();
                 }
               }
@@ -7731,7 +7575,6 @@
               } else {
                 tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
               }
-              tyazucaSelectedExtras = [];
               updateTyazucaCarouselUI();
             }
           }
@@ -7869,95 +7712,8 @@
       }
     ];
 
-    const TYHOT_EXTRAS = [
-      { id: 'extra-chamoy', name: 'Extra Chamoy de la casa', price: 0.75, label: '+ Extra Chamoy (+$0.75)' },
-      { id: 'extra-takis', name: 'Topping extra de Takis', price: 1.00, label: '+ Extra Takis (+$1.00)' },
-      { id: 'extra-gomitas', name: 'Cintas ácidas extra', price: 0.75, label: '+ Cintas ácidas (+$0.75)' }
-    ];
-
     let tyhotCurrentIdx = 0;
     let tyhotIsDetail = false;
-    let tyhotSelectedExtras = [];
-
-    function getTyhotCurrentPrice() {
-      const current = tyhotItems[tyhotCurrentIdx];
-      const base = current.priceNum || parsePriceNumber(current.price) || 4.50;
-      const extrasCost = tyhotSelectedExtras.reduce((sum, id) => {
-        const ex = TYHOT_EXTRAS.find(e => e.id === id);
-        return sum + (ex ? ex.price : 0);
-      }, 0);
-      return base + extrasCost;
-    }
-
-    function toggleTyhotExtra(extraId) {
-      const idx = tyhotSelectedExtras.indexOf(extraId);
-      if (idx > -1) {
-        tyhotSelectedExtras.splice(idx, 1);
-      } else {
-        tyhotSelectedExtras.push(extraId);
-      }
-      renderTyhotExtrasUI();
-      const priceEl = document.getElementById('tyhotDetailPrice');
-      if (priceEl) {
-        priceEl.textContent = formatCurrency(getTyhotCurrentPrice());
-      }
-    }
-
-    function renderTyhotExtrasUI() {
-      const container = document.getElementById('tyhotExtrasContainer');
-      if (!container) return;
-      const current = tyhotItems[tyhotCurrentIdx];
-      container.innerHTML = TYHOT_EXTRAS.map(extra => {
-        const isSel = tyhotSelectedExtras.includes(extra.id);
-        const activeStyle = isSel ? `style="background-color:${current.themeColor};border-color:${current.themeColor};color:#FFFFFF;"` : '';
-        return `<button type="button" class="tyazuca-extra-pill ${isSel ? 'selected' : ''}" ${activeStyle} onclick="toggleTyhotExtra('${extra.id}')">${extra.label}</button>`;
-      }).join('');
-    }
-
-    function addCustomTyhotToCart(prod, extrasList, totalPriceNum) {
-      const current = prod || tyhotItems[tyhotCurrentIdx];
-      const extras = extrasList || tyhotSelectedExtras;
-      if (!extras || extras.length === 0) {
-        addToCart(current.id);
-        return;
-      }
-      const extraObjs = extras.map(id => TYHOT_EXTRAS.find(e => e.id === id)).filter(Boolean);
-      const extraNames = extraObjs.map(e => e.name);
-      const extraCost = extraObjs.reduce((sum, e) => sum + e.price, 0);
-      const baseNum = current.priceNum || parsePriceNumber(current.price) || 4.50;
-      const totalNum = totalPriceNum || (baseNum + extraCost);
-      const totalFormatted = formatCurrency(totalNum);
-      const sortedIds = extras.slice().sort().join('_');
-      const cartItemId = `${current.id}_extras_${sortedIds}`;
-      const customDesc = `Con extras: ${extraNames.join(', ')}`;
-
-      if (cart[cartItemId]) {
-        cart[cartItemId].qty += 1;
-      } else {
-        cart[cartItemId] = {
-          id: cartItemId,
-          baseId: current.id,
-          name: `${current.name} (Personalizado)`,
-          desc: customDesc,
-          price: totalFormatted,
-          priceNum: totalNum,
-          qty: 1,
-          addedSeq: ++cartSequenceCounter,
-          addedAt: Date.now(),
-          img: current.img || null,
-          emoji: '🔥',
-          customCardClass: null,
-          isCustom: true,
-          extras: extraNames
-        };
-      }
-      saveCartToStorage();
-      triggerCartBadgeBump();
-    }
-
-    window.toggleTyhotExtra = toggleTyhotExtra;
-    window.addCustomTyhotToCart = addCustomTyhotToCart;
-    window.TYHOT_EXTRAS = TYHOT_EXTRAS;
     window.tyhotItems = tyhotItems;
 
     function updateTyhotCarouselUI() {
@@ -8028,7 +7784,7 @@
       if (detailDesc) detailDesc.textContent = current.desc;
 
       const detailPrice = document.getElementById('tyhotDetailPrice');
-      if (detailPrice) detailPrice.textContent = formatCurrency(getTyhotCurrentPrice());
+      if (detailPrice) detailPrice.textContent = current.price;
 
       const tagBadge = document.getElementById('tyhotTagBadge');
       if (tagBadge) {
@@ -8047,8 +7803,6 @@
         trustDot.style.backgroundColor = current.themeColor;
       }
 
-      renderTyhotExtrasUI();
-
       const dotsWrap = document.getElementById('tyhotDots');
       if (dotsWrap) {
         dotsWrap.innerHTML = '';
@@ -8059,7 +7813,6 @@
           dot.setAttribute('aria-label', 'Vaso ' + it.name);
           dot.onclick = () => {
             tyhotCurrentIdx = idx;
-            tyhotSelectedExtras = [];
             updateTyhotCarouselUI();
           };
           dotsWrap.appendChild(dot);
@@ -8092,14 +7845,12 @@
       if (prevBtn) {
         prevBtn.onclick = () => {
           tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
-          tyhotSelectedExtras = [];
           updateTyhotCarouselUI();
         };
       }
       if (nextBtn) {
         nextBtn.onclick = () => {
           tyhotCurrentIdx = (tyhotCurrentIdx + 1) % tyhotItems.length;
-          tyhotSelectedExtras = [];
           updateTyhotCarouselUI();
         };
       }
@@ -8107,7 +7858,6 @@
         cupPrev.onclick = () => {
           if (!tyhotIsDetail) {
             tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
-            tyhotSelectedExtras = [];
             updateTyhotCarouselUI();
           }
         };
@@ -8116,7 +7866,6 @@
         cupNext.onclick = () => {
           if (!tyhotIsDetail) {
             tyhotCurrentIdx = (tyhotCurrentIdx + 1) % tyhotItems.length;
-            tyhotSelectedExtras = [];
             updateTyhotCarouselUI();
           }
         };
@@ -8132,11 +7881,7 @@
       if (btnAdd) {
         btnAdd.onclick = () => {
           const current = tyhotItems[tyhotCurrentIdx];
-          if (tyhotSelectedExtras.length > 0) {
-            addCustomTyhotToCart(current, tyhotSelectedExtras, getTyhotCurrentPrice());
-          } else {
-            addToCart(current.id);
-          }
+          addToCart(current.id);
           const orig = btnAdd.innerHTML;
           btnAdd.innerHTML = '<span>✓</span><span>¡AGREGADO AL PEDIDO!</span>';
           btnAdd.style.transform = 'scale(0.95)';
@@ -8154,11 +7899,9 @@
         if (currentPage === 'hot') {
           if (e.key === 'ArrowRight' && !tyhotIsDetail) {
             tyhotCurrentIdx = (tyhotCurrentIdx + 1) % tyhotItems.length;
-            tyhotSelectedExtras = [];
             updateTyhotCarouselUI();
           } else if (e.key === 'ArrowLeft' && !tyhotIsDetail) {
             tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
-            tyhotSelectedExtras = [];
             updateTyhotCarouselUI();
           } else if (e.key === 'Escape' && tyhotIsDetail) {
             setTyhotDetail(false);
@@ -8191,11 +7934,9 @@
               if (!tyhotIsDetail) {
                 if (deltaX > 0) {
                   tyhotCurrentIdx = (tyhotCurrentIdx + 1) % tyhotItems.length;
-                  tyhotSelectedExtras = [];
                   updateTyhotCarouselUI();
                 } else {
                   tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
-                  tyhotSelectedExtras = [];
                   updateTyhotCarouselUI();
                 }
               }
@@ -8225,7 +7966,6 @@
               } else {
                 tyhotCurrentIdx = (tyhotCurrentIdx - 1 + tyhotItems.length) % tyhotItems.length;
               }
-              tyhotSelectedExtras = [];
               updateTyhotCarouselUI();
             }
           }

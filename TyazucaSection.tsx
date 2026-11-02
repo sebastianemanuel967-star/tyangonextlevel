@@ -18,19 +18,6 @@ export interface TyazucaProduct {
   image: string;
 }
 
-export interface TyazucaExtra {
-  id: string;
-  name: string;
-  price: number;
-  label: string;
-}
-
-export const TYAZUCA_EXTRAS: TyazucaExtra[] = [
-  { id: 'extra_topping', name: 'Extra Topping', price: 1.00, label: '+ Extra Topping (+$1.00)' },
-  { id: 'extra_crema', name: 'Extra Crema Velvet', price: 0.75, label: '+ Extra Crema Velvet (+$0.75)' },
-  { id: 'extra_paccari', name: 'Chocolate Paccari', price: 0.75, label: '+ Chocolate Paccari (+$0.75)' },
-];
-
 export const TYAZUCA_PRODUCTS: TyazucaProduct[] = [
   {
     id: 'azuca_raffaello',
@@ -113,7 +100,6 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDetailView, setIsDetailView] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
-  const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
   const total = TYAZUCA_PRODUCTS.length;
   const activeProduct = TYAZUCA_PRODUCTS[currentIndex];
@@ -125,26 +111,8 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
   const prevProduct = TYAZUCA_PRODUCTS[prevIndex];
   const nextProduct = TYAZUCA_PRODUCTS[nextIndex];
 
-  // Reset de extras al cambiar de vaso
-  useEffect(() => {
-    setSelectedExtras([]);
-  }, [currentIndex]);
-
-  const toggleExtra = (extraId: string) => {
-    setSelectedExtras((prev) =>
-      prev.includes(extraId) ? prev.filter((id) => id !== extraId) : [...prev, extraId]
-    );
-  };
-
-  // Cálculo dinámico de precio con extras incluidos
-  const extrasCost = selectedExtras.reduce((sum, extraId) => {
-    const extra = TYAZUCA_EXTRAS.find((e) => e.id === extraId);
-    return sum + (extra ? extra.price : 0);
-  }, 0);
-
-  const basePriceNum = activeProduct.priceNum || 4.50;
-  const currentTotal = basePriceNum + extrasCost;
-  const formattedPrice = `$${currentTotal.toFixed(2)}`;
+  // Precio estrictamente oficial del producto
+  const formattedPrice = activeProduct.price || `$${(activeProduct.priceNum || 4.50).toFixed(2)}`;
 
   // 1. Congelar el scroll nativo de la página cuando la vista de detalles esté abierta
   useEffect(() => {
@@ -202,32 +170,16 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleNext, handlePrev, isDetailView]);
 
-  // 4. Conexión del botón morado al carrito real global de la app (con extras incluidos)
+  // 4. Conexión del botón al carrito real global de la app
   const handleAddToCart = (e?: React.MouseEvent) => {
     if (e && typeof e.stopPropagation === 'function') {
       e.stopPropagation();
     }
 
-    const extraNames = selectedExtras.map(
-      (id) => TYAZUCA_EXTRAS.find((ex) => ex.id === id)?.name || id
-    );
-
     const formattedProduct: TyazucaProduct & {
       category: string;
-      extras?: string[];
-      isCustom?: boolean;
-      baseId?: string;
     } = {
       ...activeProduct,
-      id: selectedExtras.length > 0 ? `${activeProduct.id}_custom_${selectedExtras.slice().sort().join('_')}` : activeProduct.id,
-      baseId: activeProduct.id,
-      price: formattedPrice,
-      priceNum: currentTotal,
-      description: selectedExtras.length > 0
-        ? `${activeProduct.description} (+ ${extraNames.join(', ')})`
-        : activeProduct.description,
-      extras: extraNames,
-      isCustom: selectedExtras.length > 0,
       category: 'TYAZUCA',
     };
 
@@ -237,9 +189,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
 
     // Compatibilidad directa con la función global de la app si está disponible
     if (typeof window !== 'undefined') {
-      if (typeof (window as any).addCustomTyazucaToCart === 'function') {
-        (window as any).addCustomTyazucaToCart(activeProduct, selectedExtras, currentTotal);
-      } else if (typeof (window as any).addToCart === 'function') {
+      if (typeof (window as any).addToCart === 'function') {
         (window as any).addToCart(activeProduct.id);
       }
     }
@@ -567,7 +517,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                 className="relative z-10 cursor-grab active:cursor-grabbing touch-pan-y"
                 title="Desliza horizontalmente para ver otros vasos"
               >
-                <div className="w-[245px] h-[305px] sm:w-[280px] sm:h-[350px] rounded-[28px] overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.28)] relative border-4 border-white/70 bg-[#2B1627]">
+                <div className="w-[220px] h-[270px] sm:w-[260px] sm:h-[320px] rounded-[28px] overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.28)] relative border-4 border-white/70 bg-[#2B1627]">
                   <img
                     src={activeProduct.image}
                     alt={activeProduct.name}
@@ -577,7 +527,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
               </motion.div>
             </div>
 
-            {/* 1 & 5. MITAD INFERIOR: Bottom Sheet blanco más alto (min-h-[46vh], -mt-6, pb-28 sm:pb-12), con contenido completo y margen amplio sobre la barra flotante */}
+            {/* MITAD INFERIOR: Bottom Sheet blanco compacto y estilizado */}
             <motion.div
               drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
@@ -591,24 +541,24 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-lg mx-auto bg-white rounded-t-[36px] pt-5 px-7 pb-28 sm:pb-12 shadow-[0_-15px_40px_rgba(0,0,0,0.12)] relative z-20 flex flex-col justify-between -mt-6 sm:-mt-8 min-h-[46vh] touch-pan-y"
+              className="w-full max-w-lg mx-auto bg-white rounded-t-[32px] sm:rounded-t-[36px] pt-4 pb-6 px-6 shadow-[0_-15px_40px_rgba(0,0,0,0.12)] relative z-20 flex flex-col justify-between touch-pan-y"
             >
-              {/* Handle bar para deslizar hacia abajo */}
+              {/* Barra gris superior para arrastrar */}
               <div
                 onClick={() => setIsDetailView(false)}
-                className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 cursor-pointer active:scale-95 transition-transform"
+                className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-2 cursor-pointer active:scale-95 transition-transform"
                 title="Cerrar detalle"
               />
 
-              {/* 3 & 5. Info del producto: Tag 100% dinámico + Nombre + Descripción + Línea de confianza */}
+              {/* Info del producto: Tag dinámico + Botón cerrar + Título serif + Descripción + Línea de confianza */}
               <div className="flex flex-col">
-                <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center justify-between gap-2 mb-1.5">
                   <span
                     style={{
                       backgroundColor: `${activeProduct.themeColor || activeProduct.arcColor}18`,
                       color: activeProduct.themeColor || activeProduct.arcColor,
                     }}
-                    className="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest border border-current/20"
+                    className="inline-flex items-center rounded-full px-3 py-0.5 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-widest border border-current/20"
                   >
                     {activeProduct.tag || 'ESPECIALIDAD TYAZUCA'}
                   </span>
@@ -623,54 +573,34 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                   </button>
                 </div>
 
-                <h3 className="font-serif text-3xl sm:text-4xl font-black text-[#1E222D] tracking-tight uppercase leading-tight mt-1">
+                <h3 className="font-serif text-2xl sm:text-3xl font-black text-[#1E222D] uppercase leading-tight">
                   {activeProduct.name}
                 </h3>
 
-                <p className="text-sm sm:text-base text-gray-600 mt-1.5 leading-relaxed">
+                <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
                   {activeProduct.description}
                 </p>
 
-                {/* Línea de confianza: Preparado con frutas frescas al momento */}
-                <p className="text-xs font-medium text-gray-500 mt-2.5 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#5B4B8A] inline-block shrink-0" />
-                  <span>Preparado con frutas frescas al momento</span>
+                {/* Línea de confianza con dot de color */}
+                <p className="text-[11px] font-medium text-gray-500 mt-2 flex items-center gap-1.5">
+                  <span
+                    className="w-2 h-2 rounded-full inline-block shrink-0"
+                    style={{ backgroundColor: activeProduct.themeColor || activeProduct.arcColor || '#5B4B8A' }}
+                  />
+                  <span>Preparado al momento con fruta 100% fresca</span>
                 </p>
-
-                {/* 2. Personaliza tu vaso (Opcional) */}
-                <div className="mt-4 pt-3 border-t border-gray-100">
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">
-                    PERSONALIZA TU VASO (OPCIONAL)
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {TYAZUCA_EXTRAS.map((extra) => {
-                      const isSelected = selectedExtras.includes(extra.id);
-                      return (
-                        <button
-                          key={extra.id}
-                          type="button"
-                          onClick={() => toggleExtra(extra.id)}
-                          className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 cursor-pointer border ${
-                            isSelected
-                              ? 'bg-[#5B4B8A]/12 border-[#5B4B8A] text-[#5B4B8A] shadow-sm'
-                              : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300'
-                          } active:scale-95`}
-                        >
-                          {extra.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
               </div>
 
-              {/* Fila de compra: Precio Oficial + Botón Morado + AGREGAR */}
-              <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100 mt-4 sm:mt-6">
+              {/* Línea divisoria sutil */}
+              <div className="my-3 border-t border-gray-100" />
+
+              {/* Fila de compra: Precio Oficial a la izquierda y Botón + AGREGAR a la derecha */}
+              <div className="flex items-center justify-between gap-3">
                 <div className="flex flex-col">
                   <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 block mb-0.5">
                     PRECIO OFICIAL
                   </span>
-                  <span className="text-3xl sm:text-4xl font-black font-serif text-[#1E222D] leading-none">
+                  <span className="font-serif text-2xl sm:text-3xl font-black text-[#1E222D] leading-none">
                     {formattedPrice}
                   </span>
                 </div>
@@ -681,8 +611,13 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                   animate={justAdded ? { scale: 0.95 } : { scale: 1 }}
                   type="button"
                   onClick={handleAddToCart}
-                  className={`py-4 px-8 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase text-white shadow-lg flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
-                    justAdded ? 'bg-emerald-600' : 'bg-[#5B4B8A] hover:bg-[#4d3e75]'
+                  style={
+                    !justAdded
+                      ? { backgroundColor: activeProduct.themeColor || activeProduct.arcColor || '#5B4B8A' }
+                      : undefined
+                  }
+                  className={`py-3.5 px-7 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase text-white shadow-lg flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
+                    justAdded ? 'bg-emerald-600' : 'hover:brightness-95'
                   }`}
                 >
                   {justAdded ? (
@@ -699,11 +634,11 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                 </motion.button>
               </div>
 
-              {/* Botón Volver al Menú con separación superior */}
+              {/* Botón Volver al Menú con margen moderado mt-3 */}
               <button
                 type="button"
                 onClick={() => setIsDetailView(false)}
-                className="mt-5 text-center text-[11px] font-extrabold tracking-wider text-gray-400 hover:text-[#5B4B8A] uppercase py-1 transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer"
+                className="mt-3 text-center text-[11px] font-extrabold tracking-wider text-gray-400 hover:text-gray-700 uppercase py-1 transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer"
               >
                 ← VOLVER AL MENÚ
               </button>
