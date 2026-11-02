@@ -518,35 +518,32 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
         )}
       </motion.div>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          ARCO CIRCULAR PERFECTO (Sin corte plano arriba)
-      ═══════════════════════════════════════════════════════════════ */}
+      {/* CÍRCULO RESPONSIVE: 240vw en móvil para que cubra todo hasta abajo y mantenga la curva de PC */}
       <motion.div
         animate={{
           backgroundColor: activeProduct.themeColor || activeProduct.arcColor,
           y: isDetailView ? "100%" : "0%",
         }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute top-[42%] left-1/2 -translate-x-1/2 w-[180vw] h-[180vw] sm:w-[140vw] sm:h-[140vw] md:w-[115vw] md:h-[115vw] rounded-full z-10 flex items-center justify-center shadow-[0_-20px_60px_rgba(0,0,0,0.15)] pointer-events-none"
+        className="absolute top-[33%] md:top-[42%] left-1/2 -translate-x-1/2 w-[240vw] h-[240vw] sm:w-[160vw] sm:h-[160vw] md:w-[115vw] md:h-[115vw] rounded-full z-10 flex items-center justify-center shadow-[0_-20px_60px_rgba(0,0,0,0.15)] pointer-events-none"
       >
-        {/* TEXTO CURVO EN CÍRCULO COMPLETO CON MARGEN SUPERIOR (Nunca se corta) */}
         <motion.svg
           animate={{ rotate: activeIndex * -25 }}
           transition={{ type: "spring", stiffness: 45, damping: 18 }}
           viewBox="0 0 1200 1200"
-          className="w-full h-full opacity-[0.16] overflow-visible select-none"
+          className="w-full h-full opacity-25 md:opacity-[0.16] overflow-visible select-none"
         >
           <defs>
-            {/* Centro en (600,600) y radio 510: deja 90px de margen libre arriba para que las letras no se corten */}
+            {/* Radio 545 para que en móvil el texto asome justo por el borde superior del círculo */}
             <path
               id="perfectCircleArc"
-              d="M 90,600 A 510,510 0 1,1 1110,600 A 510,510 0 1,1 90,600"
+              d="M 55,600 A 545,545 0 1,1 1145,600 A 545,545 0 1,1 55,600"
               fill="transparent"
             />
           </defs>
-          <text className="fill-white text-[68px] font-serif uppercase tracking-[0.18em]">
+          <text className="fill-white text-[48px] md:text-[68px] font-serif uppercase tracking-[0.16em]">
             <textPath href="#perfectCircleArc" startOffset="0%">
-              • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA 
+              • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET •
             </textPath>
           </text>
         </motion.svg>

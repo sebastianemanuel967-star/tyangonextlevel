@@ -3387,14 +3387,14 @@
     .tyazuca-arrow-btn.prev-btn { left: 24px; }
     .tyazuca-arrow-btn.next-btn { right: 24px; }
 
-    /* ARCO CIRCULAR PERFECTO (Sin corte plano arriba - Capa 10) */
+    /* CÍRCULO RESPONSIVE: 240vw en móvil para que cubra todo hasta abajo y mantenga la curva de PC */
     .tyazuca-arc-disk {
       position: absolute;
-      top: 42%;
+      top: 33%;
       left: 50%;
       transform: translate3d(-50%, 0, 0);
-      width: 180vw;
-      height: 180vw;
+      width: 240vw;
+      height: 240vw;
       border-radius: 50%;
       background-color: #8A1C22;
       z-index: 10;
@@ -3407,12 +3407,14 @@
     }
     @media (min-width: 640px) {
       .tyazuca-arc-disk {
-        width: 140vw;
-        height: 140vw;
+        top: 38%;
+        width: 160vw;
+        height: 160vw;
       }
     }
     @media (min-width: 768px) {
       .tyazuca-arc-disk {
+        top: 42%;
         width: 115vw;
         height: 115vw;
       }
@@ -3425,11 +3427,24 @@
     .tyazuca-svg-text {
       width: 100%;
       height: 100%;
-      opacity: 0.16;
+      opacity: 0.25;
       overflow: visible;
       user-select: none;
       transform-origin: 50% 50%;
       transition: transform 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @media (min-width: 768px) {
+      .tyazuca-svg-text {
+        opacity: 0.16;
+      }
+    }
+    .tyazuca-svg-text text {
+      font-size: 48px;
+    }
+    @media (min-width: 768px) {
+      .tyazuca-svg-text text {
+        font-size: 68px;
+      }
     }
 
     /* Puntos de paginación (Capa 35) */
@@ -4573,21 +4588,20 @@
         </div>
       </div>
 
-      <!-- ARCO CIRCULAR PERFECTO (Sin corte plano arriba - Capa 10) -->
+      <!-- CÍRCULO RESPONSIVE: 240vw en móvil para que cubra todo hasta abajo y mantenga la curva de PC -->
       <div class="tyazuca-arc-disk" id="tyazucaArcDisk">
-        <!-- TEXTO CURVO EN CÍRCULO COMPLETO CON MARGEN SUPERIOR (Nunca se corta) -->
         <svg viewBox="0 0 1200 1200" class="tyazuca-svg-text" id="tyazucaSvgText">
           <defs>
-            <!-- Centro en (600,600) y radio 510: deja 90px de margen libre arriba para que las letras no se corten -->
+            <!-- Radio 545 para que en móvil el texto asome justo por el borde superior del círculo -->
             <path
               id="perfectCircleArc"
-              d="M 90,600 A 510,510 0 1,1 1110,600 A 510,510 0 1,1 90,600"
+              d="M 55,600 A 545,545 0 1,1 1145,600 A 545,545 0 1,1 55,600"
               fill="transparent"
             />
           </defs>
-          <text class="fill-white text-[68px] font-serif uppercase tracking-[0.18em]" font-family="'Playfair Display', Georgia, serif" font-size="68" fill="#FFFFFF" letter-spacing="0.18em">
+          <text class="fill-white text-[48px] md:text-[68px] font-serif uppercase tracking-[0.16em]" font-family="'Playfair Display', Georgia, serif" fill="#FFFFFF" letter-spacing="0.16em">
             <textPath href="#perfectCircleArc" startOffset="0%">
-              • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA 
+              • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET •
             </textPath>
           </text>
         </svg>
