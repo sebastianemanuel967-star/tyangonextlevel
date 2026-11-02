@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export interface TyazucaProduct {
   id: string;
@@ -98,21 +98,30 @@ interface TyazucaSectionProps {
 
 export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaSectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDetail, setIsDetail] = useState(false);
-  const [addedAnimation, setAddedAnimation] = useState(false);
+  const [isDetailView, setIsDetailView] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
 
   const total = TYAZUCA_PRODUCTS.length;
-  const currentProduct = TYAZUCA_PRODUCTS[currentIndex];
-  const activeProduct = currentProduct;
+  const activeProduct = TYAZUCA_PRODUCTS[currentIndex];
   const activeIndex = currentIndex;
-  const isDetailView = isDetail;
-  const setIsDetailView = setIsDetail;
 
   const prevIndex = (currentIndex - 1 + total) % total;
   const nextIndex = (currentIndex + 1) % total;
 
   const prevProduct = TYAZUCA_PRODUCTS[prevIndex];
   const nextProduct = TYAZUCA_PRODUCTS[nextIndex];
+
+  // 1. Congelar el scroll nativo de la página cuando la vista de detalles esté abierta
+  useEffect(() => {
+    if (isDetailView) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isDetailView]);
 
   const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % total);
@@ -122,8 +131,8 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Gestor táctil unificado (Swipe horizontal y vertical)
-  const touchStart = React.useRef<{ x: number; y: number } | null>(null);
+  // 3. Gestor táctil horizontal exclusivo para cambiar entre los 5 vasos (Scroll vertical nativo completamente libre)
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStart.current = {
@@ -137,54 +146,51 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
     const deltaX = touchStart.current.x - e.changedTouches[0].clientX;
     const deltaY = touchStart.current.y - e.changedTouches[0].clientY;
 
-    // Si el gesto fue principalmente horizontal -> Cambiar de vaso
+    // Solo si el gesto fue principalmente horizontal
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
       if (!isDetailView) {
         if (deltaX > 0) handleNext();
         else handlePrev();
       }
-    } 
-    // Si el gesto fue principalmente vertical -> Abrir o cerrar Detalles
-    else if (Math.abs(deltaY) > 40) {
-      if (deltaY > 0 && !isDetailView) {
-        // Usuario desliza hacia abajo/arriba para explorar el vaso -> Abre el panel blanco
-        setIsDetailView(true);
-      } else if (deltaY < 0 && !isDetailView) {
-        // Soporte intuitivo adicional: abrir con swipe hacia abajo en carrusel
-        setIsDetailView(true);
-      } else if (deltaY < 0 && isDetailView) {
-        // Usuario desliza hacia arriba/abajo para regresar -> Cierra el panel blanco
-        setIsDetailView(false);
-      } else if (deltaY > 0 && isDetailView) {
-        // Soporte intuitivo adicional: cerrar con swipe hacia arriba en detalle
-        setIsDetailView(false);
-      }
     }
-
     touchStart.current = null;
   };
 
   // Controles por teclado
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' && !isDetail) handleNext();
-      if (e.key === 'ArrowLeft' && !isDetail) handlePrev();
-      if (e.key === 'Escape' && isDetail) setIsDetail(false);
+      if (e.key === 'ArrowRight' && !isDetailView) handleNext();
+      if (e.key === 'ArrowLeft' && !isDetailView) handlePrev();
+      if (e.key === 'Escape' && isDetailView) setIsDetailView(false);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNext, handlePrev, isDetail]);
+  }, [handleNext, handlePrev, isDetailView]);
 
-  const handleAdd = (e?: React.MouseEvent, prod?: TyazucaProduct) => {
+  // 4. Conexión del botón morado al carrito real global de la app
+  const handleAddToCart = (e?: React.MouseEvent) => {
     if (e && typeof e.stopPropagation === 'function') {
       e.stopPropagation();
     }
-    const item = prod || activeProduct;
+    const formattedProduct: TyazucaProduct & { category: string } = {
+      ...activeProduct,
+      priceNum: 4.50,
+      category: 'TYAZUCA',
+    };
+
     if (onAddToCart) {
-      onAddToCart(item);
+      onAddToCart(formattedProduct);
     }
-    setAddedAnimation(true);
-    setTimeout(() => setAddedAnimation(false), 900);
+
+    // Compatibilidad directa con la función global addToCart si está disponible
+    if (typeof window !== 'undefined' && typeof (window as any).addToCart === 'function') {
+      (window as any).addToCart(activeProduct.id);
+    }
+
+    setJustAdded(true);
+    setTimeout(() => {
+      setJustAdded(false);
+    }, 1000);
   };
 
   const renderTag = (product: TyazucaProduct) => {
@@ -226,7 +232,6 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
           Línea Dulce &amp; Frutas Velvet
         </span>
 
-        {/* Cambia dinámicamente según el vaso activo para que arriba nunca se vea vacío */}
         <AnimatePresence mode="wait">
           {!isDetailView && (
             <motion.div
@@ -244,7 +249,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                 }}
                 className="inline-flex items-center rounded-full px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest mb-1"
               >
-                {activeProduct.tag || "ESPECIALIDAD TYAZUCA"}
+                {activeProduct.tag || 'ESPECIALIDAD TYAZUCA'}
               </span>
 
               <h2 className="font-serif text-3xl sm:text-5xl font-black tracking-tight text-[#1E222D] uppercase leading-none">
@@ -259,60 +264,19 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
         </AnimatePresence>
       </div>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          2. FONDO DINÁMICO & TÍTULO GIGANTE DISPLAY (VISTA DETALLE)
-      ═══════════════════════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {isDetail && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0 pointer-events-none flex items-start sm:items-center justify-center pt-24 sm:pt-0 z-10 overflow-hidden"
-          >
-            <motion.h2
-              initial={{ scale: 0.85, opacity: 0, y: 30 }}
-              animate={{ scale: 1, opacity: 0.07, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl sm:text-7xl md:text-[130px] lg:text-[170px] font-black tracking-tighter text-[#2B1627] text-center uppercase whitespace-nowrap select-none font-serif leading-none"
-            >
-              {currentProduct.displayName || currentProduct.name}
-            </motion.h2>
-
-            <div
-              className="absolute w-[320px] sm:w-[540px] h-[320px] sm:h-[540px] rounded-full blur-[90px] sm:blur-[140px] opacity-25 pointer-events-none transition-colors duration-700"
-              style={{ backgroundColor: currentProduct.arcColor }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ═══════════════════════════════════════════════════════════════
-          2. ESCENARIO CON SOPORTE DE SCROLL VERTICAL Y TARJETAS MÁS GRANDES
-      ═══════════════════════════════════════════════════════════════ */}
-      <div
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        onWheel={(e) => {
-          if (e.deltaY > 35 && !isDetailView) setIsDetailView(true);
-          if (e.deltaY < -35 && isDetailView) setIsDetailView(false);
-        }}
-        className="relative flex-1 flex flex-col items-center justify-start pt-4 sm:justify-center sm:pt-0 overflow-hidden"
-      >
-        {/* ARCO MÁS ALTO EN MOBILE (top-[27%]) PARA CERO ESPACIOS MUERTOS */}
+      {/* 2. ESCENARIO AGRUMEA (CARRUSEL 3D INTERACTIVO) */}
+      <div className="relative flex-1 flex flex-col items-center justify-start pt-4 sm:justify-center sm:pt-0 overflow-hidden">
+        {/* ARCO DE COLOR Y TEXTO CURVO GIRATORIO */}
         <motion.div
           animate={{
             backgroundColor: activeProduct.themeColor || activeProduct.arcColor,
-            y: isDetailView ? "100%" : "0%",
           }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="absolute top-[27%] md:top-[38%] left-1/2 -translate-x-1/2 w-[235vw] h-[235vw] sm:w-[160vw] sm:h-[160vw] md:w-[115vw] md:h-[115vw] rounded-full z-10 flex items-center justify-center shadow-[0_-20px_60px_rgba(0,0,0,0.18)] pointer-events-none"
         >
           <motion.svg
             animate={{ rotate: activeIndex * -25 }}
-            transition={{ type: "spring", stiffness: 45, damping: 18 }}
+            transition={{ type: 'spring', stiffness: 45, damping: 18 }}
             viewBox="0 0 1200 1200"
             className="w-full h-full opacity-25 md:opacity-[0.16] overflow-visible select-none"
           >
@@ -331,74 +295,56 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
           </motion.svg>
         </motion.div>
 
-        {/* CONTENEDOR DE TARJETAS UN 20% MÁS GRANDES + SWIPE TÁCTIL */}
-        <div
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          className="relative z-30 w-full max-w-6xl h-[340px] sm:h-[430px] flex items-center justify-center touch-pan-y"
-        >
-          {/* VASO IZQUIERDO (Anterior) - w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] */}
-          <AnimatePresence>
-            {!isDetailView && (
-              <motion.button
-                key={`prev-${prevProduct.id}`}
-                onClick={handlePrev}
-                aria-label={`Ver producto anterior: ${prevProduct.name}`}
-                initial={{ opacity: 0, scale: 0.5, x: -280, y: 70 }}
-                animate={{
-                  opacity: 0.85,
-                  scale: 0.72,
-                  rotate: -14,
-                  x: typeof window !== 'undefined' && window.innerWidth < 640 ? -145 : -280,
-                  y: typeof window !== 'undefined' && window.innerWidth < 640 ? 45 : 70,
-                }}
-                exit={{ opacity: 0, scale: 0.4, x: -320 }}
-                transition={springTransition}
-                whileHover={{ scale: 0.78, opacity: 1 }}
-                className="absolute z-20 cursor-pointer focus:outline-none group"
-                style={{
-                  filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
-                }}
-              >
-                <div className="relative w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] rounded-[26px] sm:rounded-[34px] overflow-hidden">
-                  <img
-                    src={prevProduct.image}
-                    alt={prevProduct.name}
-                    className="w-full h-full object-cover rounded-[26px] sm:rounded-[34px] pointer-events-none"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-x-0 bottom-2.5 text-center">
-                    <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
-                      {prevProduct.name}
-                    </span>
-                  </div>
-                </div>
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          {/* VASO CENTRAL (Activo / Detalle) - w-[215px] h-[275px] sm:w-[260px] sm:h-[330px] */}
-          <motion.div
-            layout
-            key={`center-${currentProduct.id}`}
+        {/* CONTENEDOR DE TARJETAS 3D FLOTANTES */}
+        <div className="relative z-30 w-full max-w-6xl h-[340px] sm:h-[430px] flex items-center justify-center touch-pan-x">
+          {/* VASO IZQUIERDO (Anterior) */}
+          <motion.button
+            key={`prev-${prevProduct.id}`}
+            onClick={handlePrev}
+            aria-label={`Ver producto anterior: ${prevProduct.name}`}
+            initial={{ opacity: 0, scale: 0.5, x: -280, y: 70 }}
+            animate={{
+              opacity: 0.85,
+              scale: 0.72,
+              rotate: -14,
+              x: typeof window !== 'undefined' && window.innerWidth < 640 ? -145 : -280,
+              y: typeof window !== 'undefined' && window.innerWidth < 640 ? 45 : 70,
+            }}
             transition={springTransition}
-            className="relative z-30 flex flex-col items-center justify-center cursor-pointer"
-            onClick={() => {
-              if (!isDetailView) setIsDetailView(true);
+            whileHover={{ scale: 0.78, opacity: 1 }}
+            className="absolute z-20 cursor-pointer focus:outline-none group"
+            style={{
+              filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
             }}
           >
+            <div className="relative w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] rounded-[26px] sm:rounded-[34px] overflow-hidden">
+              <img
+                src={prevProduct.image}
+                alt={prevProduct.name}
+                className="w-full h-full object-cover rounded-[26px] sm:rounded-[34px] pointer-events-none"
+                loading="lazy"
+              />
+              <div className="absolute inset-x-0 bottom-2.5 text-center">
+                <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
+                  {prevProduct.name}
+                </span>
+              </div>
+            </div>
+          </motion.button>
+
+          {/* VASO CENTRAL (Activo) */}
+          <motion.div
+            layout
+            key={`center-${activeProduct.id}`}
+            transition={springTransition}
+            className="relative z-30 flex flex-col items-center justify-center cursor-pointer"
+            onClick={() => setIsDetailView(true)}
+          >
             <motion.div
-              animate={
-                isDetailView
-                  ? {
-                      y: typeof window !== 'undefined' && window.innerWidth < 640 ? [0, -6, 0] : [0, -8, 0],
-                      rotate: 0,
-                    }
-                  : {
-                      y: [0, -10, 0],
-                      rotate: -7,
-                    }
-              }
+              animate={{
+                y: [0, -10, 0],
+                rotate: -7,
+              }}
               transition={{
                 y: {
                   duration: 3.6,
@@ -408,260 +354,271 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                 },
                 rotate: springTransition,
               }}
-              whileHover={
-                !isDetailView
-                  ? {
-                      scale: 1.08,
-                      rotate: -3,
-                    }
-                  : {}
-              }
+              whileHover={{
+                scale: 1.08,
+                rotate: -3,
+              }}
               className="relative transition-shadow duration-500"
               style={{
                 filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
               }}
             >
-              <div
-                className={`relative overflow-hidden rounded-[28px] sm:rounded-[36px] transition-all duration-500 ${
-                  isDetailView
-                    ? 'w-[240px] h-[305px] sm:w-[320px] sm:h-[400px]'
-                    : 'w-[215px] h-[275px] sm:w-[260px] sm:h-[330px]'
-                }`}
-              >
+              <div className="relative overflow-hidden rounded-[28px] sm:rounded-[36px] w-[215px] h-[275px] sm:w-[260px] sm:h-[330px]">
                 <img
-                  src={currentProduct.image}
-                  alt={currentProduct.name}
+                  src={activeProduct.image}
+                  alt={activeProduct.name}
                   className="w-full h-full object-cover rounded-[28px] sm:rounded-[36px] pointer-events-none select-none transition-transform duration-700"
                 />
 
-                {!isDetailView && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="absolute inset-x-0 bottom-3 sm:bottom-4 flex justify-center"
-                  >
-                    <span className="bg-[#2B1627]/90 text-white text-[9px] sm:text-[11px] font-black px-3.5 py-1.5 rounded-full shadow-lg backdrop-blur-md flex items-center gap-1 border border-white/20 active:scale-95 transition-transform">
-                      <span>✨ VER DETALLES</span>
-                    </span>
-                  </motion.div>
-                )}
+                <div className="absolute inset-x-0 bottom-3 sm:bottom-4 flex justify-center">
+                  <span className="bg-[#2B1627]/90 text-white text-[9px] sm:text-[11px] font-black px-3.5 py-1.5 rounded-full shadow-lg backdrop-blur-md flex items-center gap-1 border border-white/20 active:scale-95 transition-transform">
+                    <span>✨ VER DETALLES</span>
+                  </span>
+                </div>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* VASO DERECHO (Siguiente) - w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] */}
-          <AnimatePresence>
-            {!isDetailView && (
-              <motion.button
-                key={`next-${nextProduct.id}`}
-                onClick={handleNext}
-                aria-label={`Ver producto siguiente: ${nextProduct.name}`}
-                initial={{ opacity: 0, scale: 0.5, x: 280, y: 70 }}
-                animate={{
-                  opacity: 0.85,
-                  scale: 0.72,
-                  rotate: 14,
-                  x: typeof window !== 'undefined' && window.innerWidth < 640 ? 145 : 280,
-                  y: typeof window !== 'undefined' && window.innerWidth < 640 ? 45 : 70,
-                }}
-                exit={{ opacity: 0, scale: 0.4, x: 320 }}
-                transition={springTransition}
-                whileHover={{ scale: 0.78, opacity: 1 }}
-                className="absolute z-20 cursor-pointer focus:outline-none group"
-                style={{
-                  filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
-                }}
-              >
-                <div className="relative w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] rounded-[26px] sm:rounded-[34px] overflow-hidden">
-                  <img
-                    src={nextProduct.image}
-                    alt={nextProduct.name}
-                    className="w-full h-full object-cover rounded-[26px] sm:rounded-[34px] pointer-events-none"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-x-0 bottom-2.5 text-center">
-                    <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
-                      {nextProduct.name}
-                    </span>
-                  </div>
-                </div>
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* 3. BARRA INFERIOR DE COMPRA RÁPIDA + INDICADOR DE SCROLL (Llena el espacio marrón de abajo) */}
-        {!isDetailView && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative z-30 mt-2 pb-6 sm:pb-8 flex flex-col items-center gap-2.5"
+          {/* VASO DERECHO (Siguiente) */}
+          <motion.button
+            key={`next-${nextProduct.id}`}
+            onClick={handleNext}
+            aria-label={`Ver producto siguiente: ${nextProduct.name}`}
+            initial={{ opacity: 0, scale: 0.5, x: 280, y: 70 }}
+            animate={{
+              opacity: 0.85,
+              scale: 0.72,
+              rotate: 14,
+              x: typeof window !== 'undefined' && window.innerWidth < 640 ? 145 : 280,
+              y: typeof window !== 'undefined' && window.innerWidth < 640 ? 45 : 70,
+            }}
+            transition={springTransition}
+            whileHover={{ scale: 0.78, opacity: 1 }}
+            className="absolute z-20 cursor-pointer focus:outline-none group"
+            style={{
+              filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
+            }}
           >
-            <div className="flex items-center gap-3 rounded-full bg-black/25 backdrop-blur-md px-5 py-2 border border-white/15 shadow-lg">
-              <span className="text-xl font-black text-white">{activeProduct.price}</span>
+            <div className="relative w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] rounded-[26px] sm:rounded-[34px] overflow-hidden">
+              <img
+                src={nextProduct.image}
+                alt={nextProduct.name}
+                className="w-full h-full object-cover rounded-[26px] sm:rounded-[34px] pointer-events-none"
+                loading="lazy"
+              />
+              <div className="absolute inset-x-0 bottom-2.5 text-center">
+                <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
+                  {nextProduct.name}
+                </span>
+              </div>
+            </div>
+          </motion.button>
+        </div>
+
+        {/* 2. LIMPIEZA DEL CARRUSEL: Solo Dots y Botón para ver detalles (Sin botón amarillo ni precio en carrusel) */}
+        <div className="relative z-30 mt-2 pb-6 sm:pb-8 flex flex-col items-center gap-3">
+          {/* Puntos de paginación */}
+          <div className="flex items-center gap-2">
+            {TYAZUCA_PRODUCTS.map((prod, idx) => (
               <button
-                onClick={(e) => handleAdd(e, activeProduct)}
-                className="rounded-full bg-[#F4B41A] hover:bg-[#e0a312] text-[#1E222D] px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider transition active:scale-95 shadow-md flex items-center gap-1.5"
-              >
-                {addedAnimation ? (
-                  <>
-                    <span>✓</span>
-                    <span>¡AGREGADO!</span>
-                  </>
-                ) : (
-                  <>
-                    <span>+</span>
-                    <span>AGREGAR</span>
-                  </>
-                )}
-              </button>
-            </div>
+                key={prod.id}
+                onClick={() => setCurrentIndex(idx)}
+                aria-label={`Ir al vaso ${prod.name}`}
+                className={`transition-all duration-300 rounded-full h-2 cursor-pointer ${
+                  idx === activeIndex
+                    ? 'w-7 bg-white shadow-md'
+                    : 'w-2 bg-white/40 hover:bg-white/70'
+                }`}
+              />
+            ))}
+          </div>
 
-            {/* Dots + Aviso de Scroll */}
-            <div className="flex items-center gap-2 my-0.5">
-              {TYAZUCA_PRODUCTS.map((prod, idx) => (
-                <button
-                  key={prod.id}
-                  onClick={() => setCurrentIndex(idx)}
-                  aria-label={`Ir al vaso ${prod.name}`}
-                  className={`transition-all duration-300 rounded-full h-2 ${
-                    idx === activeIndex
-                      ? 'w-7 bg-white shadow-md'
-                      : 'w-2 bg-white/40 hover:bg-white/70'
-                  }`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={() => setIsDetailView(true)}
-              className="flex flex-col items-center text-[11px] font-medium text-white/75 hover:text-white transition group"
-            >
-              <span className="group-hover:translate-y-0.5 transition-transform">Desliza para explorar el vaso ↓</span>
-            </button>
-          </motion.div>
-        )}
+          {/* Botón interactivo limpio */}
+          <button
+            type="button"
+            onClick={() => setIsDetailView(true)}
+            className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-white/90 hover:text-white transition group py-1.5 px-4 rounded-full bg-white/15 hover:bg-white/20 backdrop-blur-md shadow-sm border border-white/20 active:scale-95 cursor-pointer"
+          >
+            <span className="group-hover:-translate-y-0.5 transition-transform">
+              Toca el vaso para ver detalles y pedir ↑
+            </span>
+          </button>
+        </div>
 
         {/* FLECHAS DE NAVEGACIÓN */}
-        {!isDetailView && (
-          <>
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Producto anterior"
-              className="absolute left-1 sm:left-4 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/85 text-[#2B1627] shadow-lg backdrop-blur-md flex items-center justify-center border border-white font-black text-base sm:text-lg active:scale-90 transition-transform"
-            >
-              ←
-            </button>
+        <button
+          type="button"
+          onClick={handlePrev}
+          aria-label="Producto anterior"
+          className="absolute left-1 sm:left-4 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/85 text-[#2B1627] shadow-lg backdrop-blur-md flex items-center justify-center border border-white font-black text-base sm:text-lg active:scale-90 transition-transform cursor-pointer"
+        >
+          ←
+        </button>
 
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Producto siguiente"
-              className="absolute right-1 sm:right-4 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/85 text-[#2B1627] shadow-lg backdrop-blur-md flex items-center justify-center border border-white font-black text-base sm:text-lg active:scale-90 transition-transform"
-            >
-              →
-            </button>
-          </>
-        )}
+        <button
+          type="button"
+          onClick={handleNext}
+          aria-label="Producto siguiente"
+          className="absolute right-1 sm:right-4 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/85 text-[#2B1627] shadow-lg backdrop-blur-md flex items-center justify-center border border-white font-black text-base sm:text-lg active:scale-90 transition-transform cursor-pointer"
+        >
+          →
+        </button>
+      </div>
 
-        {/* ═══════════════════════════════════════════════════════════════
-            INFO LATERAL / BOTTOM SHEET EN MODO DETALLE
-        ═══════════════════════════════════════════════════════════════ */}
-        <AnimatePresence>
-          {isDetailView && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="absolute inset-0 z-40 flex flex-col justify-end md:justify-between items-center pointer-events-none"
-            >
-              {/* Tarjeta inferior estilo Sheet en móvil / Lateral en desktop */}
-              <div className="pointer-events-auto w-full md:max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between px-5 md:px-14 py-4 md:py-0 bg-white/95 md:bg-transparent backdrop-blur-2xl md:backdrop-blur-none rounded-t-[32px] md:rounded-none shadow-2xl md:shadow-none border-t border-white/80 md:border-none">
-                
-                {/* Indicador de arrastre táctil para móvil */}
+      {/* ═══════════════════════════════════════════════════════════════
+          1. OVERLAY FIJO A PANTALLA COMPLETA (VISTA DE DETALLE)
+          Solución definitiva: z-40 fijo, no se corta con el footer
+      ═══════════════════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {isDetailView && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-[#FAF7F2] flex flex-col items-center justify-between pt-16 pb-20 overflow-hidden select-none"
+          >
+            {/* MITAD SUPERIOR: Tarjeta morada del vaso activo + Texto decorativo de fondo centrado en 2 líneas */}
+            <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden px-4">
+              {/* Texto decorativo de fondo centrado en 2 líneas (no se corta a los lados) */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none text-center px-4">
+                <span className="font-serif font-black text-3xl sm:text-6xl md:text-7xl uppercase tracking-tight text-[#2B1627] opacity-15 max-w-[90vw] leading-none line-clamp-1">
+                  {activeProduct.displayName || activeProduct.name}
+                </span>
+                <span className="font-serif font-bold text-xl sm:text-3xl uppercase tracking-widest text-[#2B1627] opacity-10 mt-1 max-w-[90vw]">
+                  TYAZUCA CREMA VELVET
+                </span>
                 <div
-                  onClick={() => setIsDetailView(false)}
-                  className="w-10 h-1 bg-black/15 rounded-full mb-3 md:hidden cursor-pointer active:scale-90 transition-transform"
-                  title="Cerrar detalle"
+                  className="absolute w-[240px] sm:w-[380px] h-[240px] sm:h-[380px] rounded-full blur-[80px] sm:blur-[120px] opacity-25 pointer-events-none"
+                  style={{ backgroundColor: activeProduct.themeColor || activeProduct.arcColor }}
                 />
+              </div>
 
-                {/* Lado Izquierdo: Tag + Nombre + Descripción */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 15 }}
-                  transition={{ duration: 0.45, delay: 0.1 }}
-                  className="text-center md:text-left max-w-xs md:max-w-sm mb-3 md:mb-0"
-                >
-                  <div className="mb-2">{renderTag(currentProduct)}</div>
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#2B1627] tracking-tight leading-tight mb-1.5 font-serif">
-                    {currentProduct.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm md:text-base text-[#4A1942] font-semibold leading-relaxed">
-                    {currentProduct.description}
-                  </p>
-                </motion.div>
-
-                {/* Lado Derecho: Precio + Botón + Cerrar */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 15 }}
-                  transition={{ duration: 0.45, delay: 0.15 }}
-                  className="w-full md:w-auto flex flex-col items-center md:items-end gap-2.5 sm:gap-4"
-                >
-                  <div className="flex items-center justify-between md:justify-end w-full gap-3 sm:gap-4">
-                    <div className="text-left md:text-right">
-                      <span className="text-[10px] sm:text-xs uppercase font-extrabold tracking-widest text-[#7B5B7B] block">
-                        Precio
-                      </span>
-                      <span className="text-2xl sm:text-4xl font-black text-[#2B1627] tracking-tight font-serif leading-none">
-                        {currentProduct.price}
-                      </span>
+              {/* Tarjeta morada del vaso activo centrada */}
+              <motion.div
+                initial={{ scale: 0.85, y: 20, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.85, y: 20, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="relative z-10"
+              >
+                <div className="w-[225px] h-[285px] sm:w-[260px] sm:h-[330px] rounded-3xl overflow-hidden shadow-2xl relative border-4 border-white/60 bg-[#2B1627]">
+                  <img
+                    src={activeProduct.image}
+                    alt={activeProduct.name}
+                    className="w-full h-full object-cover rounded-3xl pointer-events-none select-none"
+                  />
+                  {activeProduct.tag && (
+                    <div className="absolute top-3 left-3">
+                      {renderTag(activeProduct)}
                     </div>
+                  )}
+                </div>
+              </motion.div>
+            </div>
 
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={(e) => handleAdd(e, currentProduct)}
-                      className={`flex-1 md:flex-initial py-3.5 px-7 rounded-full font-black text-xs sm:text-sm tracking-widest uppercase text-white shadow-xl flex items-center justify-center gap-2 transition-colors duration-300 ${
-                        addedAnimation ? 'bg-emerald-600' : 'bg-[#5B4B8A] hover:bg-[#493b6e]'
-                      }`}
-                      style={{
-                        boxShadow: '0 10px 24px rgba(91,75,138,0.35)',
-                      }}
-                    >
-                      {addedAnimation ? (
-                        <>
-                          <span>✓</span>
-                          <span>¡AGREGADO!</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="text-base leading-none">+</span>
-                          <span>AGREGAR</span>
-                        </>
-                      )}
-                    </motion.button>
-                  </div>
+            {/* MITAD INFERIOR: Bottom Sheet blanco deslizable hacia abajo */}
+            <motion.div
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0, bottom: 0.5 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.y > 70) {
+                  setIsDetailView(false);
+                }
+              }}
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-lg mx-auto bg-white rounded-t-[32px] px-6 pt-4 pb-6 shadow-[0_-15px_40px_rgba(0,0,0,0.12)] relative z-20 flex flex-col touch-pan-y"
+            >
+              {/* Handle bar para deslizar hacia abajo */}
+              <div
+                onClick={() => setIsDetailView(false)}
+                className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-3 cursor-pointer active:scale-95 transition-transform"
+                title="Cerrar detalle"
+              />
+
+              {/* Info del producto: Tag + Nombre + Descripción */}
+              <div className="flex flex-col mb-3">
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <span
+                    style={{
+                      backgroundColor: `${activeProduct.themeColor || activeProduct.arcColor}18`,
+                      color: activeProduct.themeColor || activeProduct.arcColor,
+                    }}
+                    className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-widest"
+                  >
+                    {activeProduct.tag || 'ESPECIALIDAD TYAZUCA'}
+                  </span>
 
                   <button
                     type="button"
                     onClick={() => setIsDetailView(false)}
-                    className="w-full md:w-auto text-center text-[10px] sm:text-xs font-black tracking-wider text-[#7B5B7B] hover:text-[#2B1627] uppercase py-1.5 px-3 rounded-full hover:bg-black/5 active:scale-95 transition-all"
+                    className="text-gray-400 hover:text-gray-700 text-sm font-bold p-1 rounded-full active:scale-90 transition-transform cursor-pointer"
+                    aria-label="Cerrar detalle"
                   >
-                    <span>← VOLVER AL MENÚ</span>
+                    ✕
                   </button>
-                </motion.div>
+                </div>
 
+                <h3 className="font-serif text-2xl sm:text-3xl font-black text-[#1E222D] tracking-tight uppercase leading-tight">
+                  {activeProduct.name}
+                </h3>
+
+                <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
+                  {activeProduct.description}
+                </p>
               </div>
+
+              {/* Barra de acción: Precio Oficial + Botón Morado */}
+              <div className="flex items-center justify-between gap-3 pt-2.5 border-t border-gray-100">
+                <div className="flex flex-col">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400">
+                    PRECIO OFICIAL
+                  </span>
+                  <span className="text-2xl font-black font-serif text-[#1E222D] leading-none">
+                    {activeProduct.price}
+                  </span>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.95 }}
+                  animate={justAdded ? { scale: 0.95 } : { scale: 1 }}
+                  type="button"
+                  onClick={handleAddToCart}
+                  className={`py-3 px-6 sm:px-8 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase text-white shadow-lg flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
+                    justAdded ? 'bg-emerald-600' : 'bg-[#5B4B8A] hover:bg-[#4d3e75]'
+                  }`}
+                >
+                  {justAdded ? (
+                    <>
+                      <span>✓</span>
+                      <span>¡AGREGADO AL PEDIDO!</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>+</span>
+                      <span>AGREGAR</span>
+                    </>
+                  )}
+                </motion.button>
+              </div>
+
+              {/* Botón Volver al Menú */}
+              <button
+                type="button"
+                onClick={() => setIsDetailView(false)}
+                className="mt-3 text-center text-[11px] font-extrabold tracking-wider text-gray-400 hover:text-[#5B4B8A] uppercase py-1 transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer"
+              >
+                ← VOLVER AL MENÚ
+              </button>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
