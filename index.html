@@ -7173,18 +7173,35 @@
           if (e.changedTouches && e.changedTouches.length > 0) {
             touchEndX = e.changedTouches[0].clientX;
             touchEndY = e.changedTouches[0].clientY;
-            const diffX = touchEndX - touchStartX;
-            const diffY = touchEndY - touchStartY;
+            const deltaX = touchStartX - touchEndX;
+            const deltaY = touchStartY - touchEndY;
 
-            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40 && !tyazucaIsDetail) {
-              if (diffX < 0) {
-                // Swipe a la izquierda -> siguiente vaso
-                tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
-                updateTyazucaCarouselUI();
-              } else {
-                // Swipe a la derecha -> vaso anterior
-                tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
-                updateTyazucaCarouselUI();
+            // Si el gesto fue principalmente horizontal -> Cambiar de vaso
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+              if (!tyazucaIsDetail) {
+                if (deltaX > 0) {
+                  tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
+                  updateTyazucaCarouselUI();
+                } else {
+                  tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
+                  updateTyazucaCarouselUI();
+                }
+              }
+            } 
+            // Si el gesto fue principalmente vertical -> Abrir o cerrar Detalles
+            else if (Math.abs(deltaY) > 40) {
+              if (deltaY > 0 && !tyazucaIsDetail) {
+                // Usuario desliza para explorar el vaso -> Abre el panel blanco
+                setTyazucaDetail(true);
+              } else if (deltaY < 0 && !tyazucaIsDetail) {
+                // Gesto intuitivo adicional: abrir con swipe en carrusel
+                setTyazucaDetail(true);
+              } else if (deltaY < 0 && tyazucaIsDetail) {
+                // Usuario desliza para regresar -> Cierra el panel blanco
+                setTyazucaDetail(false);
+              } else if (deltaY > 0 && tyazucaIsDetail) {
+                // Gesto intuitivo adicional: cerrar con swipe en detalle
+                setTyazucaDetail(false);
               }
             }
           }

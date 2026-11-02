@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 
 export interface TyazucaProduct {
@@ -122,15 +122,46 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Gestor de arrastre/swipe en móviles
-  const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (Math.abs(info.offset.x) > 40 && Math.abs(info.offset.x) > Math.abs(info.offset.y)) {
-      if (info.offset.x < 0) {
-        handleNext();
-      } else {
-        handlePrev();
+  // Gestor táctil unificado (Swipe horizontal y vertical)
+  const touchStart = React.useRef<{ x: number; y: number } | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+    };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart.current) return;
+    const deltaX = touchStart.current.x - e.changedTouches[0].clientX;
+    const deltaY = touchStart.current.y - e.changedTouches[0].clientY;
+
+    // Si el gesto fue principalmente horizontal -> Cambiar de vaso
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+      if (!isDetailView) {
+        if (deltaX > 0) handleNext();
+        else handlePrev();
+      }
+    } 
+    // Si el gesto fue principalmente vertical -> Abrir o cerrar Detalles
+    else if (Math.abs(deltaY) > 40) {
+      if (deltaY > 0 && !isDetailView) {
+        // Usuario desliza hacia abajo/arriba para explorar el vaso -> Abre el panel blanco
+        setIsDetailView(true);
+      } else if (deltaY < 0 && !isDetailView) {
+        // Soporte intuitivo adicional: abrir con swipe hacia abajo en carrusel
+        setIsDetailView(true);
+      } else if (deltaY < 0 && isDetailView) {
+        // Usuario desliza hacia arriba/abajo para regresar -> Cierra el panel blanco
+        setIsDetailView(false);
+      } else if (deltaY > 0 && isDetailView) {
+        // Soporte intuitivo adicional: cerrar con swipe hacia arriba en detalle
+        setIsDetailView(false);
       }
     }
+
+    touchStart.current = null;
   };
 
   // Controles por teclado
@@ -184,6 +215,8 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
 
   return (
     <section
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       className={`relative w-full min-h-[640px] sm:min-h-[750px] lg:min-h-[820px] bg-[#FAF7F2] overflow-hidden select-none flex flex-col justify-between pt-3 pb-4 sm:py-6 px-3 sm:px-6 md:px-8 transition-colors duration-700 ${className}`}
       aria-label="Catálogo TYAZUCA 3D"
     >
@@ -260,6 +293,8 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
           2. ESCENARIO CON SOPORTE DE SCROLL VERTICAL Y TARJETAS MÁS GRANDES
       ═══════════════════════════════════════════════════════════════ */}
       <div
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         onWheel={(e) => {
           if (e.deltaY > 35 && !isDetailView) setIsDetailView(true);
           if (e.deltaY < -35 && isDetailView) setIsDetailView(false);
@@ -297,13 +332,9 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
         </motion.div>
 
         {/* CONTENEDOR DE TARJETAS UN 20% MÁS GRANDES + SWIPE TÁCTIL */}
-        <motion.div
-          drag={!isDetailView ? "x" : false}
-          dragConstraints={{ left: 0, right: 0 }}
-          onDragEnd={(_, info) => {
-            if (info.offset.x < -50) handleNext();
-            if (info.offset.x > 50) handlePrev();
-          }}
+        <div
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           className="relative z-30 w-full max-w-6xl h-[340px] sm:h-[430px] flex items-center justify-center touch-pan-y"
         >
           {/* VASO IZQUIERDO (Anterior) - w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] */}
