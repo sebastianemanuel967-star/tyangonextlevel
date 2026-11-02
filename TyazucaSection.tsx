@@ -476,48 +476,43 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[#FAF7F2] flex flex-col items-center justify-between pt-16 pb-20 overflow-hidden select-none"
+            className="fixed inset-0 z-40 bg-[#FAF7F2] flex flex-col items-center justify-between pt-12 pb-0 overflow-hidden select-none"
           >
-            {/* MITAD SUPERIOR: Tarjeta morada del vaso activo + Texto decorativo de fondo centrado en 2 líneas */}
-            <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden px-4">
-              {/* Texto decorativo de fondo centrado en 2 líneas (no se corta a los lados) */}
+            {/* MITAD SUPERIOR: Tarjeta del vaso activa agrandada + Texto decorativo de fondo centrado en 2 líneas SIN puntos suspensivos */}
+            <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden px-4 pt-4 pb-2">
+              {/* 4. Texto decorativo de fondo centrado en 2 líneas completo (sin line-clamp ni ellipsis) */}
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none text-center px-4">
-                <span className="font-serif font-black text-3xl sm:text-6xl md:text-7xl uppercase tracking-tight text-[#2B1627] opacity-15 max-w-[90vw] leading-none line-clamp-1">
+                <span className="font-serif font-black text-4xl sm:text-6xl md:text-7xl uppercase tracking-tight text-[#2B1627] opacity-15 max-w-[92vw] whitespace-normal text-center leading-[0.9]">
                   {activeProduct.displayName || activeProduct.name}
                 </span>
-                <span className="font-serif font-bold text-xl sm:text-3xl uppercase tracking-widest text-[#2B1627] opacity-10 mt-1 max-w-[90vw]">
+                <span className="font-serif font-bold text-lg sm:text-2xl uppercase tracking-widest text-[#2B1627] opacity-10 mt-2 max-w-[90vw] whitespace-normal text-center">
                   TYAZUCA CREMA VELVET
                 </span>
                 <div
-                  className="absolute w-[240px] sm:w-[380px] h-[240px] sm:h-[380px] rounded-full blur-[80px] sm:blur-[120px] opacity-25 pointer-events-none"
+                  className="absolute w-[260px] sm:w-[400px] h-[260px] sm:h-[400px] rounded-full blur-[85px] sm:blur-[120px] opacity-25 pointer-events-none"
                   style={{ backgroundColor: activeProduct.themeColor || activeProduct.arcColor }}
                 />
               </div>
 
-              {/* Tarjeta morada del vaso activo centrada */}
+              {/* 2. Tarjeta morada del vaso en detalle ligeramente más grande (w-[245px] h-[305px] sm:w-[280px] sm:h-[350px]), limpia sin etiqueta adentro */}
               <motion.div
-                initial={{ scale: 0.85, y: 20, opacity: 0 }}
+                initial={{ scale: 0.88, y: 15, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
-                exit={{ scale: 0.85, y: 20, opacity: 0 }}
+                exit={{ scale: 0.88, y: 15, opacity: 0 }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 className="relative z-10"
               >
-                <div className="w-[225px] h-[285px] sm:w-[260px] sm:h-[330px] rounded-3xl overflow-hidden shadow-2xl relative border-4 border-white/60 bg-[#2B1627]">
+                <div className="w-[245px] h-[305px] sm:w-[280px] sm:h-[350px] rounded-[28px] overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.28)] relative border-4 border-white/70 bg-[#2B1627]">
                   <img
                     src={activeProduct.image}
                     alt={activeProduct.name}
-                    className="w-full h-full object-cover rounded-3xl pointer-events-none select-none"
+                    className="w-full h-full object-cover rounded-[24px] pointer-events-none select-none"
                   />
-                  {activeProduct.tag && (
-                    <div className="absolute top-3 left-3">
-                      {renderTag(activeProduct)}
-                    </div>
-                  )}
                 </div>
               </motion.div>
             </div>
 
-            {/* MITAD INFERIOR: Bottom Sheet blanco deslizable hacia abajo */}
+            {/* 1 & 5. MITAD INFERIOR: Bottom Sheet blanco más alto (min-h-[46vh], -mt-6, pb-28 sm:pb-12), con contenido completo y margen amplio sobre la barra flotante */}
             <motion.div
               drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
@@ -531,24 +526,24 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-lg mx-auto bg-white rounded-t-[32px] px-6 pt-4 pb-6 shadow-[0_-15px_40px_rgba(0,0,0,0.12)] relative z-20 flex flex-col touch-pan-y"
+              className="w-full max-w-lg mx-auto bg-white rounded-t-[36px] pt-5 px-7 pb-28 sm:pb-12 shadow-[0_-15px_40px_rgba(0,0,0,0.12)] relative z-20 flex flex-col justify-between -mt-6 sm:-mt-8 min-h-[46vh] touch-pan-y"
             >
               {/* Handle bar para deslizar hacia abajo */}
               <div
                 onClick={() => setIsDetailView(false)}
-                className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-3 cursor-pointer active:scale-95 transition-transform"
+                className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 cursor-pointer active:scale-95 transition-transform"
                 title="Cerrar detalle"
               />
 
-              {/* Info del producto: Tag + Nombre + Descripción */}
-              <div className="flex flex-col mb-3">
-                <div className="flex items-center justify-between gap-2 mb-1">
+              {/* 3 & 5. Info del producto: Tag 100% dinámico + Nombre + Descripción + Línea de confianza */}
+              <div className="flex flex-col">
+                <div className="flex items-center justify-between gap-2 mb-2">
                   <span
                     style={{
                       backgroundColor: `${activeProduct.themeColor || activeProduct.arcColor}18`,
                       color: activeProduct.themeColor || activeProduct.arcColor,
                     }}
-                    className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-widest"
+                    className="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest border border-current/20"
                   >
                     {activeProduct.tag || 'ESPECIALIDAD TYAZUCA'}
                   </span>
@@ -563,22 +558,28 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                   </button>
                 </div>
 
-                <h3 className="font-serif text-2xl sm:text-3xl font-black text-[#1E222D] tracking-tight uppercase leading-tight">
+                <h3 className="font-serif text-3xl sm:text-4xl font-black text-[#1E222D] tracking-tight uppercase leading-tight mt-1">
                   {activeProduct.name}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 mt-1.5 leading-relaxed">
                   {activeProduct.description}
+                </p>
+
+                {/* Línea de confianza: Preparado con frutas frescas al momento */}
+                <p className="text-xs font-medium text-gray-500 mt-2.5 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#5B4B8A] inline-block shrink-0" />
+                  <span>Preparado con frutas frescas al momento</span>
                 </p>
               </div>
 
-              {/* Barra de acción: Precio Oficial + Botón Morado */}
-              <div className="flex items-center justify-between gap-3 pt-2.5 border-t border-gray-100">
+              {/* Fila de compra: Precio Oficial + Botón Morado + AGREGAR */}
+              <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100 mt-6">
                 <div className="flex flex-col">
-                  <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 block mb-0.5">
                     PRECIO OFICIAL
                   </span>
-                  <span className="text-2xl font-black font-serif text-[#1E222D] leading-none">
+                  <span className="text-3xl sm:text-4xl font-black font-serif text-[#1E222D] leading-none">
                     {activeProduct.price}
                   </span>
                 </div>
@@ -589,7 +590,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                   animate={justAdded ? { scale: 0.95 } : { scale: 1 }}
                   type="button"
                   onClick={handleAddToCart}
-                  className={`py-3 px-6 sm:px-8 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase text-white shadow-lg flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
+                  className={`py-4 px-8 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase text-white shadow-lg flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
                     justAdded ? 'bg-emerald-600' : 'bg-[#5B4B8A] hover:bg-[#4d3e75]'
                   }`}
                 >
@@ -600,18 +601,18 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                     </>
                   ) : (
                     <>
-                      <span>+</span>
+                      <span className="text-base leading-none">+</span>
                       <span>AGREGAR</span>
                     </>
                   )}
                 </motion.button>
               </div>
 
-              {/* Botón Volver al Menú */}
+              {/* Botón Volver al Menú con separación superior */}
               <button
                 type="button"
                 onClick={() => setIsDetailView(false)}
-                className="mt-3 text-center text-[11px] font-extrabold tracking-wider text-gray-400 hover:text-[#5B4B8A] uppercase py-1 transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer"
+                className="mt-5 text-center text-[11px] font-extrabold tracking-wider text-gray-400 hover:text-[#5B4B8A] uppercase py-1 transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer"
               >
                 ← VOLVER AL MENÚ
               </button>
