@@ -2,8 +2,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
-const DIR = __dirname;
+const PORT = process.env.PORT || 3000;
+const DIR = path.resolve(__dirname);
 
 const mimeTypes = {
   '.html': 'text/html; charset=UTF-8',
@@ -19,10 +19,18 @@ const mimeTypes = {
 };
 
 const server = http.createServer((req, res) => {
-  let reqUrl = req.url.split('?')[0];
-  if (reqUrl === '/') reqUrl = '/index.html';
+  let reqUrl = decodeURIComponent(req.url.split('?')[0]);
+  if (reqUrl === '/' || reqUrl === '') reqUrl = '/index.html';
 
-  const filePath = path.join(DIR, reqUrl);
+  const safePath = path.normalize(reqUrl).replace(/^(\.\.[\/\\])+/, '');
+  const filePath = path.join(DIR, safePath);
+
+  // Path traversal guard
+  if (!filePath.startsWith(DIR)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain; charset=UTF-8' });
+    res.end('403 Forbidden');
+    return;
+  }
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {

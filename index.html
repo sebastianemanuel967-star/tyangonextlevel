@@ -2599,6 +2599,18 @@
       color: var(--lime);
       text-transform: uppercase;
     }
+    .promo-banner-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(212, 217, 140, 0.22);
+      color: var(--lime);
+      padding: 1px 7px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(212, 217, 140, 0.4);
+    }
     .promo-gift-icon {
       color: var(--lime);
       flex-shrink: 0;
@@ -3223,6 +3235,7 @@
       <div class="promo-banner-inner" id="promoBannerInner">
         <div class="promo-banner-headline">
           <svg class="promo-gift-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+          <span class="promo-banner-badge" id="promoBannerBadge">ELIGE 1 GRATIS</span>
           <span class="promo-banner-title" id="promoBannerTitle">ELIGE 1 GRATIS</span>
         </div>
         <span class="promo-banner-subtitle" id="promoBannerSubtitle">Los demás se cobran a precio normal.</span>
@@ -3232,14 +3245,13 @@
 
   <!-- Menú secundario (Desktop) -->
   <aside class="secondary-menu" id="secondaryMenu" aria-label="Menú secundario">
-    <a href="#" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); toggleMenu();">Hazlo a tu manera</a>
-    <a href="#" onclick="openCartDrawer(); toggleMenu();">Ver Mi Carrito</a>
-    <a href="#" onclick="openOrdersModal(); toggleMenu();">Mis Pedidos</a>
-    <a href="#">Instagram</a>
-    <a href="#">Facebook</a>
-    <a href="#">TikTok</a>
-    <a href="#">Ubicación</a>
-    <a href="#">Contacto</a>
+    <a href="#" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); toggleMenu(); return false;">Hazlo a tu manera</a>
+    <a href="#" onclick="openCartDrawer(); toggleMenu(); return false;">Ver Mi Carrito</a>
+    <a href="#" onclick="openOrdersModal(); toggleMenu(); return false;">Mis Pedidos</a>
+    <a href="#" onclick="openStoryModal(); toggleMenu(); return false;">Nuestra Historia</a>
+    <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+    <a href="#" onclick="showToast('📍 Encuéntranos en nuestro local principal.'); toggleMenu(); return false;">Ubicación</a>
+    <a href="https://wa.me/593994124996" target="_blank" rel="noopener">Contacto WhatsApp</a>
   </aside>
 
   <!-- Backdrop Overlay para Drawer Móvil -->
@@ -3290,18 +3302,27 @@
 
       <div class="drawer-section-title">EXPERIENCIAS & ACCIONES</div>
       <div class="drawer-sub-links">
-        <a href="#" class="drawer-sub-link" onclick="openCartDrawer(); closeMobileDrawer();">
+        <a href="#" class="drawer-sub-link" onclick="openCartDrawer(); closeMobileDrawer(); return false;">
           Ver Mi Carrito
         </a>
-        <a href="#" class="drawer-sub-link" onclick="openOrdersModal(); closeMobileDrawer();">
+        <a href="#" class="drawer-sub-link" onclick="openOrdersModal(); closeMobileDrawer(); return false;">
           Mis Pedidos<span id="drawerOrdersBadge"></span>
         </a>
-        <a href="#" class="drawer-sub-link" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); closeMobileDrawer();">
+        <a href="#" class="drawer-sub-link" onclick="navigate('home'); setTimeout(() => document.getElementById('personaliza-section').scrollIntoView({behavior:'smooth'}), 320); closeMobileDrawer(); return false;">
           Hazlo a tu manera
         </a>
-        <a href="#" class="drawer-sub-link">Instagram</a>
-        <a href="#" class="drawer-sub-link">Ubicación</a>
-        <a href="#" class="drawer-sub-link">Contacto</a>
+        <a href="#" class="drawer-sub-link" onclick="openStoryModal(); closeMobileDrawer(); return false;">
+          📖 Nuestra Historia
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" class="drawer-sub-link" onclick="closeMobileDrawer();">
+          📸 Instagram
+        </a>
+        <a href="#" class="drawer-sub-link" onclick="showToast('📍 Encuéntranos en nuestro local principal.'); closeMobileDrawer(); return false;">
+          📍 Ubicación
+        </a>
+        <a href="https://wa.me/593994124996" target="_blank" rel="noopener" class="drawer-sub-link" onclick="closeMobileDrawer();">
+          💬 Contacto WhatsApp
+        </a>
       </div>
     </div>
   </aside>
@@ -4022,7 +4043,10 @@
       getAll() {
         try {
           const raw = localStorage.getItem(ORDERS_HISTORY_KEY);
-          if (raw) return JSON.parse(raw);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : [];
+          }
         } catch (e) {
           console.error('Error al leer historial de pedidos:', e);
         }
@@ -4402,7 +4426,12 @@
       try {
         const raw = localStorage.getItem(CART_STORAGE_KEY);
         if (raw) {
-          cart = JSON.parse(raw);
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            cart = parsed;
+          } else {
+            cart = {};
+          }
           let maxSeq = 0;
           Object.values(cart).forEach(item => {
             if (typeof item.addedSeq === 'number' && item.addedSeq > maxSeq) {
@@ -5154,20 +5183,27 @@
       // 3. Generar y validar el enlace de WhatsApp con el número oficial 593994124996
       const targetUrl = `https://wa.me/593994124996?text=${encodeURIComponent(msg)}`;
 
-      // 4. Vaciar completamente el carrito actual
+      // 4. Vaciar completamente el carrito actual y reiniciar estado de regalo
       cart = {};
+      freeGiftId = null;
+      isGiftChangeActive = false;
+      saveFreeGiftToStorage();
       saveCartToStorage();
 
       // 5. Actualizar inmediatamente la interfaz del carrito y cerrar el drawer
       closeCartDrawer();
       updateCustomerUI();
 
-      // 6. Abrir WhatsApp con el pedido ya prellenado en el campo de mensaje
+      // 6. Abrir WhatsApp con el pedido prellenado (con fallback ante bloqueadores de popups)
       copyToClipboard(msg);
+      let win = null;
       try {
-        window.open(targetUrl, '_blank');
+        win = window.open(targetUrl, '_blank');
       } catch (e) {
         console.warn('No se pudo abrir automáticamente la ventana:', e);
+      }
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        window.location.href = targetUrl;
       }
     }
 
@@ -5629,7 +5665,7 @@
           card.setAttribute('data-product-id', item.id);
         }
         const mediaContent = item.img 
-          ? `<img src="${item.img}" alt="${item.name}" class="card-photo" loading="lazy">` 
+          ? `<img src="${item.img}" alt="${item.name}" class="card-photo" loading="lazy" decoding="async">` 
           : `<span class="card-emoji" aria-hidden="true">${item.emoji}</span>`;
         
         const seasonMarkup = item.seasonInfo 
@@ -5838,6 +5874,36 @@
       const header = document.getElementById('header');
       if (header) header.classList.toggle('scrolled', window.scrollY > 20);
     });
+
+    /* ═══════ PLANTILLA REUTILIZABLE DEL FOOTER ═══════ */
+    const footerHTML = `
+      <div class="footer-grid">
+        <div>
+          <h3 style="font-size:1.25rem;font-weight:900;margin-bottom:10px;color:var(--lime)">TYANGO</h3>
+          <p style="color:var(--purple-light);font-size:0.82rem;line-height:1.6">Frescura, sabor y energía en cada creación.</p>
+        </div>
+        <div>
+          <h4 style="font-weight:800;margin-bottom:10px;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--lime)">Menú</h4>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <a href="#" onclick="navigate('hot'); return false;">TYHOT</a>
+            <a href="#" onclick="showComingSoonModal('TYICE'); return false;">TYICE</a>
+            <a href="#" onclick="showComingSoonModal('TYBOWLS'); return false;">TYBOWLS</a>
+            <a href="#" onclick="navigate('azuca'); return false;">TYAZUCA</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-weight:800;margin-bottom:10px;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--lime)">Síguenos & Contacto</h4>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <a href="#" onclick="openStoryModal(); return false;">📖 Nuestra Historia</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener">📸 Instagram</a>
+            <a href="#" onclick="showToast('📍 Encuéntranos en nuestro local principal.'); return false;">📍 Ubicación</a>
+            <a href="https://wa.me/593994124996" target="_blank" rel="noopener">💬 WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p style="color:var(--purple-light);font-size:0.74rem">© 2026 TYANGO. Todos los derechos reservados 💜</p>
+      </div>`;
 
     /* ═══════ INICIALIZACIÓN ═══════ */
     document.addEventListener('DOMContentLoaded', () => {
