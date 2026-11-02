@@ -106,6 +106,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
   const activeProduct = currentProduct;
   const activeIndex = currentIndex;
   const isDetailView = isDetail;
+  const setIsDetailView = setIsDetail;
 
   const prevIndex = (currentIndex - 1 + total) % total;
   const nextIndex = (currentIndex + 1) % total;
@@ -143,9 +144,13 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleNext, handlePrev, isDetail]);
 
-  const handleAdd = () => {
+  const handleAdd = (e?: React.MouseEvent, prod?: TyazucaProduct) => {
+    if (e && typeof e.stopPropagation === 'function') {
+      e.stopPropagation();
+    }
+    const item = prod || activeProduct;
     if (onAddToCart) {
-      onAddToCart(currentProduct);
+      onAddToCart(item);
     }
     setAddedAnimation(true);
     setTimeout(() => setAddedAnimation(false), 900);
@@ -182,24 +187,44 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
       className={`relative w-full min-h-[640px] sm:min-h-[750px] lg:min-h-[820px] bg-[#FAF7F2] overflow-hidden select-none flex flex-col justify-between pt-3 pb-4 sm:py-6 px-3 sm:px-6 md:px-8 transition-colors duration-700 ${className}`}
       aria-label="Catálogo TYAZUCA 3D"
     >
-      {/* ═══════════════════════════════════════════════════════════════
-          1. ENCABEZADO MINIMALISTA DE LA SECCIÓN (Sin redundancia)
-      ═══════════════════════════════════════════════════════════════ */}
-      <motion.div
-        animate={{
-          opacity: isDetail ? 0.15 : 1,
-          y: isDetail ? -18 : 0,
-        }}
-        transition={{ duration: 0.4 }}
-        className="relative z-30 text-center max-w-xl mx-auto pt-2 pb-2"
-      >
-        <span className="text-xs uppercase tracking-[0.25em] text-gray-400 font-semibold block mb-1">
-          LÍNEA DULCE &amp; FRUTAS VELVET
+      {/* 1. CABECERA DINÁMICA QUE LLENA EL ESPACIO BLANCO SUPERIOR */}
+      <div className="relative z-20 text-center pt-4 pb-1 px-4">
+        <span className="block text-[10px] font-bold uppercase tracking-[0.28em] text-gray-400">
+          Línea Dulce &amp; Frutas Velvet
         </span>
-        <p className="text-lg font-medium text-[#1E222D]">
-          Frutas que puedes llevar a tu manera
-        </p>
-      </motion.div>
+
+        {/* Cambia dinámicamente según el vaso activo para que arriba nunca se vea vacío */}
+        <AnimatePresence mode="wait">
+          {!isDetailView && (
+            <motion.div
+              key={`header-${activeProduct.id}`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+              className="mt-1.5 flex flex-col items-center"
+            >
+              <span
+                style={{
+                  backgroundColor: `${activeProduct.themeColor || activeProduct.arcColor}18`,
+                  color: activeProduct.themeColor || activeProduct.arcColor,
+                }}
+                className="inline-flex items-center rounded-full px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest mb-1"
+              >
+                {activeProduct.tag || "ESPECIALIDAD TYAZUCA"}
+              </span>
+
+              <h2 className="font-serif text-3xl sm:text-5xl font-black tracking-tight text-[#1E222D] uppercase leading-none">
+                {activeProduct.name}
+              </h2>
+
+              <p className="text-xs sm:text-sm text-gray-500 mt-1 max-w-[280px] sm:max-w-md line-clamp-1">
+                {activeProduct.description}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* ═══════════════════════════════════════════════════════════════
           2. FONDO DINÁMICO & TÍTULO GIGANTE DISPLAY (VISTA DETALLE)
@@ -232,48 +257,86 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
       </AnimatePresence>
 
       {/* ═══════════════════════════════════════════════════════════════
-          3. ESCENARIO DEL CARRUSEL INTERACTIVO & VASOS 3D (SWIPE TÁCTIL)
+          2. ESCENARIO CON SOPORTE DE SCROLL VERTICAL Y TARJETAS MÁS GRANDES
       ═══════════════════════════════════════════════════════════════ */}
-      <motion.div
-        drag={!isDetail ? 'x' : false}
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.25}
-        onDragEnd={handleDragEnd}
-        className="relative flex-1 w-full flex items-center justify-center my-auto min-h-[360px] sm:min-h-[440px] touch-pan-y"
+      <div
+        onWheel={(e) => {
+          if (e.deltaY > 35 && !isDetailView) setIsDetailView(true);
+          if (e.deltaY < -35 && isDetailView) setIsDetailView(false);
+        }}
+        className="relative flex-1 flex flex-col items-center justify-start pt-4 sm:justify-center sm:pt-0 overflow-hidden"
       >
-        <div className="relative w-full max-w-5xl h-[360px] sm:h-[440px] flex items-center justify-center">
+        {/* ARCO MÁS ALTO EN MOBILE (top-[27%]) PARA CERO ESPACIOS MUERTOS */}
+        <motion.div
+          animate={{
+            backgroundColor: activeProduct.themeColor || activeProduct.arcColor,
+            y: isDetailView ? "100%" : "0%",
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute top-[27%] md:top-[38%] left-1/2 -translate-x-1/2 w-[235vw] h-[235vw] sm:w-[160vw] sm:h-[160vw] md:w-[115vw] md:h-[115vw] rounded-full z-10 flex items-center justify-center shadow-[0_-20px_60px_rgba(0,0,0,0.18)] pointer-events-none"
+        >
+          <motion.svg
+            animate={{ rotate: activeIndex * -25 }}
+            transition={{ type: "spring", stiffness: 45, damping: 18 }}
+            viewBox="0 0 1200 1200"
+            className="w-full h-full opacity-25 md:opacity-[0.16] overflow-visible select-none"
+          >
+            <defs>
+              <path
+                id="perfectCircleArc"
+                d="M 55,600 A 545,545 0 1,1 1145,600 A 545,545 0 1,1 55,600"
+                fill="transparent"
+              />
+            </defs>
+            <text className="fill-white text-[50px] md:text-[68px] font-serif uppercase tracking-[0.16em]">
+              <textPath href="#perfectCircleArc" startOffset="0%">
+                • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET •
+              </textPath>
+            </text>
+          </motion.svg>
+        </motion.div>
 
-          {/* VASO IZQUIERDO (Anterior) */}
+        {/* CONTENEDOR DE TARJETAS UN 20% MÁS GRANDES + SWIPE TÁCTIL */}
+        <motion.div
+          drag={!isDetailView ? "x" : false}
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragEnd={(_, info) => {
+            if (info.offset.x < -50) handleNext();
+            if (info.offset.x > 50) handlePrev();
+          }}
+          className="relative z-30 w-full max-w-6xl h-[340px] sm:h-[430px] flex items-center justify-center touch-pan-y"
+        >
+          {/* VASO IZQUIERDO (Anterior) - w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] */}
           <AnimatePresence>
-            {!isDetail && (
+            {!isDetailView && (
               <motion.button
                 key={`prev-${prevProduct.id}`}
                 onClick={handlePrev}
                 aria-label={`Ver producto anterior: ${prevProduct.name}`}
-                initial={{ opacity: 0, scale: 0.5, x: -280, y: 80 }}
+                initial={{ opacity: 0, scale: 0.5, x: -280, y: 70 }}
                 animate={{
                   opacity: 0.85,
-                  scale: 0.66,
+                  scale: 0.72,
                   rotate: -14,
-                  x: typeof window !== 'undefined' && window.innerWidth < 640 ? -130 : -260,
-                  y: typeof window !== 'undefined' && window.innerWidth < 640 ? 50 : 80,
+                  x: typeof window !== 'undefined' && window.innerWidth < 640 ? -145 : -280,
+                  y: typeof window !== 'undefined' && window.innerWidth < 640 ? 45 : 70,
                 }}
                 exit={{ opacity: 0, scale: 0.4, x: -320 }}
                 transition={springTransition}
-                whileHover={{ scale: 0.74, opacity: 1 }}
+                whileHover={{ scale: 0.78, opacity: 1 }}
                 className="absolute z-20 cursor-pointer focus:outline-none group"
                 style={{
                   filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
                 }}
               >
-                <div className="relative w-[150px] sm:w-[210px] md:w-[250px] aspect-[4/5] rounded-[26px] sm:rounded-[34px] overflow-hidden">
+                <div className="relative w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] rounded-[26px] sm:rounded-[34px] overflow-hidden">
                   <img
                     src={prevProduct.image}
                     alt={prevProduct.name}
                     className="w-full h-full object-cover rounded-[26px] sm:rounded-[34px] pointer-events-none"
                     loading="lazy"
                   />
-                  <div className="absolute inset-x-0 bottom-3 text-center">
+                  <div className="absolute inset-x-0 bottom-2.5 text-center">
                     <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
                       {prevProduct.name}
                     </span>
@@ -283,19 +346,19 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
             )}
           </AnimatePresence>
 
-          {/* VASO CENTRAL (Activo / Detalle) */}
+          {/* VASO CENTRAL (Activo / Detalle) - w-[215px] h-[275px] sm:w-[260px] sm:h-[330px] */}
           <motion.div
             layout
             key={`center-${currentProduct.id}`}
             transition={springTransition}
             className="relative z-30 flex flex-col items-center justify-center cursor-pointer"
             onClick={() => {
-              if (!isDetail) setIsDetail(true);
+              if (!isDetailView) setIsDetailView(true);
             }}
           >
             <motion.div
               animate={
-                isDetail
+                isDetailView
                   ? {
                       y: typeof window !== 'undefined' && window.innerWidth < 640 ? [0, -6, 0] : [0, -8, 0],
                       rotate: 0,
@@ -315,9 +378,9 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                 rotate: springTransition,
               }}
               whileHover={
-                !isDetail
+                !isDetailView
                   ? {
-                      scale: 1.12,
+                      scale: 1.08,
                       rotate: -3,
                     }
                   : {}
@@ -329,9 +392,9 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
             >
               <div
                 className={`relative overflow-hidden rounded-[28px] sm:rounded-[36px] transition-all duration-500 ${
-                  isDetail
-                    ? 'w-[200px] sm:w-[280px] md:w-[340px] aspect-[4/5]'
-                    : 'w-[170px] sm:w-[240px] md:w-[280px] aspect-[4/5]'
+                  isDetailView
+                    ? 'w-[240px] h-[305px] sm:w-[320px] sm:h-[400px]'
+                    : 'w-[215px] h-[275px] sm:w-[260px] sm:h-[330px]'
                 }`}
               >
                 <img
@@ -340,7 +403,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                   className="w-full h-full object-cover rounded-[28px] sm:rounded-[36px] pointer-events-none select-none transition-transform duration-700"
                 />
 
-                {!isDetail && (
+                {!isDetailView && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -356,37 +419,37 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
             </motion.div>
           </motion.div>
 
-          {/* VASO DERECHO (Siguiente) */}
+          {/* VASO DERECHO (Siguiente) - w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] */}
           <AnimatePresence>
-            {!isDetail && (
+            {!isDetailView && (
               <motion.button
                 key={`next-${nextProduct.id}`}
                 onClick={handleNext}
                 aria-label={`Ver producto siguiente: ${nextProduct.name}`}
-                initial={{ opacity: 0, scale: 0.5, x: 280, y: 80 }}
+                initial={{ opacity: 0, scale: 0.5, x: 280, y: 70 }}
                 animate={{
                   opacity: 0.85,
-                  scale: 0.66,
+                  scale: 0.72,
                   rotate: 14,
-                  x: typeof window !== 'undefined' && window.innerWidth < 640 ? 130 : 260,
-                  y: typeof window !== 'undefined' && window.innerWidth < 640 ? 50 : 80,
+                  x: typeof window !== 'undefined' && window.innerWidth < 640 ? 145 : 280,
+                  y: typeof window !== 'undefined' && window.innerWidth < 640 ? 45 : 70,
                 }}
                 exit={{ opacity: 0, scale: 0.4, x: 320 }}
                 transition={springTransition}
-                whileHover={{ scale: 0.74, opacity: 1 }}
+                whileHover={{ scale: 0.78, opacity: 1 }}
                 className="absolute z-20 cursor-pointer focus:outline-none group"
                 style={{
                   filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
                 }}
               >
-                <div className="relative w-[150px] sm:w-[210px] md:w-[250px] aspect-[4/5] rounded-[26px] sm:rounded-[34px] overflow-hidden">
+                <div className="relative w-[155px] h-[200px] sm:w-[195px] sm:h-[250px] rounded-[26px] sm:rounded-[34px] overflow-hidden">
                   <img
                     src={nextProduct.image}
                     alt={nextProduct.name}
                     className="w-full h-full object-cover rounded-[26px] sm:rounded-[34px] pointer-events-none"
                     loading="lazy"
                   />
-                  <div className="absolute inset-x-0 bottom-3 text-center">
+                  <div className="absolute inset-x-0 bottom-2.5 text-center">
                     <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
                       {nextProduct.name}
                     </span>
@@ -395,14 +458,88 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
               </motion.button>
             )}
           </AnimatePresence>
+        </motion.div>
 
-        </div>
+        {/* 3. BARRA INFERIOR DE COMPRA RÁPIDA + INDICADOR DE SCROLL (Llena el espacio marrón de abajo) */}
+        {!isDetailView && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative z-30 mt-2 pb-6 sm:pb-8 flex flex-col items-center gap-2.5"
+          >
+            <div className="flex items-center gap-3 rounded-full bg-black/25 backdrop-blur-md px-5 py-2 border border-white/15 shadow-lg">
+              <span className="text-xl font-black text-white">{activeProduct.price}</span>
+              <button
+                onClick={(e) => handleAdd(e, activeProduct)}
+                className="rounded-full bg-[#F4B41A] hover:bg-[#e0a312] text-[#1E222D] px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider transition active:scale-95 shadow-md flex items-center gap-1.5"
+              >
+                {addedAnimation ? (
+                  <>
+                    <span>✓</span>
+                    <span>¡AGREGADO!</span>
+                  </>
+                ) : (
+                  <>
+                    <span>+</span>
+                    <span>AGREGAR</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Dots + Aviso de Scroll */}
+            <div className="flex items-center gap-2 my-0.5">
+              {TYAZUCA_PRODUCTS.map((prod, idx) => (
+                <button
+                  key={prod.id}
+                  onClick={() => setCurrentIndex(idx)}
+                  aria-label={`Ir al vaso ${prod.name}`}
+                  className={`transition-all duration-300 rounded-full h-2 ${
+                    idx === activeIndex
+                      ? 'w-7 bg-white shadow-md'
+                      : 'w-2 bg-white/40 hover:bg-white/70'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={() => setIsDetailView(true)}
+              className="flex flex-col items-center text-[11px] font-medium text-white/75 hover:text-white transition group"
+            >
+              <span className="group-hover:translate-y-0.5 transition-transform">Desliza para explorar el vaso ↓</span>
+            </button>
+          </motion.div>
+        )}
+
+        {/* FLECHAS DE NAVEGACIÓN */}
+        {!isDetailView && (
+          <>
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Producto anterior"
+              className="absolute left-1 sm:left-4 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/85 text-[#2B1627] shadow-lg backdrop-blur-md flex items-center justify-center border border-white font-black text-base sm:text-lg active:scale-90 transition-transform"
+            >
+              ←
+            </button>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Producto siguiente"
+              className="absolute right-1 sm:right-4 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/85 text-[#2B1627] shadow-lg backdrop-blur-md flex items-center justify-center border border-white font-black text-base sm:text-lg active:scale-90 transition-transform"
+            >
+              →
+            </button>
+          </>
+        )}
 
         {/* ═══════════════════════════════════════════════════════════════
             INFO LATERAL / BOTTOM SHEET EN MODO DETALLE
         ═══════════════════════════════════════════════════════════════ */}
         <AnimatePresence>
-          {isDetail && (
+          {isDetailView && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -415,7 +552,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                 
                 {/* Indicador de arrastre táctil para móvil */}
                 <div
-                  onClick={() => setIsDetail(false)}
+                  onClick={() => setIsDetailView(false)}
                   className="w-10 h-1 bg-black/15 rounded-full mb-3 md:hidden cursor-pointer active:scale-90 transition-transform"
                   title="Cerrar detalle"
                 />
@@ -458,7 +595,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={handleAdd}
+                      onClick={(e) => handleAdd(e, currentProduct)}
                       className={`flex-1 md:flex-initial py-3.5 px-7 rounded-full font-black text-xs sm:text-sm tracking-widest uppercase text-white shadow-xl flex items-center justify-center gap-2 transition-colors duration-300 ${
                         addedAnimation ? 'bg-emerald-600' : 'bg-[#5B4B8A] hover:bg-[#493b6e]'
                       }`}
@@ -482,7 +619,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
 
                   <button
                     type="button"
-                    onClick={() => setIsDetail(false)}
+                    onClick={() => setIsDetailView(false)}
                     className="w-full md:w-auto text-center text-[10px] sm:text-xs font-black tracking-wider text-[#7B5B7B] hover:text-[#2B1627] uppercase py-1.5 px-3 rounded-full hover:bg-black/5 active:scale-95 transition-all"
                   >
                     <span>← VOLVER AL MENÚ</span>
@@ -493,79 +630,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* FLECHAS DE NAVEGACIÓN */}
-        {!isDetail && (
-          <>
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Producto anterior"
-              className="absolute left-1 sm:left-4 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/85 text-[#2B1627] shadow-lg backdrop-blur-md flex items-center justify-center border border-white font-black text-base sm:text-lg active:scale-90 transition-transform"
-            >
-              ←
-            </button>
-
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Producto siguiente"
-              className="absolute right-1 sm:right-4 z-40 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/85 text-[#2B1627] shadow-lg backdrop-blur-md flex items-center justify-center border border-white font-black text-base sm:text-lg active:scale-90 transition-transform"
-            >
-              →
-            </button>
-          </>
-        )}
-      </motion.div>
-
-      {/* CÍRCULO RESPONSIVE: 240vw en móvil para que cubra todo hasta abajo y mantenga la curva de PC */}
-      <motion.div
-        animate={{
-          backgroundColor: activeProduct.themeColor || activeProduct.arcColor,
-          y: isDetailView ? "100%" : "0%",
-        }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute top-[33%] md:top-[42%] left-1/2 -translate-x-1/2 w-[240vw] h-[240vw] sm:w-[160vw] sm:h-[160vw] md:w-[115vw] md:h-[115vw] rounded-full z-10 flex items-center justify-center shadow-[0_-20px_60px_rgba(0,0,0,0.15)] pointer-events-none"
-      >
-        <motion.svg
-          animate={{ rotate: activeIndex * -25 }}
-          transition={{ type: "spring", stiffness: 45, damping: 18 }}
-          viewBox="0 0 1200 1200"
-          className="w-full h-full opacity-25 md:opacity-[0.16] overflow-visible select-none"
-        >
-          <defs>
-            {/* Radio 545 para que en móvil el texto asome justo por el borde superior del círculo */}
-            <path
-              id="perfectCircleArc"
-              d="M 55,600 A 545,545 0 1,1 1145,600 A 545,545 0 1,1 55,600"
-              fill="transparent"
-            />
-          </defs>
-          <text className="fill-white text-[48px] md:text-[68px] font-serif uppercase tracking-[0.16em]">
-            <textPath href="#perfectCircleArc" startOffset="0%">
-              • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET •
-            </textPath>
-          </text>
-        </motion.svg>
-      </motion.div>
-
-      {/* Paginación táctil (Capa 35) */}
-      {!isDetailView && (
-        <div className="relative z-35 pb-3 sm:pb-5 pointer-events-auto flex items-center justify-center gap-2 sm:gap-2.5">
-          {TYAZUCA_PRODUCTS.map((prod, idx) => (
-            <button
-              key={prod.id}
-              onClick={() => setCurrentIndex(idx)}
-              aria-label={`Ir al vaso ${prod.name}`}
-              className={`transition-all duration-300 rounded-full h-2.5 ${
-                idx === activeIndex
-                  ? 'w-8 bg-white shadow-md'
-                  : 'w-2.5 bg-white/40 hover:bg-white/70'
-              }`}
-            />
-          ))}
-        </div>
-      )}
+      </div>
     </section>
   );
 }

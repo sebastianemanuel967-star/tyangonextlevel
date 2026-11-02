@@ -3211,33 +3211,59 @@
 
     .tyazuca-agrumea-header {
       position: relative;
-      z-index: 30;
+      z-index: 20;
       text-align: center;
       max-width: 680px;
       margin: 0 auto;
-      padding: 14px 20px 6px;
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      padding: 16px 16px 4px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
     .tyazuca-agrumea-section.is-detail .tyazuca-agrumea-header {
-      opacity: 0.22;
+      opacity: 0;
       transform: translateY(-16px);
       pointer-events: none;
     }
     .tyazuca-eyebrow {
       display: block;
-      font-size: 0.75rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: #9CA3AF;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
-    .tyazuca-sub1 {
-      font-size: 1.125rem;
-      font-weight: 500;
+    .tyazuca-header-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 9999px;
+      padding: 2px 10px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      transition: all 0.3s ease;
+    }
+    .tyazuca-header-active-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.8rem, 4.5vw, 2.9rem);
+      font-weight: 900;
       color: #1E222D;
-      margin: 0;
-      line-height: 1.4;
+      text-transform: uppercase;
+      line-height: 1.05;
+      margin: 0 0 4px;
+      letter-spacing: -0.02em;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .tyazuca-header-active-desc {
+      font-size: clamp(0.75rem, 1.8vw, 0.88rem);
+      color: #6B7280;
+      margin: 0 auto;
+      max-width: 440px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: opacity 0.25s ease;
     }
 
     /* Escenario central de los vasos (Capa 30) */
@@ -3253,11 +3279,9 @@
       justify-content: center;
     }
 
-    /* Vasos 3D Flotantes (Sin marco blanco de tarjeta) */
+    /* Vasos 3D Flotantes (20% más grandes) */
     .tyazuca-cup {
       position: absolute;
-      width: 250px;
-      height: 310px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -3266,6 +3290,19 @@
       transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease, filter 0.4s ease;
       will-change: transform, opacity;
       filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.45));
+    }
+    .tyazuca-cup.cup-prev,
+    .tyazuca-cup.cup-next {
+      width: 195px;
+      height: 250px;
+    }
+    .tyazuca-cup.cup-active {
+      width: 260px;
+      height: 330px;
+    }
+    .tyazuca-agrumea-section.is-detail .tyazuca-cup.cup-active {
+      width: 320px;
+      height: 400px;
     }
     .tyazuca-cup-inner {
       position: relative;
@@ -3313,48 +3350,45 @@
 
     /* Vaso Izquierdo */
     .tyazuca-cup.cup-prev {
-      transform: translate3d(-270px, 80px, 0) scale(0.72) rotate(-16deg);
+      transform: translate3d(-290px, 70px, 0) scale(0.72) rotate(-14deg);
       opacity: 0.85;
       z-index: 31;
-      filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.45));
     }
     .tyazuca-cup.cup-prev:hover {
-      transform: translate3d(-270px, 65px, 0) scale(0.78) rotate(-14deg);
+      transform: translate3d(-290px, 55px, 0) scale(0.78) rotate(-12deg);
       opacity: 1;
     }
 
     /* Vaso Central (Activo) */
     .tyazuca-cup.cup-active {
-      transform: translate3d(0, 0, 0) scale(1.1) rotate(-7deg);
+      transform: translate3d(0, 0, 0) scale(1) rotate(-7deg);
       z-index: 33;
-      filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.45));
       animation: tyazucaFloat 3.8s ease-in-out infinite alternate;
     }
     .tyazuca-cup.cup-active:hover {
-      transform: translate3d(0, -6px, 0) scale(1.15) rotate(-3deg);
+      transform: translate3d(0, -6px, 0) scale(1.06) rotate(-3deg);
       filter: drop-shadow(0 30px 42px rgba(0, 0, 0, 0.52));
     }
 
     /* Vaso Derecho */
     .tyazuca-cup.cup-next {
-      transform: translate3d(270px, 80px, 0) scale(0.72) rotate(16deg);
+      transform: translate3d(290px, 70px, 0) scale(0.72) rotate(14deg);
       opacity: 0.85;
       z-index: 31;
-      filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.45));
     }
     .tyazuca-cup.cup-next:hover {
-      transform: translate3d(270px, 65px, 0) scale(0.78) rotate(14deg);
+      transform: translate3d(290px, 55px, 0) scale(0.78) rotate(12deg);
       opacity: 1;
     }
 
     /* Animaciones de Flotación */
     @keyframes tyazucaFloat {
-      0% { transform: translate3d(0, 0, 0) scale(1.1) rotate(-7deg); }
-      100% { transform: translate3d(0, -12px, 0) scale(1.1) rotate(-7deg); }
+      0% { transform: translate3d(0, 0, 0) scale(1) rotate(-7deg); }
+      100% { transform: translate3d(0, -12px, 0) scale(1) rotate(-7deg); }
     }
     @keyframes tyazucaFloatDetail {
-      0% { transform: translate3d(0, 0, 0) scale(1.2) rotate(0deg); }
-      100% { transform: translate3d(0, -8px, 0) scale(1.2) rotate(0deg); }
+      0% { transform: translate3d(0, 0, 0) scale(1.15) rotate(0deg); }
+      100% { transform: translate3d(0, -8px, 0) scale(1.15) rotate(0deg); }
     }
 
     /* Flechas de navegación */
@@ -3387,34 +3421,34 @@
     .tyazuca-arrow-btn.prev-btn { left: 24px; }
     .tyazuca-arrow-btn.next-btn { right: 24px; }
 
-    /* CÍRCULO RESPONSIVE: 240vw en móvil para que cubra todo hasta abajo y mantenga la curva de PC */
+    /* ARCO MÁS ALTO EN MOBILE (top-[27%] / md:top-[38%]) */
     .tyazuca-arc-disk {
       position: absolute;
-      top: 33%;
+      top: 27%;
       left: 50%;
       transform: translate3d(-50%, 0, 0);
-      width: 240vw;
-      height: 240vw;
+      width: 235vw;
+      height: 235vw;
       border-radius: 50%;
       background-color: #8A1C22;
       z-index: 10;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.18);
       pointer-events: none;
       transition: background-color 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
     @media (min-width: 640px) {
       .tyazuca-arc-disk {
-        top: 38%;
+        top: 32%;
         width: 160vw;
         height: 160vw;
       }
     }
     @media (min-width: 768px) {
       .tyazuca-arc-disk {
-        top: 42%;
+        top: 38%;
         width: 115vw;
         height: 115vw;
       }
@@ -3439,7 +3473,7 @@
       }
     }
     .tyazuca-svg-text text {
-      font-size: 48px;
+      font-size: 50px;
     }
     @media (min-width: 768px) {
       .tyazuca-svg-text text {
@@ -3447,17 +3481,100 @@
       }
     }
 
+    /* 3. BARRA INFERIOR DE COMPRA RÁPIDA + INDICADOR DE SCROLL */
+    .tyazuca-bottom-bar-wrap {
+      position: relative;
+      z-index: 30;
+      margin-top: 6px;
+      padding-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .tyazuca-agrumea-section.is-detail .tyazuca-bottom-bar-wrap {
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+    }
+    .tyazuca-quick-buy-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 6px 18px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.22);
+    }
+    .tyazuca-quick-price {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1;
+    }
+    .tyazuca-quick-add-btn {
+      background: #F4B41A;
+      color: #1E222D;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(244, 180, 26, 0.35);
+    }
+    .tyazuca-quick-add-btn:hover {
+      background: #e0a312;
+      transform: scale(1.04);
+    }
+    .tyazuca-quick-add-btn:active {
+      transform: scale(0.96);
+    }
+    .tyazuca-scroll-hint-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 2px 8px;
+    }
+    .tyazuca-scroll-hint-btn:hover {
+      color: #FFFFFF;
+      transform: translateY(1px);
+    }
+
     /* Puntos de paginación (Capa 35) */
     .tyazuca-dots {
-      position: absolute;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
+      position: relative;
       z-index: 35;
       padding-bottom: 0;
       display: flex;
       gap: 10px;
       pointer-events: auto;
+    }
+    .tyazuca-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.45);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0;
+    }
+    .tyazuca-dot.active {
+      width: 32px;
+      background: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }
     .tyazuca-dot {
       width: 9px;
@@ -3747,11 +3864,19 @@
         touch-action: pan-y;
       }
 
-      /* Vasos ajustados proporcionalmente para pantallas de teléfono */
-      .tyazuca-cup {
-        width: 175px;
-        height: 235px;
-        filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.40));
+      /* Vasos ajustados proporcionalmente para pantallas de teléfono (20% más grandes) */
+      .tyazuca-cup.cup-prev,
+      .tyazuca-cup.cup-next {
+        width: 155px;
+        height: 200px;
+      }
+      .tyazuca-cup.cup-active {
+        width: 215px;
+        height: 275px;
+      }
+      .tyazuca-agrumea-section.is-detail .tyazuca-cup.cup-active {
+        width: 240px;
+        height: 305px;
       }
       .tyazuca-cup-inner {
         border-radius: 26px;
@@ -3770,25 +3895,25 @@
 
       /* Disposición de vasos 3D en teléfono */
       .tyazuca-cup.cup-prev {
-        transform: translate3d(-135px, 55px, 0) scale(0.66) rotate(-14deg);
+        transform: translate3d(-145px, 45px, 0) scale(0.72) rotate(-14deg);
         filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.40));
       }
       .tyazuca-cup.cup-prev:hover {
-        transform: translate3d(-135px, 48px, 0) scale(0.70) rotate(-12deg);
+        transform: translate3d(-145px, 38px, 0) scale(0.78) rotate(-12deg);
       }
       .tyazuca-cup.cup-active {
-        transform: translate3d(0, 0, 0) scale(1.05) rotate(-7deg);
+        transform: translate3d(0, 0, 0) scale(1) rotate(-7deg);
         filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.40));
       }
       .tyazuca-cup.cup-active:hover {
-        transform: translate3d(0, -6px, 0) scale(1.08) rotate(-4deg);
+        transform: translate3d(0, -6px, 0) scale(1.06) rotate(-4deg);
       }
       .tyazuca-cup.cup-next {
-        transform: translate3d(135px, 55px, 0) scale(0.66) rotate(14deg);
+        transform: translate3d(145px, 45px, 0) scale(0.72) rotate(14deg);
         filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.40));
       }
       .tyazuca-cup.cup-next:hover {
-        transform: translate3d(135px, 48px, 0) scale(0.70) rotate(12deg);
+        transform: translate3d(145px, 38px, 0) scale(0.78) rotate(12deg);
       }
 
       /* Flechas de navegación táctil ergonómicas */
@@ -4508,10 +4633,14 @@
   <!-- ═══════ PAGE: TYAZUCA (CARRUSEL INTERACTIVO 3D AGRUMEA) ═══════ -->
   <main class="page" id="page-azuca" role="main">
     <section class="tyazuca-agrumea-section" id="tyazucaAgrumeaRoot">
-      <!-- 1. Encabezado minimalista de la sección (Fijo arriba en carrusel) -->
+      <!-- 1. CABECERA DINÁMICA QUE LLENA EL ESPACIO BLANCO SUPERIOR -->
       <div class="tyazuca-agrumea-header">
-        <span class="tyazuca-eyebrow">LÍNEA DULCE &amp; FRUTAS VELVET</span>
-        <p class="tyazuca-sub1">Frutas que puedes llevar a tu manera</p>
+        <span class="tyazuca-eyebrow">Línea Dulce &amp; Frutas Velvet</span>
+        <div class="tyazuca-dynamic-header-inner" id="tyazucaDynamicHeaderInner">
+          <span class="tyazuca-header-tag-pill" id="tyazucaHeaderTagPill">POPULAR</span>
+          <h2 class="tyazuca-header-active-name" id="tyazucaHeaderActiveName">RAFFAELLO</h2>
+          <p class="tyazuca-header-active-desc" id="tyazucaHeaderActiveDesc">Fresas frescas con crema Velvet y Raffaello</p>
+        </div>
       </div>
 
       <!-- Título Display Gigante & Resplandor (Vista Detalle) -->
@@ -4607,8 +4736,22 @@
         </svg>
       </div>
 
-      <!-- Puntos de paginación (Capa 35) -->
-      <div class="tyazuca-dots" id="tyazucaDots"></div>
+      <!-- 3. BARRA INFERIOR DE COMPRA RÁPIDA + INDICADOR DE SCROLL -->
+      <div class="tyazuca-bottom-bar-wrap" id="tyazucaBottomBarWrap">
+        <div class="tyazuca-quick-buy-pill">
+          <span class="tyazuca-quick-price" id="tyazucaQuickPrice">$4.50</span>
+          <button type="button" class="tyazuca-quick-add-btn" id="tyazucaQuickAddBtn" onclick="addTyazucaCurrentToCart()">
+            + AGREGAR
+          </button>
+        </div>
+
+        <!-- Puntos de paginación (Capa 35) -->
+        <div class="tyazuca-dots" id="tyazucaDots"></div>
+
+        <button type="button" class="tyazuca-scroll-hint-btn" onclick="setTyazucaDetail(true)">
+          <span>Desliza para explorar el vaso ↓</span>
+        </button>
+      </div>
 
       <!-- Cuadrícula oculta por compatibilidad -->
       <div id="grid-azuca" style="display: none;"></div>
@@ -6758,6 +6901,7 @@
         desc: 'Fresas frescas con crema Velvet y Raffaello',
         price: '$4.50',
         arcColor: '#8A1C22',
+        themeColor: '#8A1C22',
         img: 'raffaello.jpg'
       },
       {
@@ -6769,6 +6913,7 @@
         desc: 'Fresas cremosas con chocolate Paccari',
         price: '$4.50',
         arcColor: '#3D1E12',
+        themeColor: '#3D1E12',
         img: 'paccari.jpg'
       },
       {
@@ -6780,6 +6925,7 @@
         desc: 'Fresas con crema Velvet y Franui',
         price: '$4.50',
         arcColor: '#6B1323',
+        themeColor: '#6B1323',
         img: 'franui.jpg'
       },
       {
@@ -6791,6 +6937,7 @@
         desc: 'Fresas frescas con crema Velvet y Kinder Bueno',
         price: '$4.50',
         arcColor: '#593720',
+        themeColor: '#593720',
         img: 'kinder-bueno.jpg'
       },
       {
@@ -6802,6 +6949,7 @@
         desc: 'Mango fresco con crema Velvet y Raffaello',
         price: '$4.50',
         arcColor: '#C87A19',
+        themeColor: '#C87A19',
         img: 'mango-raffaello.jpg'
       }
     ];
@@ -6842,6 +6990,29 @@
       const svgText = document.getElementById('tyazucaSvgText');
       if (svgText) {
         svgText.style.transform = `rotate(${tyazucaCurrentIdx * -25}deg)`;
+      }
+
+      /* Actualización de cabecera dinámica superior */
+      const headerTagPill = document.getElementById('tyazucaHeaderTagPill');
+      if (headerTagPill) {
+        headerTagPill.textContent = current.tag || 'ESPECIALIDAD TYAZUCA';
+        headerTagPill.style.backgroundColor = `${current.arcColor}18`;
+        headerTagPill.style.color = current.arcColor;
+      }
+
+      const headerActiveName = document.getElementById('tyazucaHeaderActiveName');
+      if (headerActiveName) {
+        headerActiveName.textContent = current.name;
+      }
+
+      const headerActiveDesc = document.getElementById('tyazucaHeaderActiveDesc');
+      if (headerActiveDesc) {
+        headerActiveDesc.textContent = current.desc;
+      }
+
+      const quickPrice = document.getElementById('tyazucaQuickPrice');
+      if (quickPrice) {
+        quickPrice.textContent = current.price;
       }
 
       const watermark = document.getElementById('tyazucaWatermark');
@@ -6890,6 +7061,24 @@
       const root = document.getElementById('tyazucaAgrumeaRoot');
       if (root) {
         root.classList.toggle('is-detail', open);
+      }
+    }
+
+    function addTyazucaCurrentToCart() {
+      const current = tyazucaItems[tyazucaCurrentIdx];
+      addToCart(current.id);
+      showToast(`¡${current.name} agregado al carrito!`);
+      const btn = document.getElementById('tyazucaQuickAddBtn');
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '✓ ¡AGREGADO!';
+        btn.style.backgroundColor = '#10B981';
+        btn.style.color = '#FFFFFF';
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.style.backgroundColor = '';
+          btn.style.color = '';
+        }, 900);
       }
     }
 
@@ -6968,6 +7157,11 @@
       let touchEndY = 0;
 
       if (stage && typeof stage.addEventListener === 'function') {
+        stage.addEventListener('wheel', (e) => {
+          if (e.deltaY > 35 && !tyazucaIsDetail) setTyazucaDetail(true);
+          if (e.deltaY < -35 && tyazucaIsDetail) setTyazucaDetail(false);
+        }, { passive: true });
+
         stage.addEventListener('touchstart', (e) => {
           if (e.touches && e.touches.length > 0) {
             touchStartX = e.touches[0].clientX;
