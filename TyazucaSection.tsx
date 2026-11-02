@@ -18,6 +18,19 @@ export interface TyazucaProduct {
   image: string;
 }
 
+export interface TyazucaExtra {
+  id: string;
+  name: string;
+  price: number;
+  label: string;
+}
+
+export const TYAZUCA_EXTRAS: TyazucaExtra[] = [
+  { id: 'extra_topping', name: 'Extra Topping', price: 1.00, label: '+ Extra Topping (+$1.00)' },
+  { id: 'extra_crema', name: 'Extra Crema Velvet', price: 0.75, label: '+ Extra Crema Velvet (+$0.75)' },
+  { id: 'extra_paccari', name: 'Chocolate Paccari', price: 0.75, label: '+ Chocolate Paccari (+$0.75)' },
+];
+
 export const TYAZUCA_PRODUCTS: TyazucaProduct[] = [
   {
     id: 'azuca_raffaello',
@@ -100,6 +113,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDetailView, setIsDetailView] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
   const total = TYAZUCA_PRODUCTS.length;
   const activeProduct = TYAZUCA_PRODUCTS[currentIndex];
@@ -110,6 +124,27 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
 
   const prevProduct = TYAZUCA_PRODUCTS[prevIndex];
   const nextProduct = TYAZUCA_PRODUCTS[nextIndex];
+
+  // Reset de extras al cambiar de vaso
+  useEffect(() => {
+    setSelectedExtras([]);
+  }, [currentIndex]);
+
+  const toggleExtra = (extraId: string) => {
+    setSelectedExtras((prev) =>
+      prev.includes(extraId) ? prev.filter((id) => id !== extraId) : [...prev, extraId]
+    );
+  };
+
+  // Cálculo dinámico de precio con extras incluidos
+  const extrasCost = selectedExtras.reduce((sum, extraId) => {
+    const extra = TYAZUCA_EXTRAS.find((e) => e.id === extraId);
+    return sum + (extra ? extra.price : 0);
+  }, 0);
+
+  const basePriceNum = activeProduct.priceNum || 4.50;
+  const currentTotal = basePriceNum + extrasCost;
+  const formattedPrice = `$${currentTotal.toFixed(2)}`;
 
   // 1. Congelar el scroll nativo de la página cuando la vista de detalles esté abierta
   useEffect(() => {
@@ -167,14 +202,32 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleNext, handlePrev, isDetailView]);
 
-  // 4. Conexión del botón morado al carrito real global de la app
+  // 4. Conexión del botón morado al carrito real global de la app (con extras incluidos)
   const handleAddToCart = (e?: React.MouseEvent) => {
     if (e && typeof e.stopPropagation === 'function') {
       e.stopPropagation();
     }
-    const formattedProduct: TyazucaProduct & { category: string } = {
+
+    const extraNames = selectedExtras.map(
+      (id) => TYAZUCA_EXTRAS.find((ex) => ex.id === id)?.name || id
+    );
+
+    const formattedProduct: TyazucaProduct & {
+      category: string;
+      extras?: string[];
+      isCustom?: boolean;
+      baseId?: string;
+    } = {
       ...activeProduct,
-      priceNum: 4.50,
+      id: selectedExtras.length > 0 ? `${activeProduct.id}_custom_${selectedExtras.slice().sort().join('_')}` : activeProduct.id,
+      baseId: activeProduct.id,
+      price: formattedPrice,
+      priceNum: currentTotal,
+      description: selectedExtras.length > 0
+        ? `${activeProduct.description} (+ ${extraNames.join(', ')})`
+        : activeProduct.description,
+      extras: extraNames,
+      isCustom: selectedExtras.length > 0,
       category: 'TYAZUCA',
     };
 
@@ -182,9 +235,13 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
       onAddToCart(formattedProduct);
     }
 
-    // Compatibilidad directa con la función global addToCart si está disponible
-    if (typeof window !== 'undefined' && typeof (window as any).addToCart === 'function') {
-      (window as any).addToCart(activeProduct.id);
+    // Compatibilidad directa con la función global de la app si está disponible
+    if (typeof window !== 'undefined') {
+      if (typeof (window as any).addCustomTyazucaToCart === 'function') {
+        (window as any).addCustomTyazucaToCart(activeProduct, selectedExtras, currentTotal);
+      } else if (typeof (window as any).addToCart === 'function') {
+        (window as any).addToCart(activeProduct.id);
+      }
     }
 
     setJustAdded(true);
@@ -371,9 +428,13 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                 />
 
                 <div className="absolute inset-x-0 bottom-3 sm:bottom-4 flex justify-center">
-                  <span className="bg-[#2B1627]/90 text-white text-[9px] sm:text-[11px] font-black px-3.5 py-1.5 rounded-full shadow-lg backdrop-blur-md flex items-center gap-1 border border-white/20 active:scale-95 transition-transform">
+                  <motion.span
+                    animate={{ scale: [1, 1.04, 1] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                    className="bg-[#2B1627]/90 text-white text-[9px] sm:text-[11px] font-black px-3.5 py-1.5 rounded-full shadow-lg backdrop-blur-md flex items-center gap-1 border border-white/20 active:scale-95 transition-transform"
+                  >
                     <span>✨ VER DETALLES</span>
-                  </span>
+                  </motion.span>
                 </div>
               </div>
             </motion.div>
@@ -478,29 +539,33 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 bg-[#FAF7F2] flex flex-col items-center justify-between pt-12 pb-0 overflow-hidden select-none"
           >
-            {/* MITAD SUPERIOR: Tarjeta del vaso activa agrandada + Texto decorativo de fondo centrado en 2 líneas SIN puntos suspensivos */}
+            {/* MITAD SUPERIOR: Halo de color suave suave y tarjeta morada con swipe horizontal entre vasos */}
             <div className="relative flex-1 w-full flex items-center justify-center overflow-hidden px-4 pt-4 pb-2">
-              {/* 4. Texto decorativo de fondo centrado en 2 líneas completo (sin line-clamp ni ellipsis) */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none select-none text-center px-4">
-                <span className="font-serif font-black text-4xl sm:text-6xl md:text-7xl uppercase tracking-tight text-[#2B1627] opacity-15 max-w-[92vw] whitespace-normal text-center leading-[0.9]">
-                  {activeProduct.displayName || activeProduct.name}
-                </span>
-                <span className="font-serif font-bold text-lg sm:text-2xl uppercase tracking-widest text-[#2B1627] opacity-10 mt-2 max-w-[90vw] whitespace-normal text-center">
-                  TYAZUCA CREMA VELVET
-                </span>
-                <div
-                  className="absolute w-[260px] sm:w-[400px] h-[260px] sm:h-[400px] rounded-full blur-[85px] sm:blur-[120px] opacity-25 pointer-events-none"
-                  style={{ backgroundColor: activeProduct.themeColor || activeProduct.arcColor }}
-                />
-              </div>
+              {/* 1. Halo de color suave (w-72 h-72 blur-3xl opacity-25) sin letras cortadas */}
+              <div
+                className="w-72 h-72 sm:w-96 sm:h-96 rounded-full blur-3xl opacity-25 pointer-events-none absolute"
+                style={{ backgroundColor: activeProduct.themeColor || activeProduct.arcColor }}
+              />
 
-              {/* 2. Tarjeta morada del vaso en detalle ligeramente más grande (w-[245px] h-[305px] sm:w-[280px] sm:h-[350px]), limpia sin etiqueta adentro */}
+              {/* 1 & 2. Tarjeta del vaso con swipe horizontal drag="x" para navegar entre vasos sin salir */}
               <motion.div
+                key={`detail-card-${activeProduct.id}`}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.35}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x < -45) {
+                    handleNext();
+                  } else if (info.offset.x > 45) {
+                    handlePrev();
+                  }
+                }}
                 initial={{ scale: 0.88, y: 15, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.88, y: 15, opacity: 0 }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="relative z-10"
+                className="relative z-10 cursor-grab active:cursor-grabbing touch-pan-y"
+                title="Desliza horizontalmente para ver otros vasos"
               >
                 <div className="w-[245px] h-[305px] sm:w-[280px] sm:h-[350px] rounded-[28px] overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.28)] relative border-4 border-white/70 bg-[#2B1627]">
                   <img
@@ -571,16 +636,42 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                   <span className="w-2 h-2 rounded-full bg-[#5B4B8A] inline-block shrink-0" />
                   <span>Preparado con frutas frescas al momento</span>
                 </p>
+
+                {/* 2. Personaliza tu vaso (Opcional) */}
+                <div className="mt-4 pt-3 border-t border-gray-100">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-2">
+                    PERSONALIZA TU VASO (OPCIONAL)
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {TYAZUCA_EXTRAS.map((extra) => {
+                      const isSelected = selectedExtras.includes(extra.id);
+                      return (
+                        <button
+                          key={extra.id}
+                          type="button"
+                          onClick={() => toggleExtra(extra.id)}
+                          className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-bold transition-all duration-200 cursor-pointer border ${
+                            isSelected
+                              ? 'bg-[#5B4B8A]/12 border-[#5B4B8A] text-[#5B4B8A] shadow-sm'
+                              : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300'
+                          } active:scale-95`}
+                        >
+                          {extra.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
 
               {/* Fila de compra: Precio Oficial + Botón Morado + AGREGAR */}
-              <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100 mt-6">
+              <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-100 mt-4 sm:mt-6">
                 <div className="flex flex-col">
                   <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 block mb-0.5">
                     PRECIO OFICIAL
                   </span>
                   <span className="text-3xl sm:text-4xl font-black font-serif text-[#1E222D] leading-none">
-                    {activeProduct.price}
+                    {formattedPrice}
                   </span>
                 </div>
 

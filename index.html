@@ -3347,6 +3347,17 @@
       pointer-events: none;
       letter-spacing: 0.04em;
     }
+    @keyframes tyazucaPulseBadge {
+      0%, 100% {
+        transform: translateX(-50%) scale(1);
+      }
+      50% {
+        transform: translateX(-50%) scale(1.04);
+      }
+    }
+    .cup-active .tyazuca-cup-pill {
+      animation: tyazucaPulseBadge 2.5s ease-in-out infinite;
+    }
 
     /* Vaso Izquierdo */
     .tyazuca-cup.cup-prev {
@@ -3708,13 +3719,20 @@
     }
     .tyazuca-detail-top-glow {
       position: absolute;
-      width: 340px;
-      height: 340px;
+      width: 288px;
+      height: 288px;
       border-radius: 50%;
-      filter: blur(95px);
+      filter: blur(48px);
       opacity: 0.25;
       pointer-events: none;
       transition: background-color 0.7s ease;
+    }
+    @media (min-width: 640px) {
+      .tyazuca-detail-top-glow {
+        width: 384px;
+        height: 384px;
+        filter: blur(64px);
+      }
     }
 
     /* 2. Tarjeta del vaso en detalle más imponente (w-[245px] h-[305px] / w-[280px] h-[350px]) */
@@ -3864,6 +3882,58 @@
       background: rgba(91, 75, 138, 0.12);
       color: #5B4B8A;
       border: 1px solid rgba(91, 75, 138, 0.28);
+    }
+
+    /* 2. Personaliza tu vaso (Opcional) */
+    .tyazuca-extras-section {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .tyazuca-extras-title {
+      display: block;
+      font-size: 10px;
+      font-weight: 800;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+    .tyazuca-extras-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .tyazuca-extra-pill {
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid #E5E7EB;
+      background-color: #F9FAFB;
+      color: #4B5563;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    @media (min-width: 640px) {
+      .tyazuca-extra-pill {
+        font-size: 12px;
+        padding: 7px 14px;
+      }
+    }
+    .tyazuca-extra-pill:hover {
+      border-color: #D1D5DB;
+    }
+    .tyazuca-extra-pill.selected {
+      background-color: rgba(91, 75, 138, 0.12);
+      border-color: #5B4B8A;
+      color: #5B4B8A;
+      box-shadow: 0 2px 6px rgba(91, 75, 138, 0.12);
+    }
+    .tyazuca-extra-pill:active {
+      transform: scale(0.96);
     }
 
     .tyazuca-detail-action-block {
@@ -4872,14 +4942,12 @@
 
       <!-- 1. OVERLAY DE INFORMACIÓN A PANTALLA COMPLETA (VISTA DETALLE FIJA) -->
       <div class="tyazuca-detail-overlay" id="tyazucaDetailOverlay">
-        <!-- Mitad Superior: Fondo decorativo en 2 líneas + Tarjeta morada del vaso activo (sin badge interno) -->
+        <!-- Mitad Superior: Halo de color suave (sin letras cortadas) + Tarjeta morada con swipe horizontal -->
         <div class="tyazuca-detail-top-half">
           <div class="tyazuca-detail-watermark-wrap">
-            <span class="tyazuca-detail-watermark-1" id="tyazucaWatermark1">RAFFAELLO</span>
-            <span class="tyazuca-detail-watermark-2">TYAZUCA CREMA VELVET</span>
             <div class="tyazuca-detail-top-glow" id="tyazucaTopGlow"></div>
           </div>
-          <div class="tyazuca-detail-active-card">
+          <div class="tyazuca-detail-active-card" id="tyazucaDetailActiveCard" title="Desliza para cambiar de vaso">
             <img src="raffaello.jpg" alt="" class="tyazuca-detail-active-img" id="tyazucaDetailActiveImg">
           </div>
         </div>
@@ -4899,6 +4967,12 @@
               <span class="tyazuca-detail-trust-dot"></span>
               <span>Preparado con frutas frescas al momento</span>
             </p>
+
+            <!-- 2. Personaliza tu vaso (Opcional) -->
+            <div class="tyazuca-extras-section">
+              <span class="tyazuca-extras-title">PERSONALIZA TU VASO (OPCIONAL)</span>
+              <div class="tyazuca-extras-pills" id="tyazucaExtrasContainer"></div>
+            </div>
           </div>
 
           <div class="tyazuca-detail-action-block">
@@ -7151,6 +7225,91 @@
     let tyazucaCurrentIdx = 0;
     let tyazucaIsDetail = false;
 
+    const TYAZUCA_EXTRAS = [
+      { id: 'extra_topping', name: 'Extra Topping', price: 1.00, label: '+ Extra Topping (+$1.00)' },
+      { id: 'extra_crema', name: 'Extra Crema Velvet', price: 0.75, label: '+ Extra Crema Velvet (+$0.75)' },
+      { id: 'extra_paccari', name: 'Chocolate Paccari', price: 0.75, label: '+ Chocolate Paccari (+$0.75)' }
+    ];
+    let tyazucaSelectedExtras = [];
+
+    function getTyazucaCurrentPrice() {
+      const current = tyazucaItems[tyazucaCurrentIdx];
+      const base = parsePriceNumber(current.price) || 4.50;
+      const extrasCost = tyazucaSelectedExtras.reduce((sum, id) => {
+        const ex = TYAZUCA_EXTRAS.find(e => e.id === id);
+        return sum + (ex ? ex.price : 0);
+      }, 0);
+      return base + extrasCost;
+    }
+
+    function toggleTyazucaExtra(extraId) {
+      const idx = tyazucaSelectedExtras.indexOf(extraId);
+      if (idx > -1) {
+        tyazucaSelectedExtras.splice(idx, 1);
+      } else {
+        tyazucaSelectedExtras.push(extraId);
+      }
+      renderTyazucaExtrasUI();
+      const priceEl = document.getElementById('tyazucaDetailPrice');
+      if (priceEl) {
+        priceEl.textContent = formatCurrency(getTyazucaCurrentPrice());
+      }
+    }
+
+    function renderTyazucaExtrasUI() {
+      const container = document.getElementById('tyazucaExtrasContainer');
+      if (!container) return;
+      container.innerHTML = TYAZUCA_EXTRAS.map(extra => {
+        const isSel = tyazucaSelectedExtras.includes(extra.id);
+        return `<button type="button" class="tyazuca-extra-pill ${isSel ? 'selected' : ''}" onclick="toggleTyazucaExtra('${extra.id}')">${extra.label}</button>`;
+      }).join('');
+    }
+
+    function addCustomTyazucaToCart(prod, extrasList, totalPriceNum) {
+      const current = prod || tyazucaItems[tyazucaCurrentIdx];
+      const extras = extrasList || tyazucaSelectedExtras;
+      if (!extras || extras.length === 0) {
+        addToCart(current.id);
+        return;
+      }
+      const extraObjs = extras.map(id => TYAZUCA_EXTRAS.find(e => e.id === id)).filter(Boolean);
+      const extraNames = extraObjs.map(e => e.name);
+      const extraCost = extraObjs.reduce((sum, e) => sum + e.price, 0);
+      const baseNum = parsePriceNumber(current.price) || 4.50;
+      const totalNum = totalPriceNum || (baseNum + extraCost);
+      const totalFormatted = formatCurrency(totalNum);
+      const sortedIds = extras.slice().sort().join('_');
+      const cartItemId = `${current.id}_extras_${sortedIds}`;
+      const customDesc = `Con extras: ${extraNames.join(', ')}`;
+
+      if (cart[cartItemId]) {
+        cart[cartItemId].qty += 1;
+      } else {
+        cart[cartItemId] = {
+          id: cartItemId,
+          baseId: current.id,
+          name: `${current.name} (Personalizado)`,
+          desc: customDesc,
+          price: totalFormatted,
+          priceNum: totalNum,
+          qty: 1,
+          addedSeq: ++cartSequenceCounter,
+          addedAt: Date.now(),
+          img: current.img || null,
+          emoji: '🍓',
+          customCardClass: null,
+          isCustom: true,
+          extras: extraNames
+        };
+      }
+      saveCartToStorage();
+      triggerCartBadgeBump();
+    }
+
+    window.toggleTyazucaExtra = toggleTyazucaExtra;
+    window.addCustomTyazucaToCart = addCustomTyazucaToCart;
+    window.TYAZUCA_EXTRAS = TYAZUCA_EXTRAS;
+
     function updateTyazucaCarouselUI() {
       const total = tyazucaItems.length;
       const prevIdx = (tyazucaCurrentIdx - 1 + total) % total;
@@ -7209,9 +7368,6 @@
         quickPrice.textContent = current.price;
       }
 
-      const watermark1 = document.getElementById('tyazucaWatermark1');
-      if (watermark1) watermark1.textContent = current.displayName || current.name;
-
       const detailImg = document.getElementById('tyazucaDetailActiveImg');
       if (detailImg) detailImg.src = current.img;
 
@@ -7238,7 +7394,9 @@
       if (detailDesc) detailDesc.textContent = current.desc;
 
       const detailPrice = document.getElementById('tyazucaDetailPrice');
-      if (detailPrice) detailPrice.textContent = current.price;
+      if (detailPrice) detailPrice.textContent = formatCurrency(getTyazucaCurrentPrice());
+
+      renderTyazucaExtrasUI();
 
       const tagBadge = document.getElementById('tyazucaTagBadge');
       if (tagBadge) {
@@ -7258,6 +7416,7 @@
           dot.setAttribute('aria-label', 'Vaso ' + it.name);
           dot.onclick = () => {
             tyazucaCurrentIdx = idx;
+            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           };
           dotsWrap.appendChild(dot);
@@ -7308,12 +7467,14 @@
       if (prevBtn) {
         prevBtn.onclick = () => {
           tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
+          tyazucaSelectedExtras = [];
           updateTyazucaCarouselUI();
         };
       }
       if (nextBtn) {
         nextBtn.onclick = () => {
           tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
+          tyazucaSelectedExtras = [];
           updateTyazucaCarouselUI();
         };
       }
@@ -7321,6 +7482,7 @@
         cupPrev.onclick = () => {
           if (!tyazucaIsDetail) {
             tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
+            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           }
         };
@@ -7329,6 +7491,7 @@
         cupNext.onclick = () => {
           if (!tyazucaIsDetail) {
             tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
+            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           }
         };
@@ -7344,7 +7507,11 @@
       if (btnAdd) {
         btnAdd.onclick = () => {
           const current = tyazucaItems[tyazucaCurrentIdx];
-          addToCart(current.id);
+          if (tyazucaSelectedExtras.length > 0) {
+            addCustomTyazucaToCart(current, tyazucaSelectedExtras, getTyazucaCurrentPrice());
+          } else {
+            addToCart(current.id);
+          }
           const orig = btnAdd.innerHTML;
           btnAdd.innerHTML = '<span>✓</span><span>¡AGREGADO AL PEDIDO!</span>';
           btnAdd.style.transform = 'scale(0.95)';
@@ -7362,9 +7529,11 @@
         if (currentPage === 'azuca') {
           if (e.key === 'ArrowRight' && !tyazucaIsDetail) {
             tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
+            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           } else if (e.key === 'ArrowLeft' && !tyazucaIsDetail) {
             tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
+            tyazucaSelectedExtras = [];
             updateTyazucaCarouselUI();
           } else if (e.key === 'Escape' && tyazucaIsDetail) {
             setTyazucaDetail(false);
@@ -7399,12 +7568,43 @@
               if (!tyazucaIsDetail) {
                 if (deltaX > 0) {
                   tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
+                  tyazucaSelectedExtras = [];
                   updateTyazucaCarouselUI();
                 } else {
                   tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
+                  tyazucaSelectedExtras = [];
                   updateTyazucaCarouselUI();
                 }
               }
+            }
+          }
+        }, { passive: true });
+      }
+
+      // Deslizar horizontalmente sobre la tarjeta del vaso en vista de detalles para navegar entre vasos sin salir
+      const detailCard = document.getElementById('tyazucaDetailActiveCard') || document.querySelector('.tyazuca-detail-active-card');
+      let detailCardStartX = 0;
+      let detailCardStartY = 0;
+      if (detailCard && typeof detailCard.addEventListener === 'function') {
+        detailCard.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches.length > 0) {
+            detailCardStartX = e.touches[0].clientX;
+            detailCardStartY = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        detailCard.addEventListener('touchend', (e) => {
+          if (e.changedTouches && e.changedTouches.length > 0) {
+            const deltaX = detailCardStartX - e.changedTouches[0].clientX;
+            const deltaY = detailCardStartY - e.changedTouches[0].clientY;
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40 && tyazucaIsDetail) {
+              if (deltaX > 0) {
+                tyazucaCurrentIdx = (tyazucaCurrentIdx + 1) % tyazucaItems.length;
+              } else {
+                tyazucaCurrentIdx = (tyazucaCurrentIdx - 1 + tyazucaItems.length) % tyazucaItems.length;
+              }
+              tyazucaSelectedExtras = [];
+              updateTyazucaCarouselUI();
             }
           }
         }, { passive: true });
