@@ -431,7 +431,7 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
                     transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
                     className="bg-[#1E222D]/90 text-white text-[9px] sm:text-[11px] font-black px-3.5 py-1.5 rounded-full shadow-lg backdrop-blur-md flex items-center gap-1.5 border border-white/20 active:scale-95 transition-transform"
                   >
-                    <span>✨ VER DETALLES</span>
+                    <span>VER DETALLES</span>
                   </motion.span>
                 </div>
               </div>
@@ -584,7 +584,7 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-lg mx-auto bg-white rounded-t-[32px] sm:rounded-t-[36px] pt-4 pb-6 px-6 shadow-[0_-15px_40px_rgba(0,0,0,0.12)] relative z-20 flex flex-col justify-between touch-pan-y"
+              className="w-full max-w-lg mx-auto bg-white rounded-t-[32px] sm:rounded-t-[36px] pt-4 pb-8 px-6 shadow-[0_-15px_40px_rgba(0,0,0,0.12)] relative z-20 flex flex-col justify-between touch-pan-y"
             >
               {/* Barra gris superior para arrastrar */}
               <div
@@ -663,28 +663,9 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
                     justAdded ? 'bg-emerald-600' : 'hover:brightness-95'
                   }`}
                 >
-                  {justAdded ? (
-                    <>
-                      <span>✓</span>
-                      <span>¡AGREGADO AL PEDIDO!</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-base leading-none">+</span>
-                      <span>AGREGAR</span>
-                    </>
-                  )}
+                  {justAdded ? '¡AGREGADO AL PEDIDO!' : 'AGREGAR'}
                 </motion.button>
               </div>
-
-              {/* Botón Volver al Menú con margen moderado mt-3 */}
-              <button
-                type="button"
-                onClick={() => setIsDetailView(false)}
-                className="mt-3 text-center text-[11px] font-extrabold tracking-wider text-gray-400 hover:text-gray-700 uppercase py-1 transition-colors flex items-center justify-center gap-1 mx-auto cursor-pointer"
-              >
-                ← VOLVER AL MENÚ
-              </button>
             </motion.div>
           </motion.div>
         )}

@@ -3772,7 +3772,7 @@
       margin: 0 auto;
       background: #FFFFFF;
       border-radius: 32px 32px 0 0;
-      padding: 16px 24px 24px;
+      padding: 16px 24px 32px;
       box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.12);
       box-sizing: border-box;
       display: flex;
@@ -4315,11 +4315,11 @@
         <button class="header-nav-btn locked" data-page="bowls" onclick="showComingSoonModal('TYBOWLS')" aria-label="TYBOWLS - Próximamente" title="TYBOWLS - Próximamente">🔒 TYBOWLS <span class="header-nav-soon-pill">PRÓXIMAMENTE</span></button>
       </nav>
 
-      <!-- Acciones de Cabecera: Carrito 🛒 + Hamburguesa ☰ -->
+      <!-- Acciones de Cabecera: Carrito + Hamburguesa ☰ -->
       <div class="header-actions">
         <button class="header-cart-btn" onclick="openCartDrawer()" aria-label="Ver carrito de compras" id="headerCartBtn">
           <div class="cart-icon-wrapper">
-            <span class="cart-icon">🛒</span>
+            <span class="cart-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;color:#d8b4fe;"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></span>
             <span class="cart-badge" id="cartBadge">0</span>
           </div>
         </button>
@@ -4436,7 +4436,7 @@
   <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Carrito de compras">
     <div class="cart-drawer-header">
       <div class="cart-drawer-title-group">
-        <span class="cart-icon" style="font-size: 1.35rem;">🛒</span>
+        <span class="cart-icon" style="display:inline-flex;align-items:center;"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;color:#d8b4fe;"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></span>
         <h2>TU CARRITO</h2>
         <span class="cart-drawer-count" id="cartDrawerCount">0 items</span>
       </div>
@@ -4504,7 +4504,7 @@
   <!-- Barra Flotante de Carrito en Móvil -->
   <div class="mobile-floating-cart" id="mobileFloatingCart" onclick="openCartDrawer()" role="button" tabindex="0" aria-label="Ver carrito de compras">
     <div class="mfc-left">
-      <span class="mfc-icon">🛒</span>
+      <span class="mfc-icon" style="display:inline-flex;align-items:center;"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;color:#d8b4fe;"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
       <span class="mfc-info">
         <span id="mfcUnits">0 items</span> • <span class="mfc-total" id="mfcTotal">$0.00</span>
       </span>
@@ -4888,9 +4888,7 @@
             </button>
           </div>
 
-          <button type="button" class="tyazuca-btn-back" id="tyhotBtnBack" onclick="setTyhotDetail(false)">
-            <span>← VOLVER AL MENÚ</span>
-          </button>
+
         </div>
       </div>
 
@@ -5043,9 +5041,7 @@
             </button>
           </div>
 
-          <button type="button" class="tyazuca-btn-back" id="tyazucaBtnBack" onclick="setTyazucaDetail(false)">
-            <span>← VOLVER AL MENÚ</span>
-          </button>
+
         </div>
       </div>
 
