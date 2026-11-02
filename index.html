@@ -4836,7 +4836,7 @@
           <div class="tyazuca-cup-inner">
             <img src="tyango-clasico.jpg" alt="" class="tyazuca-cup-photo" id="tyhotImgActive">
             <div class="tyazuca-cup-glare"></div>
-            <span class="tyazuca-cup-pill" id="tyhotPillActive">✨ VER DETALLES</span>
+            <span class="tyazuca-cup-pill" id="tyhotPillActive">VER DETALLES</span>
           </div>
         </div>
 
@@ -4884,7 +4884,6 @@
               <div class="tyazuca-price-val" id="tyhotDetailPrice">$4.50</div>
             </div>
             <button type="button" class="tyazuca-btn-add" id="tyhotBtnAdd" style="background:#C84B31">
-              <span>+</span>
               <span>AGREGAR</span>
             </button>
           </div>
@@ -4992,7 +4991,7 @@
           <div class="tyazuca-cup-inner">
             <img src="raffaello.jpg" alt="" class="tyazuca-cup-photo" id="tyazucaImgActive">
             <div class="tyazuca-cup-glare"></div>
-            <span class="tyazuca-cup-pill" id="tyazucaPillActive">✨ VER DETALLES</span>
+            <span class="tyazuca-cup-pill" id="tyazucaPillActive">VER DETALLES</span>
           </div>
         </div>
 
@@ -5040,7 +5039,6 @@
               <div class="tyazuca-price-val" id="tyazucaDetailPrice">$4.50</div>
             </div>
             <button type="button" class="tyazuca-btn-add" id="tyazucaBtnAdd">
-              <span>+</span>
               <span>AGREGAR</span>
             </button>
           </div>
@@ -7489,7 +7487,7 @@
           const current = tyazucaItems[tyazucaCurrentIdx];
           addToCart(current.id);
           const orig = btnAdd.innerHTML;
-          btnAdd.innerHTML = '<span>✓</span><span>¡AGREGADO AL PEDIDO!</span>';
+          btnAdd.innerHTML = '<span>¡AGREGADO AL PEDIDO!</span>';
           btnAdd.style.transform = 'scale(0.95)';
           btnAdd.style.backgroundColor = '#059669';
           showToast(`¡${current.name} agregado al pedido!`);
@@ -7883,7 +7881,7 @@
           const current = tyhotItems[tyhotCurrentIdx];
           addToCart(current.id);
           const orig = btnAdd.innerHTML;
-          btnAdd.innerHTML = '<span>✓</span><span>¡AGREGADO AL PEDIDO!</span>';
+          btnAdd.innerHTML = '<span>¡AGREGADO AL PEDIDO!</span>';
           btnAdd.style.transform = 'scale(0.95)';
           btnAdd.style.backgroundColor = '#059669';
           showToast(`¡${current.name} agregado al pedido!`);

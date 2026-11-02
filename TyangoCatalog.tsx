@@ -317,13 +317,13 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
           >
             <defs>
               <path
-                id="catalogArc"
+                id="catalogArcClean"
                 d="M 55,600 A 545,545 0 1,1 1145,600 A 545,545 0 1,1 55,600"
                 fill="transparent"
               />
             </defs>
             <text className="fill-white text-[50px] md:text-[68px] font-serif uppercase tracking-[0.16em]">
-              <textPath href="#catalogArc" startOffset="0%">
+              <textPath href="#catalogArcClean" startOffset="0%">
                 • {line} • FRUTAS FRESCAS • SABOR Y CREATIVIDAD • TYANGO •
               </textPath>
             </text>
@@ -381,9 +381,9 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
                 onError={handleImageError}
                 className="w-full h-full object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-300 pointer-events-none"
               />
-              <div className="absolute bottom-3 z-10 flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1 text-[11px] font-extrabold text-gray-900 shadow-md">
-                <SparklesIcon className="w-3 h-3 text-[#E91E63]" />
-                <span>VER DETALLES</span>
+              {/* BOTÓN VER DETALLES LIMPIO (SIN EMOJIS, SOLO TEXTO O ICONO VECTORIAL SUTIL) */}
+              <div className="absolute bottom-3 z-10 flex items-center gap-1.5 rounded-full bg-white/95 px-4 py-1.5 text-[11px] font-extrabold tracking-wider text-gray-900 shadow-md">
+                VER DETALLES
               </div>
             </motion.div>
           </motion.div>
@@ -545,7 +545,7 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
                     justAdded ? "bg-green-600" : ""
                   }`}
                 >
-                  {justAdded ? "✓ ¡AGREGADO AL PEDIDO!" : "+ AGREGAR"}
+                  {justAdded ? "¡AGREGADO AL PEDIDO!" : "AGREGAR"}
                 </button>
               </div>
 
