@@ -13,6 +13,7 @@ export interface TyazucaProduct {
   price: string;
   priceNum: number;
   arcColor: string;
+  themeColor?: string;
   accentBg: string;
   image: string;
 }
@@ -28,6 +29,7 @@ export const TYAZUCA_PRODUCTS: TyazucaProduct[] = [
     price: '$4.50',
     priceNum: 4.5,
     arcColor: '#8A1C22',
+    themeColor: '#8A1C22',
     accentBg: '#5c1318',
     image: '/raffaello.jpg',
   },
@@ -41,6 +43,7 @@ export const TYAZUCA_PRODUCTS: TyazucaProduct[] = [
     price: '$4.50',
     priceNum: 4.5,
     arcColor: '#3D1E12',
+    themeColor: '#3D1E12',
     accentBg: '#2a140c',
     image: '/paccari.jpg',
   },
@@ -54,6 +57,7 @@ export const TYAZUCA_PRODUCTS: TyazucaProduct[] = [
     price: '$4.50',
     priceNum: 4.5,
     arcColor: '#6B1323',
+    themeColor: '#6B1323',
     accentBg: '#470c17',
     image: '/franui.jpg',
   },
@@ -67,6 +71,7 @@ export const TYAZUCA_PRODUCTS: TyazucaProduct[] = [
     price: '$4.50',
     priceNum: 4.5,
     arcColor: '#593720',
+    themeColor: '#593720',
     accentBg: '#3d2415',
     image: '/kinder-bueno.jpg',
   },
@@ -80,6 +85,7 @@ export const TYAZUCA_PRODUCTS: TyazucaProduct[] = [
     price: '$4.50',
     priceNum: 4.5,
     arcColor: '#C87A19',
+    themeColor: '#C87A19',
     accentBg: '#8c520a',
     image: '/mango-raffaello.jpg',
   },
@@ -97,6 +103,9 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
 
   const total = TYAZUCA_PRODUCTS.length;
   const currentProduct = TYAZUCA_PRODUCTS[currentIndex];
+  const activeProduct = currentProduct;
+  const activeIndex = currentIndex;
+  const isDetailView = isDetail;
 
   const prevIndex = (currentIndex - 1 + total) % total;
   const nextIndex = (currentIndex + 1) % total;
@@ -174,7 +183,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
       aria-label="Catálogo TYAZUCA 3D"
     >
       {/* ═══════════════════════════════════════════════════════════════
-          1. ENCABEZADO DE LA SECCIÓN (Optimizado para Mobile & Desktop)
+          1. ENCABEZADO MINIMALISTA DE LA SECCIÓN (Sin redundancia)
       ═══════════════════════════════════════════════════════════════ */}
       <motion.div
         animate={{
@@ -182,22 +191,13 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
           y: isDetail ? -18 : 0,
         }}
         transition={{ duration: 0.4 }}
-        className="relative z-30 text-center max-w-xl mx-auto pt-1 sm:pt-2 pb-2 sm:pb-4"
+        className="relative z-30 text-center max-w-xl mx-auto pt-2 pb-2"
       >
-        <span className="text-[10px] sm:text-xs font-black tracking-[0.22em] text-[#5B4B8A] uppercase mb-0.5 sm:mb-1 block">
-          Línea Dulce & Frutas Velvet
+        <span className="text-xs uppercase tracking-[0.25em] text-gray-400 font-semibold block mb-1">
+          LÍNEA DULCE &amp; FRUTAS VELVET
         </span>
-
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#2B1627] tracking-tight mb-1 sm:mb-2">
-          TYAZUCA
-        </h1>
-
-        <p className="text-xs sm:text-base md:text-lg font-bold text-[#4A1942] mb-0.5 sm:mb-1">
-          Frutas que puedes llevar a tu manera.
-        </p>
-
-        <p className="text-[11px] sm:text-xs md:text-sm text-[#7B5B7B] font-medium max-w-xs sm:max-w-md mx-auto leading-tight sm:leading-normal">
-          Frutas frescas con cremas, chocolates y toppings irresistibles.
+        <p className="text-lg font-medium text-[#1E222D]">
+          Frutas que puedes llevar a tu manera
         </p>
       </motion.div>
 
@@ -263,18 +263,18 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                 whileHover={{ scale: 0.74, opacity: 1 }}
                 className="absolute z-20 cursor-pointer focus:outline-none group"
                 style={{
-                  filter: 'drop-shadow(0 14px 20px rgba(43,22,39,0.20))',
+                  filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
                 }}
               >
-                <div className="relative w-[150px] sm:w-[210px] md:w-[250px] aspect-[4/5] rounded-[24px] sm:rounded-[32px] overflow-hidden p-2 sm:p-2.5 bg-gradient-to-b from-white/70 to-white/20 backdrop-blur-sm border border-white/60">
+                <div className="relative w-[150px] sm:w-[210px] md:w-[250px] aspect-[4/5] rounded-[26px] sm:rounded-[34px] overflow-hidden">
                   <img
                     src={prevProduct.image}
                     alt={prevProduct.name}
-                    className="w-full h-full object-cover rounded-[18px] sm:rounded-[24px] pointer-events-none"
+                    className="w-full h-full object-cover rounded-[26px] sm:rounded-[34px] pointer-events-none"
                     loading="lazy"
                   />
                   <div className="absolute inset-x-0 bottom-3 text-center">
-                    <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full shadow-md">
+                    <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
                       {prevProduct.name}
                     </span>
                   </div>
@@ -324,24 +324,21 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
               }
               className="relative transition-shadow duration-500"
               style={{
-                filter: isDetail
-                  ? 'drop-shadow(0 30px 45px rgba(43,22,39,0.32))'
-                  : 'drop-shadow(0 22px 30px rgba(43,22,39,0.28))',
+                filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
               }}
             >
               <div
-                className={`relative overflow-hidden rounded-[28px] sm:rounded-[38px] p-2.5 sm:p-3 transition-all duration-500 border border-white/80 shadow-inner ${
+                className={`relative overflow-hidden rounded-[28px] sm:rounded-[36px] transition-all duration-500 ${
                   isDetail
-                    ? 'w-[200px] sm:w-[280px] md:w-[340px] aspect-[4/5] bg-gradient-to-b from-white/95 via-white/70 to-white/30 backdrop-blur-md'
-                    : 'w-[170px] sm:w-[240px] md:w-[280px] aspect-[4/5] bg-gradient-to-b from-white/90 via-white/50 to-white/20 backdrop-blur-md'
+                    ? 'w-[200px] sm:w-[280px] md:w-[340px] aspect-[4/5]'
+                    : 'w-[170px] sm:w-[240px] md:w-[280px] aspect-[4/5]'
                 }`}
               >
                 <img
                   src={currentProduct.image}
                   alt={currentProduct.name}
-                  className="w-full h-full object-cover rounded-[20px] sm:rounded-[28px] pointer-events-none select-none transition-transform duration-700"
+                  className="w-full h-full object-cover rounded-[28px] sm:rounded-[36px] pointer-events-none select-none transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-white/60 pointer-events-none rounded-[28px] sm:rounded-[38px]" />
 
                 {!isDetail && (
                   <motion.div
@@ -350,7 +347,7 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                     transition={{ delay: 0.2 }}
                     className="absolute inset-x-0 bottom-3 sm:bottom-4 flex justify-center"
                   >
-                    <span className="bg-[#2B1627]/90 text-white text-[9px] sm:text-[11px] font-black px-3 py-1 sm:px-4 sm:py-1.5 rounded-full shadow-lg backdrop-blur-md flex items-center gap-1 border border-white/20 active:scale-95 transition-transform">
+                    <span className="bg-[#2B1627]/90 text-white text-[9px] sm:text-[11px] font-black px-3.5 py-1.5 rounded-full shadow-lg backdrop-blur-md flex items-center gap-1 border border-white/20 active:scale-95 transition-transform">
                       <span>✨ VER DETALLES</span>
                     </span>
                   </motion.div>
@@ -379,18 +376,18 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
                 whileHover={{ scale: 0.74, opacity: 1 }}
                 className="absolute z-20 cursor-pointer focus:outline-none group"
                 style={{
-                  filter: 'drop-shadow(0 14px 20px rgba(43,22,39,0.20))',
+                  filter: 'drop-shadow(0 25px 35px rgba(0,0,0,0.45))',
                 }}
               >
-                <div className="relative w-[150px] sm:w-[210px] md:w-[250px] aspect-[4/5] rounded-[24px] sm:rounded-[32px] overflow-hidden p-2 sm:p-2.5 bg-gradient-to-b from-white/70 to-white/20 backdrop-blur-sm border border-white/60">
+                <div className="relative w-[150px] sm:w-[210px] md:w-[250px] aspect-[4/5] rounded-[26px] sm:rounded-[34px] overflow-hidden">
                   <img
                     src={nextProduct.image}
                     alt={nextProduct.name}
-                    className="w-full h-full object-cover rounded-[18px] sm:rounded-[24px] pointer-events-none"
+                    className="w-full h-full object-cover rounded-[26px] sm:rounded-[34px] pointer-events-none"
                     loading="lazy"
                   />
                   <div className="absolute inset-x-0 bottom-3 text-center">
-                    <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full shadow-md">
+                    <span className="inline-block bg-[#2B1627]/85 backdrop-blur-md text-white text-[9px] sm:text-[11px] font-bold px-3 py-1 rounded-full shadow-md">
                       {nextProduct.name}
                     </span>
                   </div>
@@ -522,76 +519,56 @@ export default function TyazucaSection({ onAddToCart, className = '' }: TyazucaS
       </motion.div>
 
       {/* ═══════════════════════════════════════════════════════════════
-          4. ESCENARIO INFERIOR — ARCO DINÁMICO & TEXTO SVG ROTATORIO
+          ARCO CIRCULAR PERFECTO (Sin corte plano arriba)
       ═══════════════════════════════════════════════════════════════ */}
-      <div className="relative w-full h-[150px] sm:h-[190px] md:h-[220px] flex items-end justify-center pointer-events-none mt-1">
-        <AnimatePresence>
-          {!isDetail && (
-            <motion.div
-              initial={{ y: 180, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 220, opacity: 0 }}
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-4xl h-full flex items-end justify-center"
-            >
-              {/* Arco Semicircular Agrumea */}
-              <div
-                className="absolute -bottom-[250px] sm:-bottom-[310px] w-[500px] sm:w-[720px] md:w-[920px] h-[500px] sm:h-[720px] md:h-[920px] rounded-full transition-colors duration-700 shadow-2xl"
-                style={{
-                  backgroundColor: currentProduct.arcColor,
-                  boxShadow: `0 -14px 40px ${currentProduct.arcColor}55`,
-                }}
-              />
+      <motion.div
+        animate={{
+          backgroundColor: activeProduct.themeColor || activeProduct.arcColor,
+          y: isDetailView ? "100%" : "0%",
+        }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute top-[42%] left-1/2 -translate-x-1/2 w-[180vw] h-[180vw] sm:w-[140vw] sm:h-[140vw] md:w-[115vw] md:h-[115vw] rounded-full z-10 flex items-center justify-center shadow-[0_-20px_60px_rgba(0,0,0,0.15)] pointer-events-none"
+      >
+        {/* TEXTO CURVO EN CÍRCULO COMPLETO CON MARGEN SUPERIOR (Nunca se corta) */}
+        <motion.svg
+          animate={{ rotate: activeIndex * -25 }}
+          transition={{ type: "spring", stiffness: 45, damping: 18 }}
+          viewBox="0 0 1200 1200"
+          className="w-full h-full opacity-[0.16] overflow-visible select-none"
+        >
+          <defs>
+            {/* Centro en (600,600) y radio 510: deja 90px de margen libre arriba para que las letras no se corten */}
+            <path
+              id="perfectCircleArc"
+              d="M 90,600 A 510,510 0 1,1 1110,600 A 510,510 0 1,1 90,600"
+              fill="transparent"
+            />
+          </defs>
+          <text className="fill-white text-[68px] font-serif uppercase tracking-[0.18em]">
+            <textPath href="#perfectCircleArc" startOffset="0%">
+              • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA • FRUTAS FRESCAS • CREMA VELVET • TYAZUCA 
+            </textPath>
+          </text>
+        </motion.svg>
+      </motion.div>
 
-              {/* Texto curvo rotatorio SVG */}
-              <div className="absolute -bottom-[240px] sm:-bottom-[300px] w-[480px] sm:w-[700px] md:w-[900px] h-[480px] sm:h-[700px] md:h-[900px] pointer-events-none">
-                <motion.svg
-                  viewBox="0 0 800 800"
-                  className="w-full h-full"
-                  animate={{ rotate: currentIndex * -72 }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 90,
-                    damping: 18,
-                  }}
-                >
-                  <defs>
-                    <path
-                      id="tyazucaArcPath"
-                      d="M 120,400 A 280,280 0 1,1 680,400 A 280,280 0 1,1 120,400"
-                      fill="none"
-                    />
-                  </defs>
-                  <text
-                    className="text-[17px] sm:text-[15px] font-black uppercase tracking-[0.28em] fill-white/95"
-                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.35)' }}
-                  >
-                    <textPath href="#tyazucaArcPath" startOffset="0%">
-                      • TYAZUCA • FRUTAS FRESCAS CON CREMAS Y CHOCOLATES • TYANGO • TYAZUCA • FRUTAS FRESCAS CON CREMAS Y CHOCOLATES • TYANGO
-                    </textPath>
-                  </text>
-                </motion.svg>
-              </div>
-
-              {/* Puntos de paginación táctiles */}
-              <div className="relative z-30 pb-3 sm:pb-4 pointer-events-auto flex items-center gap-2 sm:gap-2.5">
-                {TYAZUCA_PRODUCTS.map((prod, idx) => (
-                  <button
-                    key={prod.id}
-                    onClick={() => setCurrentIndex(idx)}
-                    aria-label={`Ir al vaso ${prod.name}`}
-                    className={`transition-all duration-300 rounded-full h-2 ${
-                      idx === currentIndex
-                        ? 'w-7 sm:w-8 bg-white shadow-md'
-                        : 'w-2 bg-white/40 hover:bg-white/70'
-                    }`}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      {/* Paginación táctil (Capa 35) */}
+      {!isDetailView && (
+        <div className="relative z-35 pb-3 sm:pb-5 pointer-events-auto flex items-center justify-center gap-2 sm:gap-2.5">
+          {TYAZUCA_PRODUCTS.map((prod, idx) => (
+            <button
+              key={prod.id}
+              onClick={() => setCurrentIndex(idx)}
+              aria-label={`Ir al vaso ${prod.name}`}
+              className={`transition-all duration-300 rounded-full h-2.5 ${
+                idx === activeIndex
+                  ? 'w-8 bg-white shadow-md'
+                  : 'w-2.5 bg-white/40 hover:bg-white/70'
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
