@@ -13,6 +13,7 @@ export interface Product {
   themeColor: string;
   image: string;
   cardBg?: string;
+  isSoldOut?: boolean;
 }
 
 export interface CatalogProps {
@@ -112,6 +113,7 @@ export const CATALOG_DATA: Record<"TYAZUCA" | "TYHOT", Product[]> = {
       themeColor: "#D05A28",
       cardBg: "#3E1F14",
       image: "/tyhot/bendito-mango.png",
+      isSoldOut: true,
     },
     {
       id: "takimango",
@@ -167,6 +169,7 @@ export const CATALOG_DATA: Record<"TYAZUCA" | "TYHOT", Product[]> = {
       themeColor: "#52B788",
       cardBg: "#1B4332",
       image: "/tyhot/iceuva.png",
+      isSoldOut: true,
     },
     {
       id: "uva-pulpa",
@@ -178,6 +181,7 @@ export const CATALOG_DATA: Record<"TYAZUCA" | "TYHOT", Product[]> = {
       themeColor: "#7B2CBF",
       cardBg: "#3E1F14",
       image: "/tyhot/uva-pulpa.png",
+      isSoldOut: true,
     },
   ],
 };
@@ -273,17 +277,24 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
               transition={{ duration: 0.2 }}
               className="mt-1 flex flex-col items-center"
             >
-              {activeProduct.tag && (
-                <span
-                  style={{
-                    backgroundColor: `${activeProduct.themeColor}18`,
-                    color: activeProduct.themeColor,
-                  }}
-                  className="inline-flex items-center rounded-full px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest mb-1"
-                >
-                  {activeProduct.tag}
-                </span>
-              )}
+              <div className="flex items-center gap-1.5 mb-1">
+                {activeProduct.tag && (
+                  <span
+                    style={{
+                      backgroundColor: `${activeProduct.themeColor}18`,
+                      color: activeProduct.themeColor,
+                    }}
+                    className="inline-flex items-center rounded-full px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest"
+                  >
+                    {activeProduct.tag}
+                  </span>
+                )}
+                {activeProduct.isSoldOut && (
+                  <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest bg-red-500 text-white shadow-sm">
+                    AGOTADO
+                  </span>
+                )}
+              </div>
 
               <h2 className="font-serif text-3xl sm:text-5xl font-black tracking-tight text-[#1E222D] uppercase leading-none">
                 {activeProduct.name}
@@ -347,8 +358,13 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
           >
             <div
               style={{ backgroundColor: `${products[prevIndex].cardBg || cupBgColor}E6` }}
-              className="w-[200px] h-[250px] rounded-[32px] p-2 shadow-xl flex items-center justify-center border border-white/10"
+              className="w-[200px] h-[250px] rounded-[32px] p-2 shadow-xl flex items-center justify-center border border-white/10 relative overflow-hidden"
             >
+              {products[prevIndex].isSoldOut && (
+                <span className="absolute top-2.5 z-10 rounded-full bg-red-600 text-white px-2 py-0.5 text-[9px] font-black uppercase tracking-wider shadow">
+                  AGOTADO
+                </span>
+              )}
               <img
                 src={products[prevIndex].image}
                 alt="prev"
@@ -370,20 +386,36 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
               style={{ backgroundColor: cupBgColor }}
               className="w-[215px] h-[270px] sm:w-[260px] sm:h-[330px] rounded-[32px] p-3 shadow-[0_25px_50px_rgba(0,0,0,0.5)] border-2 border-white/20 flex flex-col items-center justify-center relative overflow-hidden"
             >
-              {activeProduct.tag && (
+              {/* Badge AGOTADO o Tag */}
+              {activeProduct.isSoldOut ? (
+                <div className="absolute top-3.5 z-20 flex items-center gap-1 rounded-full bg-red-600 px-3 py-0.5 text-[10px] font-black uppercase tracking-widest text-white shadow-lg border border-white/30 animate-pulse">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                  AGOTADO
+                </div>
+              ) : activeProduct.tag ? (
                 <span className="absolute top-3 z-10 rounded-full bg-[#E6F4F1] text-[#2A9D8F] px-3 py-0.5 text-[9px] font-extrabold uppercase tracking-widest shadow">
                   {activeProduct.tag}
                 </span>
-              )}
+              ) : null}
+
               <img
                 src={activeProduct.image}
                 alt={activeProduct.name}
                 onError={handleImageError}
-                className="w-full h-full object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                className={`w-full h-full object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-300 pointer-events-none ${
+                  activeProduct.isSoldOut ? "opacity-90 grayscale-[15%]" : ""
+                }`}
               />
-              {/* BOTÓN VER DETALLES LIMPIO (SIN EMOJIS, SOLO TEXTO O ICONO VECTORIAL SUTIL) */}
-              <div className="absolute bottom-3 z-10 flex items-center gap-1.5 rounded-full bg-white/95 px-4 py-1.5 text-[11px] font-extrabold tracking-wider text-gray-900 shadow-md">
-                VER DETALLES
+
+              {/* BOTÓN VER DETALLES */}
+              <div
+                className={`absolute bottom-3 z-10 flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[11px] font-extrabold tracking-wider shadow-md ${
+                  activeProduct.isSoldOut
+                    ? "bg-red-600 text-white"
+                    : "bg-white/95 text-gray-900"
+                }`}
+              >
+                {activeProduct.isSoldOut ? "AGOTADO • VER DETALLES" : "VER DETALLES"}
               </div>
             </motion.div>
           </motion.div>
@@ -395,8 +427,13 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
           >
             <div
               style={{ backgroundColor: `${products[nextIndex].cardBg || cupBgColor}E6` }}
-              className="w-[200px] h-[250px] rounded-[32px] p-2 shadow-xl flex items-center justify-center border border-white/10"
+              className="w-[200px] h-[250px] rounded-[32px] p-2 shadow-xl flex items-center justify-center border border-white/10 relative overflow-hidden"
             >
+              {products[nextIndex].isSoldOut && (
+                <span className="absolute top-2.5 z-10 rounded-full bg-red-600 text-white px-2 py-0.5 text-[9px] font-black uppercase tracking-wider shadow">
+                  AGOTADO
+                </span>
+              )}
               <img
                 src={products[nextIndex].image}
                 alt="next"
@@ -494,11 +531,18 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
               {/* Encabezado con la X de cierre en la esquina */}
               <div className="relative flex items-start justify-between mb-2">
                 <div>
-                  {activeProduct.tag && (
-                    <span className="inline-block rounded-full bg-[#E6F4F1] text-[#2A9D8F] px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest mb-1">
-                      {activeProduct.tag}
-                    </span>
-                  )}
+                  <div className="flex items-center gap-1.5 mb-1">
+                    {activeProduct.tag && (
+                      <span className="inline-block rounded-full bg-[#E6F4F1] text-[#2A9D8F] px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-widest">
+                        {activeProduct.tag}
+                      </span>
+                    )}
+                    {activeProduct.isSoldOut && (
+                      <span className="inline-block rounded-full bg-red-600 text-white px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest shadow-sm">
+                        AGOTADO
+                      </span>
+                    )}
+                  </div>
                   <h3 className="font-serif text-2xl sm:text-3xl font-black text-[#1E222D] uppercase leading-tight">
                     {activeProduct.name}
                   </h3>
@@ -512,7 +556,7 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
                   aria-label="Cerrar detalles"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                    <path strokeLinecap="round" strokeWidth="2.5" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
@@ -540,13 +584,26 @@ export default function TyangoCatalog({ line, onAddToCart }: CatalogProps) {
 
                 <button
                   type="button"
-                  onClick={handleAdd}
-                  style={{ backgroundColor: activeProduct.themeColor }}
-                  className={`flex-1 rounded-full py-3.5 px-6 text-xs font-extrabold uppercase tracking-widest text-white shadow-lg transition-all active:scale-95 hover:opacity-90 cursor-pointer ${
-                    justAdded ? "bg-green-600" : ""
+                  disabled={activeProduct.isSoldOut}
+                  onClick={activeProduct.isSoldOut ? undefined : handleAdd}
+                  style={
+                    activeProduct.isSoldOut
+                      ? { backgroundColor: "#9CA3AF" }
+                      : { backgroundColor: activeProduct.themeColor }
+                  }
+                  className={`flex-1 rounded-full py-3.5 px-6 text-xs font-extrabold uppercase tracking-widest text-white shadow-lg transition-all ${
+                    activeProduct.isSoldOut
+                      ? "opacity-60 cursor-not-allowed shadow-none"
+                      : justAdded
+                      ? "bg-green-600 active:scale-95 hover:opacity-90 cursor-pointer"
+                      : "active:scale-95 hover:opacity-90 cursor-pointer"
                   }`}
                 >
-                  {justAdded ? "¡AGREGADO AL PEDIDO!" : "AGREGAR"}
+                  {activeProduct.isSoldOut
+                    ? "AGOTADO"
+                    : justAdded
+                    ? "¡AGREGADO AL PEDIDO!"
+                    : "AGREGAR"}
                 </button>
               </div>
             </motion.div>

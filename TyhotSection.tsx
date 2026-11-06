@@ -17,6 +17,7 @@ export interface TyhotProduct {
   arcColor?: string;
   accentBg?: string;
   image: string;
+  isSoldOut?: boolean;
 }
 
 export const TYHOT_PRODUCTS: TyhotProduct[] = [
@@ -49,6 +50,7 @@ export const TYHOT_PRODUCTS: TyhotProduct[] = [
     arcColor: '#D05A28',
     accentBg: '#3E1F14',
     image: '/tyhot/bendito-mango.png',
+    isSoldOut: true,
   },
   {
     id: 'takimango',
@@ -124,6 +126,7 @@ export const TYHOT_PRODUCTS: TyhotProduct[] = [
     arcColor: '#52B788',
     accentBg: '#1B4332',
     image: '/tyhot/iceuva.png',
+    isSoldOut: true,
   },
   {
     id: 'uva-pulpa',
@@ -139,6 +142,7 @@ export const TYHOT_PRODUCTS: TyhotProduct[] = [
     arcColor: '#7B2CBF',
     accentBg: '#3E1F14',
     image: '/tyhot/uva-pulpa.png',
+    isSoldOut: true,
   },
 ];
 
@@ -411,27 +415,36 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
               }}
             >
               <div className="relative overflow-hidden rounded-[28px] sm:rounded-[36px] w-[215px] h-[275px] sm:w-[260px] sm:h-[330px] bg-[#3E1F14] p-3 border-2 border-white/20 flex flex-col items-center justify-center">
-                {activeProduct.tag && (
+                {activeProduct.isSoldOut ? (
+                  <div className="absolute top-3.5 z-20 flex items-center gap-1 rounded-full bg-red-600 px-3 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-white shadow-lg border border-white/30 animate-pulse">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                    AGOTADO
+                  </div>
+                ) : activeProduct.tag ? (
                   <span className="absolute top-3.5 z-10 rounded-full bg-[#E6F4F1] text-[#2A9D8F] px-3 py-0.5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow">
                     {activeProduct.tag}
                   </span>
-                )}
+                ) : null}
 
                 <img
                   src={activeProduct.image}
                   alt={activeProduct.name}
                   onError={handleImageError}
-                  className="w-full h-full object-contain rounded-[24px] pointer-events-none select-none transition-transform duration-700 drop-shadow-2xl"
+                  className={`w-full h-full object-contain rounded-[24px] pointer-events-none select-none transition-transform duration-700 drop-shadow-2xl ${
+                    activeProduct.isSoldOut ? 'opacity-90 grayscale-[15%]' : ''
+                  }`}
                 />
 
-                {/* BOTÓN FLOTANTE CON MICRO-ANIMACIÓN DE PULSO */}
+                {/* BOTÓN FLOTANTE */}
                 <div className="absolute inset-x-0 bottom-3 sm:bottom-4 flex justify-center">
                   <motion.span
                     animate={{ scale: [1, 1.04, 1] }}
                     transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                    className="bg-[#1E222D]/90 text-white text-[9px] sm:text-[11px] font-black px-3.5 py-1.5 rounded-full shadow-lg backdrop-blur-md flex items-center gap-1.5 border border-white/20 active:scale-95 transition-transform"
+                    className={`${
+                      activeProduct.isSoldOut ? 'bg-red-600' : 'bg-[#1E222D]/90'
+                    } text-white text-[9px] sm:text-[11px] font-black px-3.5 py-1.5 rounded-full shadow-lg backdrop-blur-md flex items-center gap-1.5 border border-white/20 active:scale-95 transition-transform`}
                   >
-                    <span>VER DETALLES</span>
+                    <span>{activeProduct.isSoldOut ? 'AGOTADO • VER DETALLES' : 'VER DETALLES'}</span>
                   </motion.span>
                 </div>
               </div>
@@ -596,15 +609,22 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
               {/* Info del producto */}
               <div className="flex flex-col">
                 <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <span
-                    style={{
-                      backgroundColor: `${activeProduct.themeColor}18`,
-                      color: activeProduct.themeColor,
-                    }}
-                    className="inline-flex items-center rounded-full px-3 py-0.5 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-widest border border-current/20"
-                  >
-                    {activeProduct.tag || 'ESPECIALIDAD TYHOT'}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      style={{
+                        backgroundColor: `${activeProduct.themeColor}18`,
+                        color: activeProduct.themeColor,
+                      }}
+                      className="inline-flex items-center rounded-full px-3 py-0.5 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-widest border border-current/20"
+                    >
+                      {activeProduct.tag || 'ESPECIALIDAD TYHOT'}
+                    </span>
+                    {activeProduct.isSoldOut && (
+                      <span className="inline-flex items-center rounded-full bg-red-600 text-white px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest shadow-sm">
+                        AGOTADO
+                      </span>
+                    )}
+                  </div>
 
                   <button
                     type="button"
@@ -649,21 +669,32 @@ export default function TyhotSection({ onAddToCart, className = '' }: TyhotSecti
                 </div>
 
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={!activeProduct.isSoldOut ? { scale: 1.02 } : undefined}
+                  whileTap={!activeProduct.isSoldOut ? { scale: 0.95 } : undefined}
                   animate={justAdded ? { scale: 0.95 } : { scale: 1 }}
                   type="button"
-                  onClick={handleAddToCart}
+                  disabled={activeProduct.isSoldOut}
+                  onClick={activeProduct.isSoldOut ? undefined : handleAddToCart}
                   style={
-                    !justAdded
+                    activeProduct.isSoldOut
+                      ? { backgroundColor: '#9CA3AF' }
+                      : !justAdded
                       ? { backgroundColor: activeProduct.themeColor }
                       : undefined
                   }
-                  className={`py-3.5 px-7 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase text-white shadow-lg flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer ${
-                    justAdded ? 'bg-emerald-600' : 'hover:brightness-95'
+                  className={`py-3.5 px-7 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase text-white shadow-lg flex items-center justify-center gap-2 transition-all duration-300 ${
+                    activeProduct.isSoldOut
+                      ? 'opacity-60 cursor-not-allowed shadow-none'
+                      : justAdded
+                      ? 'bg-emerald-600 cursor-pointer'
+                      : 'hover:brightness-95 cursor-pointer'
                   }`}
                 >
-                  {justAdded ? '¡AGREGADO AL PEDIDO!' : 'AGREGAR'}
+                  {activeProduct.isSoldOut
+                    ? 'AGOTADO'
+                    : justAdded
+                    ? '¡AGREGADO AL PEDIDO!'
+                    : 'AGREGAR'}
                 </motion.button>
               </div>
             </motion.div>

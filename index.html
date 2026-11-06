@@ -3347,6 +3347,35 @@
       pointer-events: none;
       letter-spacing: 0.04em;
     }
+    .tyazuca-cup-soldout-badge {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 15;
+      background: #EF4444;
+      color: #FFFFFF;
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45);
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    .tyazuca-cup-soldout-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      display: inline-block;
+    }
     @keyframes tyazucaPulseBadge {
       0%, 100% {
         transform: translateX(-50%) scale(1);
@@ -4834,6 +4863,7 @@
 
         <div class="tyazuca-cup cup-active" id="tyhotCupActive" title="Haz clic para ver detalles">
           <div class="tyazuca-cup-inner">
+            <span class="tyazuca-cup-soldout-badge" id="tyhotBadgeSoldOut" style="display:none;">AGOTADO</span>
             <img src="tyango-clasico.jpg" alt="" class="tyazuca-cup-photo" id="tyhotImgActive">
             <div class="tyazuca-cup-glare"></div>
             <span class="tyazuca-cup-pill" id="tyhotPillActive">VER DETALLES</span>
@@ -5199,6 +5229,9 @@
         { 
           id: 'hot_uva_pulpa',
           img: 'uva-pulpa.jpg', 
+          badge: 'AGOTADO', 
+          badgeCss: 'background:#FEE2E2;color:#DC2626;font-weight:900;', 
+          isSoldOut: true,
           name: 'UVA PULPA', 
           desc: 'Uvas verdes congeladas con Pulparindo y Tajín.', 
           price: '$4.80' 
@@ -5227,8 +5260,9 @@
         { 
           id: 'hot_iceuva',
           img: 'iceuva.jpg', 
-          badge: 'Nuevo', 
-          badgeCss: 'background:rgba(59,130,246,0.12);color:#2563EB', 
+          badge: 'AGOTADO', 
+          badgeCss: 'background:#FEE2E2;color:#DC2626;font-weight:900;', 
+          isSoldOut: true,
           name: 'ICEUVA', 
           desc: 'Uva congelada refrescante con Sprite y Tajín.', 
           price: '$4.50' 
@@ -5237,8 +5271,9 @@
           id: 'hot_bendito_mango',
           img: 'bendito-mango.jpg', 
           customCardClass: 'card-edition-blue',
-          badge: 'EDICIÓN LIMITADA', 
-          badgeCss: 'background:#FFFFFF;color:#0B6F9E;font-weight:900;',
+          badge: 'AGOTADO', 
+          badgeCss: 'background:#FEE2E2;color:#DC2626;font-weight:900;',
+          isSoldOut: true,
           seasonInfo: 'Disponible durante septiembre',
           name: 'BENDITO MANGO', 
           desc: 'Mango fresco con chamoy y gomitas azules.', 
@@ -7619,6 +7654,7 @@
         displayName: 'BENDITO MANGO',
         tag: 'POPULAR',
         tagType: 'orange',
+        isSoldOut: true,
         desc: 'Mango fresco bañado en chamoy con cintas de gomita ácida azul',
         price: '$4.80',
         priceNum: 4.80,
@@ -7684,6 +7720,7 @@
         displayName: 'ICE UVA HELADA',
         tag: 'EDICIÓN LIMITADA',
         tagType: 'green',
+        isSoldOut: true,
         desc: 'Uvas verdes congeladas y escarchadas con limón y chilito',
         price: '$4.50',
         priceNum: 4.50,
@@ -7697,6 +7734,7 @@
         displayName: 'UVA TAMARINDO',
         tag: 'TOP VENTAS',
         tagType: 'orange',
+        isSoldOut: true,
         desc: 'Uvas envueltas en pulpa de tamarindo natural y escarchadas',
         price: '$4.80',
         priceNum: 4.80,
@@ -7722,15 +7760,33 @@
       const imgPrev = document.getElementById('tyhotImgPrev');
       const pillPrev = document.getElementById('tyhotPillPrev');
       if (imgPrev) imgPrev.src = prev.img;
-      if (pillPrev) pillPrev.textContent = prev.name;
+      if (pillPrev) pillPrev.textContent = prev.name + (prev.isSoldOut ? ' (AGOTADO)' : '');
 
       const imgActive = document.getElementById('tyhotImgActive');
       if (imgActive) imgActive.src = current.img;
 
+      const badgeSoldOut = document.getElementById('tyhotBadgeSoldOut');
+      if (badgeSoldOut) {
+        badgeSoldOut.style.display = current.isSoldOut ? 'inline-flex' : 'none';
+      }
+
+      const pillActive = document.getElementById('tyhotPillActive');
+      if (pillActive) {
+        if (current.isSoldOut) {
+          pillActive.textContent = 'AGOTADO • VER DETALLES';
+          pillActive.style.background = '#EF4444';
+          pillActive.style.color = '#FFFFFF';
+        } else {
+          pillActive.textContent = 'VER DETALLES';
+          pillActive.style.background = 'rgba(255,255,255,0.95)';
+          pillActive.style.color = '#111827';
+        }
+      }
+
       const imgNext = document.getElementById('tyhotImgNext');
       const pillNext = document.getElementById('tyhotPillNext');
       if (imgNext) imgNext.src = next.img;
-      if (pillNext) pillNext.textContent = next.name;
+      if (pillNext) pillNext.textContent = next.name + (next.isSoldOut ? ' (AGOTADO)' : '');
 
       const arcDisk = document.getElementById('tyhotArcDisk');
       if (arcDisk) {
@@ -7747,9 +7803,15 @@
 
       const headerTagPill = document.getElementById('tyhotHeaderTagPill');
       if (headerTagPill) {
-        headerTagPill.textContent = current.tag || 'ESPECIALIDAD TYHOT';
-        headerTagPill.style.backgroundColor = `${current.themeColor}18`;
-        headerTagPill.style.color = current.themeColor;
+        if (current.isSoldOut) {
+          headerTagPill.textContent = 'AGOTADO';
+          headerTagPill.style.backgroundColor = '#FEE2E2';
+          headerTagPill.style.color = '#DC2626';
+        } else {
+          headerTagPill.textContent = current.tag || 'ESPECIALIDAD TYHOT';
+          headerTagPill.style.backgroundColor = `${current.themeColor}18`;
+          headerTagPill.style.color = current.themeColor;
+        }
       }
 
       const headerActiveName = document.getElementById('tyhotHeaderActiveName');
@@ -7782,14 +7844,32 @@
 
       const tagBadge = document.getElementById('tyhotTagBadge');
       if (tagBadge) {
-        tagBadge.textContent = current.tag || 'ESPECIALIDAD TYHOT';
-        tagBadge.style.backgroundColor = `${current.themeColor}18`;
-        tagBadge.style.color = current.themeColor;
+        if (current.isSoldOut) {
+          tagBadge.textContent = 'AGOTADO';
+          tagBadge.style.backgroundColor = '#FEE2E2';
+          tagBadge.style.color = '#DC2626';
+        } else {
+          tagBadge.textContent = current.tag || 'ESPECIALIDAD TYHOT';
+          tagBadge.style.backgroundColor = `${current.themeColor}18`;
+          tagBadge.style.color = current.themeColor;
+        }
       }
 
       const btnAdd = document.getElementById('tyhotBtnAdd');
       if (btnAdd) {
-        btnAdd.style.backgroundColor = current.themeColor;
+        if (current.isSoldOut) {
+          btnAdd.disabled = true;
+          btnAdd.innerHTML = '<span>AGOTADO</span>';
+          btnAdd.style.backgroundColor = '#9CA3AF';
+          btnAdd.style.cursor = 'not-allowed';
+          btnAdd.style.opacity = '0.7';
+        } else {
+          btnAdd.disabled = false;
+          btnAdd.innerHTML = '<span>AGREGAR</span>';
+          btnAdd.style.backgroundColor = current.themeColor;
+          btnAdd.style.cursor = 'pointer';
+          btnAdd.style.opacity = '1';
+        }
       }
 
       const trustDot = document.getElementById('tyhotTrustDot');
@@ -7875,6 +7955,10 @@
       if (btnAdd) {
         btnAdd.onclick = () => {
           const current = tyhotItems[tyhotCurrentIdx];
+          if (current.isSoldOut) {
+            showToast(`El producto ${current.name} está temporalmente agotado`);
+            return;
+          }
           addToCart(current.id);
           const orig = btnAdd.innerHTML;
           btnAdd.innerHTML = '<span>¡AGREGADO AL PEDIDO!</span>';
